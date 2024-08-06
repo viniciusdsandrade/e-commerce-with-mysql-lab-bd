@@ -40,7 +40,7 @@ CREATE TABLE tb_produto
     nome      VARCHAR(100)   NOT NULL,
     descricao TEXT,
     preco     DECIMAL(10, 2) NOT NULL,
-    estoque   INT            NOT NULL,
+    estoque   INT UNSIGNED   NOT NULL,
 
     PRIMARY KEY (id)
 );
@@ -49,7 +49,9 @@ CREATE TABLE tb_produto_categoria
 (
     id_produto   BIGINT UNSIGNED,
     id_categoria BIGINT UNSIGNED,
+
     PRIMARY KEY (id_produto, id_categoria),
+
     FOREIGN KEY (id_produto) REFERENCES tb_produto (id),
     FOREIGN KEY (id_categoria) REFERENCES tb_categoria (id)
 );
@@ -83,7 +85,7 @@ CREATE TABLE tb_item_pedido
     id             BIGINT UNSIGNED AUTO_INCREMENT,
     id_pedido      BIGINT UNSIGNED,
     id_produto     BIGINT UNSIGNED,
-    quantidade     INT            NOT NULL,
+    quantidade     INT UNSIGNED   NOT NULL,
     preco_unitario DECIMAL(10, 2) NOT NULL,
 
     PRIMARY KEY (id),
@@ -108,7 +110,7 @@ CREATE TABLE tb_item_carrinho
     id          BIGINT UNSIGNED AUTO_INCREMENT,
     id_carrinho BIGINT UNSIGNED,
     id_produto  BIGINT UNSIGNED,
-    quantidade  INT NOT NULL,
+    quantidade  INT UNSIGNED NOT NULL,
 
     PRIMARY KEY (id),
 
@@ -143,9 +145,9 @@ CREATE TABLE tb_avaliacao
     id             BIGINT UNSIGNED AUTO_INCREMENT,
     id_produto     BIGINT UNSIGNED,
     id_cliente     BIGINT UNSIGNED,
-    rating         INT      NOT NULL CHECK (rating BETWEEN 1 AND 5),
+    rating         INT UNSIGNED NOT NULL CHECK (rating BETWEEN 1 AND 5),
     comentario     TEXT,
-    data_avaliacao DATETIME NOT NULL,
+    data_avaliacao DATETIME     NOT NULL,
 
     PRIMARY KEY (id),
 
@@ -174,7 +176,6 @@ CREATE TABLE tb_cupom
 
     PRIMARY KEY (id)
 );
-
 
 CREATE TABLE tb_pagamento
 (
@@ -213,7 +214,6 @@ CREATE TABLE tb_envio
     FOREIGN KEY (id_pedido) REFERENCES tb_pedido (id)
 );
 
-
 CREATE TABLE tb_usuario_admin
 (
     id           BIGINT UNSIGNED AUTO_INCREMENT,
@@ -224,7 +224,6 @@ CREATE TABLE tb_usuario_admin
 
     PRIMARY KEY (id)
 );
-
 
 CREATE TABLE tb_log_atividade
 (
