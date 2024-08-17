@@ -3,7 +3,7 @@
     TABELA DE CLIENTES
     TABELA DE PEDIDOS E ITENS DE PEDIDO
     TABELAS DE CARRINHO DE COMPRA S E LISTA DE DESEJOS
-    TABELA DE AVA LIÇÕES E COMENTÁRIOS
+    TABELA DE AVALIÇÕES E COMENTÁRIOS
     TABELA DE PROMOÇÕES E CUPONS
     TABELA DE PAGAMENTOS E TRANSAÇÕES
     TABELA DE LOGÍSTICA E ENVIO
@@ -29,20 +29,22 @@ CREATE TABLE tb_categoria
 (
     id        BIGINT UNSIGNED AUTO_INCREMENT,
     nome      VARCHAR(100) NOT NULL,
-    descricao TEXT,
+    descricao TEXT NULL, -- Campo opcional
 
     PRIMARY KEY (id)
 );
 
 CREATE TABLE tb_produto
 (
-    id        BIGINT UNSIGNED AUTO_INCREMENT,
-    nome      VARCHAR(100)   NOT NULL,
-    descricao TEXT,
-    preco     DECIMAL(10, 2) NOT NULL,
-    estoque   INT UNSIGNED   NOT NULL,
+    id            BIGINT UNSIGNED AUTO_INCREMENT,
+    nome          VARCHAR(100)   NOT NULL,
+    descricao     TEXT NULL,
+    preco         DECIMAL(10, 2) NOT NULL,
+    estoque       INT UNSIGNED   NOT NULL,
+    id_categoria  BIGINT UNSIGNED NOT NULL,  -- Relacionamento obrigatório com tb_categoria
 
-    PRIMARY KEY (id)
+    PRIMARY KEY (id),
+    FOREIGN KEY (id_categoria) REFERENCES tb_categoria (id)  -- Chave estrangeira para tb_categoria
 );
 
 CREATE TABLE tb_produto_categoria
@@ -238,7 +240,7 @@ CREATE TABLE tb_log_atividade
 
 DESCRIBE tb_categoria;
 DESCRIBE tb_produto;
-DESCRIBE tb_produtoCategoria;
+DESCRIBE tb_produto_categoria;
 DESCRIBE tb_cliente;
 DESCRIBE tb_pedido;
 DESCRIBE tb_item_pedido;
