@@ -94,11 +94,7 @@ VALUES (1, 2),
        (2, 3);
 
 
-SELECT *
-FROM users;
-SELECT *
-FROM posts;
-SELECT *
-FROM comments;
-SELECT *
-FROM likes;
+SELECT * FROM users;
+SELECT * FROM posts;
+SELECT * FROM comments;
+SELECT * FROM likes;

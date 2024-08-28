@@ -4,6 +4,7 @@ USE db_papelaria_livraria;
 
 SHOW TABLES;
 
+-- Tabela para armazenar as Transportadoras
 CREATE TABLE IF NOT EXISTS tb_transportadoras
 (
     id                 BIGINT UNSIGNED AUTO_INCREMENT,
@@ -22,6 +23,7 @@ CREATE TABLE IF NOT EXISTS tb_transportadoras
     PRIMARY KEY (id)
 );
 
+-- Tabela para armazenar os Usuários
 CREATE TABLE IF NOT EXISTS tb_usuarios
 (
     id                   BIGINT UNSIGNED AUTO_INCREMENT,
@@ -38,17 +40,18 @@ CREATE TABLE IF NOT EXISTS tb_usuarios
     PRIMARY KEY (id)
 );
 
+-- Tabela para armazenar os Endereços dos Usuários
 CREATE TABLE IF NOT EXISTS tb_enderecos
 (
     id           BIGINT UNSIGNED AUTO_INCREMENT,
     id_usuario   BIGINT UNSIGNED NOT NULL,
     rua          VARCHAR(100),
     numero       VARCHAR(8),
-    complemento  VARCHAR(50)     NULL,
     bairro       VARCHAR(100),
     cidade       VARCHAR(100),
     estado       VARCHAR(100),
     CEP          VARCHAR(20),
+    complemento  VARCHAR(50)     NULL,
     is_principal BOOLEAN DEFAULT FALSE,
 
     PRIMARY KEY (id),
@@ -56,37 +59,40 @@ CREATE TABLE IF NOT EXISTS tb_enderecos
     FOREIGN KEY (id_usuario) REFERENCES tb_usuarios (id)
 );
 
+-- Tabela para armazenar os Produtos
 CREATE TABLE IF NOT EXISTS tb_produtos
 (
     id        BIGINT UNSIGNED AUTO_INCREMENT,
-    nome      VARCHAR(100)   NOT NULL,
+    nome      VARCHAR(50)    NOT NULL,
     preco     DECIMAL(10, 2) NOT NULL,
     descricao TEXT           NULL, -- Pode ser NULL, pois o produto pode não ter descrição
 
     PRIMARY KEY (id)
 );
 
--- Associação entre produto e estoque
+-- Tabela para armazenar o Estoque dos Produtos
 CREATE TABLE IF NOT EXISTS tb_estoque_produto
 (
     id                      BIGINT UNSIGNED AUTO_INCREMENT,
     id_produto              BIGINT UNSIGNED NOT NULL,
     quantidade              INT UNSIGNED    NOT NULL,
-    localizacao             VARCHAR(100)    NULL, -- Ex: "Prateleira A", "Depósito 1", etc.
+    localizacao             VARCHAR(70)    NULL, -- Ex: "Prateleira A", "Depósito 1", etc.
     data_ultima_atualizacao DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     PRIMARY KEY (id),
     FOREIGN KEY (id_produto) REFERENCES tb_produtos (id)
 );
 
+-- Tabela para armazenar as Categorias
 CREATE TABLE IF NOT EXISTS tb_categorias
 (
     id   BIGINT UNSIGNED AUTO_INCREMENT,
-    nome VARCHAR(100) NOT NULL,
+    nome VARCHAR(50) NOT NULL,
 
     PRIMARY KEY (id)
 );
 
+-- Tabela de associação N:N entre Produtos e Categorias
 CREATE TABLE IF NOT EXISTS tb_produtos_categorias
 (
     id_produto   BIGINT UNSIGNED NOT NULL,
@@ -96,6 +102,7 @@ CREATE TABLE IF NOT EXISTS tb_produtos_categorias
     FOREIGN KEY (id_categoria) REFERENCES tb_categorias (id)
 );
 
+-- Tabela para armazenar os Carrinhos de Compras de cada Usuário
 CREATE TABLE IF NOT EXISTS tb_carrinho
 (
     id         BIGINT UNSIGNED AUTO_INCREMENT,
@@ -106,32 +113,34 @@ CREATE TABLE IF NOT EXISTS tb_carrinho
     FOREIGN KEY (id_usuario) REFERENCES tb_usuarios (id)
 );
 
+-- Tabela de associação N:N entre Carrinhos e Produtos
 CREATE TABLE IF NOT EXISTS tb_carrinho_produtos
 (
-    id_carrinho BIGINT UNSIGNED NOT NULL,
     id_produto  BIGINT UNSIGNED NOT NULL,
+    id_carrinho BIGINT UNSIGNED NOT NULL,
     quantidade  BIGINT UNSIGNED NOT NULL,
 
-    FOREIGN KEY (id_carrinho) REFERENCES tb_carrinho (id),
-    FOREIGN KEY (id_produto) REFERENCES tb_produtos (id)
+    FOREIGN KEY (id_produto) REFERENCES tb_produtos (id),
+    FOREIGN KEY (id_carrinho) REFERENCES tb_carrinho (id)
 );
 
+-- Tabela para armazenar as Compras
 CREATE TABLE IF NOT EXISTS tb_compras
 (
     id                BIGINT UNSIGNED AUTO_INCREMENT,
-    id_usuario        BIGINT UNSIGNED NOT NULL,
     data_compra       DATETIME        NOT NULL,
-    id_transportadora BIGINT UNSIGNED NOT NULL,
+    id_usuario        BIGINT UNSIGNED NOT NULL,
     id_endereco       BIGINT UNSIGNED NOT NULL,
+    id_transportadora BIGINT UNSIGNED NOT NULL,
 
     PRIMARY KEY (id),
 
     FOREIGN KEY (id_usuario) REFERENCES tb_usuarios (id),
-    FOREIGN KEY (id_transportadora) REFERENCES tb_transportadoras (id),
-    FOREIGN KEY (id_endereco) REFERENCES tb_enderecos (id)
+    FOREIGN KEY (id_endereco) REFERENCES tb_enderecos (id),
+    FOREIGN KEY (id_transportadora) REFERENCES tb_transportadoras (id)
 );
 
--- quero fazer uma tabela que será responsável por armazenar os avaliação de produtos específicos de uma compra
+-- Tabela responsável por armazenar as avaliações de produtos de uma compra
 CREATE TABLE IF NOT EXISTS tb_compra_produto_avaliacao
 (
     id_compra      BIGINT UNSIGNED NOT NULL,
@@ -152,6 +161,7 @@ CREATE TABLE IF NOT EXISTS tb_compra_produto_avaliacao
 ) CHARACTER SET utf8mb4
   COLLATE utf8mb4_unicode_ci;
 
+-- Tabela de associação N:N entre Compras e Produtos
 CREATE TABLE IF NOT EXISTS tb_compras_produtos
 (
     id_compra  BIGINT UNSIGNED NOT NULL,
@@ -162,7 +172,7 @@ CREATE TABLE IF NOT EXISTS tb_compras_produtos
     FOREIGN KEY (id_produto) REFERENCES tb_produtos (id)
 );
 
--- definição: uma promoção é um desconto aplicado a UM PRODUTO específico
+-- Definição: uma promoção é um desconto aplicado a UM PRODUTO específico
 CREATE TABLE IF NOT EXISTS tb_promocoes
 (
     id          BIGINT UNSIGNED AUTO_INCREMENT,
@@ -187,7 +197,7 @@ CREATE TABLE IF NOT EXISTS tb_promocoes_produtos
     FOREIGN KEY (id_promocao) REFERENCES tb_promocoes (id)
 );
 
--- definição: um cupom é um desconto aplicado a uma COMPRA
+-- Definição: um cupom é um desconto aplicado a uma COMPRA
 CREATE TABLE IF NOT EXISTS tb_cupons
 (
     id_cupom    BIGINT UNSIGNED AUTO_INCREMENT,
@@ -199,6 +209,7 @@ CREATE TABLE IF NOT EXISTS tb_cupons
     PRIMARY KEY (id_cupom)
 );
 
+-- Um cupom pode ser aplicado a várias compras e uma compra pode ter vários cupons
 CREATE TABLE IF NOT EXISTS tb_cupon_compra
 (
     id_compra BIGINT UNSIGNED NOT NULL,
@@ -207,7 +218,6 @@ CREATE TABLE IF NOT EXISTS tb_cupon_compra
     FOREIGN KEY (id_compra) REFERENCES tb_compras (id),
     FOREIGN KEY (id_cupom) REFERENCES tb_cupons (id_cupom)
 );
-
 
 -- Relatório de Vendas por Período
 SELECT DATE_FORMAT(data_compra, '%Y-%m-%d') AS data_compra,
@@ -223,7 +233,6 @@ FROM tb_compras AS c
 WHERE data_compra BETWEEN '2024-01-01' AND '2024-12-31'
 GROUP BY DATE_FORMAT(data_compra, '%Y-%m-%d')
 ORDER BY data_compra DESC;
-
 
 -- Relatório de Produtos Mais Vendidos
 SELECT p.nome                       AS produto,
@@ -283,7 +292,6 @@ FROM tb_produtos_categorias AS pc
 GROUP BY cat.nome
 ORDER BY total_receita DESC;
 
-
 -- Relatório de Vendas por Transportadora
 SELECT t.nome                       AS transportadora,
        COUNT(c.id)                  AS total_pedidos,
@@ -298,7 +306,7 @@ FROM tb_transportadoras AS t
 GROUP BY t.nome
 ORDER BY total_pedidos DESC, total_receita DESC;
 
---
+-- Relatório de Avaliação Média dos Produtos
 SELECT p.nome                                                 AS produto,
        AVG(CAST(REPLACE(cpa.avaliacao, '⭐', '') AS UNSIGNED)) AS avaliacao_media
 FROM tb_compra_produto_avaliacao cpa
@@ -306,7 +314,7 @@ FROM tb_compra_produto_avaliacao cpa
 GROUP BY p.nome
 ORDER BY avaliacao_media DESC;
 
---
+-- Relatório de Avaliações Negativas dos Produtos
 SELECT p.nome   AS produto,
        COUNT(*) AS total_avaliacoes_negativas
 FROM tb_compra_produto_avaliacao cpa
