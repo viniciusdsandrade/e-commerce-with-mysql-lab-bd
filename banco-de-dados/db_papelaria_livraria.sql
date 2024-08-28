@@ -40,16 +40,16 @@ CREATE TABLE IF NOT EXISTS tb_usuarios
 
 CREATE TABLE IF NOT EXISTS tb_enderecos
 (
-    id          BIGINT UNSIGNED AUTO_INCREMENT,
-    id_usuario  BIGINT UNSIGNED NOT NULL,
-    rua         VARCHAR(100),
-    numero      VARCHAR(8),
-    complemento VARCHAR(50)     NULL,
-    bairro      VARCHAR(100),
-    cidade      VARCHAR(100),
-    estado      VARCHAR(100),
-    CEP         VARCHAR(20),
-    principal   BOOLEAN DEFAULT FALSE,
+    id           BIGINT UNSIGNED AUTO_INCREMENT,
+    id_usuario   BIGINT UNSIGNED NOT NULL,
+    rua          VARCHAR(100),
+    numero       VARCHAR(8),
+    complemento  VARCHAR(50)     NULL,
+    bairro       VARCHAR(100),
+    cidade       VARCHAR(100),
+    estado       VARCHAR(100),
+    CEP          VARCHAR(20),
+    is_principal BOOLEAN DEFAULT FALSE,
 
     PRIMARY KEY (id),
 
@@ -64,6 +64,19 @@ CREATE TABLE IF NOT EXISTS tb_produtos
     descricao TEXT           NULL, -- Pode ser NULL, pois o produto pode não ter descrição
 
     PRIMARY KEY (id)
+);
+
+-- Associação entre produto e estoque
+CREATE TABLE IF NOT EXISTS tb_estoque_produto
+(
+    id                      BIGINT UNSIGNED AUTO_INCREMENT,
+    id_produto              BIGINT UNSIGNED NOT NULL,
+    quantidade              INT UNSIGNED    NOT NULL,
+    localizacao             VARCHAR(100)    NULL, -- Ex: "Prateleira A", "Depósito 1", etc.
+    data_ultima_atualizacao DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    PRIMARY KEY (id),
+    FOREIGN KEY (id_produto) REFERENCES tb_produtos (id)
 );
 
 CREATE TABLE IF NOT EXISTS tb_categorias
@@ -225,6 +238,22 @@ WHERE c.data_compra BETWEEN '2024-01-01' AND '2024-12-31'
 GROUP BY p.nome
 ORDER BY quantidade_vendida DESC, total_receita DESC;
 
+-- Clientes que realizaram somente uma compra
+SELECT u.nome, u.email, MAX(c.data_compra) AS ultima_compra
+FROM tb_usuarios u
+         JOIN tb_compras c ON u.id = c.id_usuario
+GROUP BY u.nome, u.email
+HAVING COUNT(c.id) = 1;
+
+-- Ticket médio por cliente
+SELECT u.nome, AVG(p.preco * cp.quantidade) AS ticket_medio
+FROM tb_usuarios u
+         JOIN tb_compras c ON u.id = c.id_usuario
+         JOIN tb_compras_produtos cp ON c.id = cp.id_compra
+         JOIN tb_produtos p ON cp.id_produto = p.id
+GROUP BY u.nome
+ORDER BY ticket_medio DESC;
+
 -- Relatório de Clientes menos Frequentes e que Mais Gastaram
 SELECT u.nome                       AS cliente,
        COUNT(c.id)                  AS total_compras,
@@ -268,3 +297,20 @@ FROM tb_transportadoras AS t
      tb_produtos AS p ON cp.id_produto = p.id
 GROUP BY t.nome
 ORDER BY total_pedidos DESC, total_receita DESC;
+
+--
+SELECT p.nome                                                 AS produto,
+       AVG(CAST(REPLACE(cpa.avaliacao, '⭐', '') AS UNSIGNED)) AS avaliacao_media
+FROM tb_compra_produto_avaliacao cpa
+         JOIN tb_produtos p ON cpa.id_produto = p.id
+GROUP BY p.nome
+ORDER BY avaliacao_media DESC;
+
+--
+SELECT p.nome   AS produto,
+       COUNT(*) AS total_avaliacoes_negativas
+FROM tb_compra_produto_avaliacao cpa
+         JOIN tb_produtos p ON cpa.id_produto = p.id
+WHERE cpa.avaliacao IN ('⭐', '⭐⭐')
+GROUP BY p.nome
+ORDER BY total_avaliacoes_negativas DESC;
