@@ -38,20 +38,64 @@ CREATE TABLE IF NOT EXISTS tb_usuarios
     PRIMARY KEY (id)
 );
 
+-- Tabela para armazenar as formas de pagamento
 CREATE TABLE IF NOT EXISTS tb_forma_de_pagamento
 (
-    id              BIGINT UNSIGNED AUTO_INCREMENT,
-    id_usuario      BIGINT UNSIGNED NOT NULL,
-    forma_pagamento ENUM (
-        'CARTAO_CREDITO',
-        'CARTAO_DEBITO',
+    id         BIGINT UNSIGNED AUTO_INCREMENT,
+    id_usuario BIGINT UNSIGNED NOT NULL,
+    tipo       ENUM (
         'PIX',
+        'CARTAO_CREDITO',
         'BOLETO',
-        'TRANSFERENCIA')            NOT NULL,
+        'TRANSFERENCIA')       NOT NULL,
 
     PRIMARY KEY (id),
     FOREIGN KEY (id_usuario) REFERENCES tb_usuarios (id)
 );
+
+-- Tabela para armazenar detalhes específicos do PIX
+CREATE TABLE IF NOT EXISTS tb_pix
+(
+    id_forma_pgto BIGINT UNSIGNED NOT NULL,
+    chave         VARCHAR(100)    NOT NULL,
+
+    PRIMARY KEY (id_forma_pgto),
+    FOREIGN KEY (id_forma_pgto) REFERENCES tb_forma_de_pagamento (id)
+);
+
+-- Tabela para armazenar detalhes específicos do Cartão de Crédito
+CREATE TABLE IF NOT EXISTS tb_cartao_credito
+(
+    id_forma_pgto    BIGINT UNSIGNED NOT NULL,
+    numero           VARCHAR(20)     NOT NULL,
+    validade         DATE            NOT NULL,
+    codigo_seguranca VARCHAR(10)     NOT NULL,
+    nome_dono        VARCHAR(100)    NOT NULL,
+
+    PRIMARY KEY (id_forma_pgto),
+    FOREIGN KEY (id_forma_pgto) REFERENCES tb_forma_de_pagamento (id)
+);
+
+-- Tabela para armazenar detalhes específicos do Boleto
+CREATE TABLE IF NOT EXISTS tb_boleto
+(
+    id_forma_pgto BIGINT UNSIGNED NOT NULL,
+    codigo_barras VARCHAR(50)     NOT NULL,
+
+    PRIMARY KEY (id_forma_pgto),
+    FOREIGN KEY (id_forma_pgto) REFERENCES tb_forma_de_pagamento (id)
+);
+
+-- Tabela para armazenar detalhes específicos da Transferência
+CREATE TABLE IF NOT EXISTS tb_transferencia
+(
+    id_forma_pgto   BIGINT UNSIGNED NOT NULL,
+    dados_bancarios VARCHAR(255)    NOT NULL,
+
+    PRIMARY KEY (id_forma_pgto),
+    FOREIGN KEY (id_forma_pgto) REFERENCES tb_forma_de_pagamento (id)
+);
+
 
 -- Tabela para armazenar os Endereços dos Usuários
 CREATE TABLE IF NOT EXISTS tb_enderecos
@@ -153,23 +197,15 @@ CREATE TABLE IF NOT EXISTS tb_cupons
 CREATE TABLE IF NOT EXISTS tb_compras
 (
     id                BIGINT UNSIGNED AUTO_INCREMENT,
-    data_compra       DATETIME        NOT NULL,
     id_usuario        BIGINT UNSIGNED NOT NULL,
-    id_endereco       BIGINT UNSIGNED NOT NULL,
     id_transportadora BIGINT UNSIGNED NOT NULL,
     id_cupom          BIGINT UNSIGNED NULL,
-    forma_pagamento   ENUM (
-        'CARTAO_CREDITO',
-        'CARTAO_DEBITO',
-        'PIX',
-        'BOLETO',
-        'TRANSFERENCIA')              NOT NULL,
+    data_compra       DATETIME        NOT NULL,
 
     PRIMARY KEY (id),
 
     FOREIGN KEY (id_usuario) REFERENCES tb_usuarios (id),
     FOREIGN KEY (id_cupom) REFERENCES tb_cupons (id_cupom),
-    FOREIGN KEY (id_endereco) REFERENCES tb_enderecos (id),
     FOREIGN KEY (id_transportadora) REFERENCES tb_transportadoras (id)
 );
 

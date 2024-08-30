@@ -23,40 +23,52 @@ VALUES ('Transportadora Alpha', 5.00, '12.345.678/0001-00', '1234567890', '(11) 
        ('Transportadora Kappa', 6.20, '01.234.567/0001-09', '0123456789', '(11) 98765-6543', 'kappa@transportadora.com',
         'Rua J, 890');
 
--- Inserções na tabela de Usuários
+-- Inserindo dados na tabela tb_usuarios
 INSERT INTO tb_usuarios (nome, CPF, telefone, email, senha, email_de_recuperacao)
-VALUES ('João Silva', '123.456.789-00', '(11) 91234-5678', 'joao@exemplo.com', 'senha123',
-        'joao.recuperacao@exemplo.com'),
-       ('Maria Oliveira', '234.567.890-11', '(21) 92345-6789', 'maria@exemplo.com', 'senha456',
-        'maria.recuperacao@exemplo.com'),
-       ('José Santos', '345.678.901-22', '(31) 93456-7890', 'jose@exemplo.com', 'senha789',
-        'jose.recuperacao@exemplo.com'),
+VALUES ('João Silva', '123.456.789-00', '(11) 91234-5678', 'joao@exemplo.com', 'senha123', 'joao.recuperacao@exemplo.com'),
+       ('Maria Oliveira', '234.567.890-11', '(21) 92345-6789', 'maria@exemplo.com', 'senha456', 'maria.recuperacao@exemplo.com'),
+       ('José Santos', '345.678.901-22', '(31) 93456-7890', 'jose@exemplo.com', 'senha789', 'jose.recuperacao@exemplo.com'),
        ('Ana Souza', '456.789.012-33', '(41) 94567-8901', 'ana@exemplo.com', 'senha012', 'ana.recuperacao@exemplo.com'),
-       ('Pedro Lima', '567.890.123-44', '(51) 95678-9012', 'pedro@exemplo.com', 'senha345',
-        'pedro.recuperacao@exemplo.com'),
-       ('Paula Costa', '678.901.234-55', '(61) 96789-0123', 'paula@exemplo.com', 'senha678',
-        'paula.recuperacao@exemplo.com'),
-       ('Carlos Pereira', '789.012.345-66', '(71) 97890-1234', 'carlos@exemplo.com', 'senha901',
-        'carlos.recuperacao@exemplo.com'),
-       ('Julia Melo', '890.123.456-77', '(81) 98901-2345', 'julia@exemplo.com', 'senha234',
-        'julia.recuperacao@exemplo.com'),
-       ('Roberto Almeida', '901.234.567-88', '(91) 99012-3456', 'roberto@exemplo.com', 'senha567',
-        'roberto.recuperacao@exemplo.com'),
-       ('Carla Fernandes', '012.345.678-99', '(11) 91123-4567', 'carla@exemplo.com', 'senha890',
-        'carla.recuperacao@exemplo.com');
+       ('Pedro Lima', '567.890.123-44', '(51) 95678-9012', 'pedro@exemplo.com', 'senha345', 'pedro.recuperacao@exemplo.com'),
+       ('Paula Costa', '678.901.234-55', '(61) 96789-0123', 'paula@exemplo.com', 'senha678', 'paula.recuperacao@exemplo.com'),
+       ('Carlos Pereira', '789.012.345-66', '(71) 97890-1234', 'carlos@exemplo.com', 'senha901', 'carlos.recuperacao@exemplo.com'),
+       ('Julia Melo', '890.123.456-77', '(81) 98901-2345', 'julia@exemplo.com', 'senha234', 'julia.recuperacao@exemplo.com'),
+       ('Roberto Almeida', '901.234.567-88', '(91) 99012-3456', 'roberto@exemplo.com', 'senha567', 'roberto.recuperacao@exemplo.com'),
+       ('Carla Fernandes', '012.345.678-99', '(11) 91123-4567', 'carla@exemplo.com', 'senha890', 'carla.recuperacao@exemplo.com');
 
 -- Inserindo dados na tabela tb_forma_de_pagamento
-INSERT INTO tb_forma_de_pagamento (id_usuario, forma_pagamento)
+INSERT INTO tb_forma_de_pagamento (id_usuario, tipo)
 VALUES (1, 'CARTAO_CREDITO'),
        (2, 'PIX'),
        (3, 'BOLETO'),
-       (4, 'CARTAO_DEBITO'),
-       (5, 'TRANSFERENCIA'),
-       (6, 'CARTAO_CREDITO'),
-       (7, 'PIX'),
-       (8, 'BOLETO'),
-       (9, 'TRANSFERENCIA'),
-       (10, 'CARTAO_DEBITO');
+       (4, 'TRANSFERENCIA'),
+       (5, 'CARTAO_CREDITO'),
+       (6, 'PIX'),
+       (7, 'BOLETO'),
+       (8, 'TRANSFERENCIA'),
+       (9, 'CARTAO_CREDITO'),
+       (10, 'PIX');
+
+-- Inserindo dados na tabela tb_pix
+INSERT INTO tb_pix (id_forma_pgto, chave)
+VALUES (2, 'chave_pix_exemplo_1'),
+       (6, 'chave_pix_exemplo_2');
+
+-- Inserindo dados na tabela tb_cartao_credito
+INSERT INTO tb_cartao_credito (id_forma_pgto, numero, validade, codigo_seguranca, nome_dono)
+VALUES (1, '1234 5678 9012 3456', '2025-12-31', '123', 'João Silva'),
+       (5, '6543 2109 8765 4321', '2026-11-30', '456', 'Pedro Lima'),
+       (9, '9876 5432 1098 7654', '2027-10-31', '789', 'Julia Melo');
+
+-- Inserindo dados na tabela tb_boleto
+INSERT INTO tb_boleto (id_forma_pgto, codigo_barras)
+VALUES (3, 'codigo_barras_exemplo_1'),
+       (7, 'codigo_barras_exemplo_2');
+
+-- Inserindo dados na tabela tb_transferencia
+INSERT INTO tb_transferencia (id_forma_pgto, dados_bancarios)
+VALUES (4, 'dados_bancarios_exemplo_1'),
+       (8, 'dados_bancarios_exemplo_2');
 
 -- Inserções na tabela de Endereços dos Usuários
 INSERT INTO tb_enderecos (id_usuario, rua, numero, bairro, cidade, estado, CEP, complemento, is_principal)
@@ -76,13 +88,13 @@ INSERT INTO tb_produtos (nome, preco, descricao)
 VALUES ('Caneta Azul', 2.50, 'Caneta esferográfica azul'),
        ('Lápis HB', 1.00, 'Lápis de madeira HB'),
        ('Caderno 100 folhas', 10.00, 'Caderno universitário de 100 folhas'),
-       ('Borracha Branca', 0.75, 'Borracha branca para lápis'),
-       ('Marcador de Texto', 3.50, 'Marcador de texto amarelo'),
-       ('Corretivo Líquido', 5.00, 'Corretivo líquido branco'),
-       ('Tesoura Escolar', 7.00, 'Tesoura escolar sem ponta'),
-       ('Régua 30cm', 4.00, 'Régua de plástico 30cm'),
-       ('Apontador Duplo', 1.50, 'Apontador duplo com depósito'),
-       ('Cola Bastão', 3.00, 'Cola bastão 10g');
+       ('Apontador', 1.50, 'Apontador de lápis com reservatório'),
+       ('Borracha', 0.75, 'Borracha branca para grafite'),
+       ('Marcador de Texto', 3.00, 'Marcador de texto amarelo'),
+       ('Agenda 2024', 15.00, 'Agenda anual para o ano de 2024'),
+       ('Papel A4', 20.00, 'Pacote com 500 folhas de papel A4'),
+       ('Calculadora', 12.00, 'Calculadora científica'),
+       ('Pastas de arquivo', 5.00, 'Pastas para arquivos diversos');
 
 -- Inserções na tabela de Estoque dos Produtos
 INSERT INTO tb_estoque_produto (id_produto, quantidade, localizacao)
@@ -164,17 +176,17 @@ VALUES ('Cupom1', 5.00, '2024-08-01 00:00:00', '2024-08-31 23:59:59'),
 
 
 -- Inserindo dados na tabela tb_compras com o campo forma_pagamento e id_cupom
-INSERT INTO tb_compras (data_compra, id_usuario, id_endereco, id_transportadora, forma_pagamento, id_cupom)
-VALUES ('2024-08-01 10:00:00', 1, 1, 1, 'CARTAO_CREDITO', 1),
-       ('2024-08-02 11:30:00', 2, 2, 2, 'PIX', 2),
-       ('2024-08-03 14:15:00', 3, 3, 3, 'BOLETO', 3),
-       ('2024-08-04 16:20:00', 4, 4, 4, 'CARTAO_DEBITO', 4),
-       ('2024-08-05 18:00:00', 5, 5, 5, 'TRANSFERENCIA', 5),
-       ('2024-08-06 09:00:00', 1, 2, 3, 'PIX', NULL),
-       ('2024-08-07 12:00:00', 2, 3, 4, 'CARTAO_CREDITO', NULL),
-       ('2024-08-08 15:00:00', 3, 4, 5, 'BOLETO', NULL),
-       ('2024-08-09 17:00:00', 4, 5, 1, 'TRANSFERENCIA', NULL),
-       ('2024-08-10 19:30:00', 5, 1, 2, 'CARTAO_DEBITO', NULL);
+INSERT INTO tb_compras (data_compra, id_usuario, id_transportadora, id_cupom)
+VALUES ('2024-08-01 10:00:00', 1, 1, 1),
+       ('2024-08-02 11:30:00', 2, 2, 2),
+       ('2024-08-03 14:15:00', 3, 3, 3),
+       ('2024-08-04 16:20:00', 4, 4, 4),
+       ('2024-08-05 18:00:00', 5, 5, 5),
+       ('2024-08-06 09:00:00', 1, 2, NULL),
+       ('2024-08-07 12:00:00', 2, 3, NULL),
+       ('2024-08-08 15:00:00', 3, 4, NULL),
+       ('2024-08-09 17:00:00', 4, 5, NULL),
+       ('2024-08-10 19:30:00', 5, 1, NULL);
 
 
 -- Inserindo dados na tabela tb_compra_produto_avaliacao
