@@ -6,11 +6,11 @@ SELECT DATE_FORMAT(data_compra, '%Y-%m-%d') AS data_compra,
        SUM(cp.quantidade)                   AS total_produtos_vendidos,
        SUM(p.preco * cp.quantidade)         AS total_receita,
        AVG(p.preco * cp.quantidade)         AS valor_medio_por_compra
-FROM tb_compras AS c
+FROM tb_compra AS c
          JOIN
-     tb_compras_produtos AS cp ON c.id = cp.id_compra
+     tb_compra_produto AS cp ON c.id = cp.id_compra
          JOIN
-     tb_produtos AS p ON cp.id_produto = p.id
+     tb_produto AS p ON cp.id_produto = p.id
 WHERE data_compra BETWEEN '2024-01-01' AND '2024-12-31'
 GROUP BY DATE_FORMAT(data_compra, '%Y-%m-%d')
 ORDER BY data_compra DESC;
@@ -19,28 +19,28 @@ ORDER BY data_compra DESC;
 SELECT p.nome                       AS produto,
        SUM(cp.quantidade)           AS quantidade_vendida,
        SUM(p.preco * cp.quantidade) AS total_receita
-FROM tb_compras_produtos AS cp
+FROM tb_compra_produto AS cp
          JOIN
-     tb_produtos AS p ON cp.id_produto = p.id
+     tb_produto AS p ON cp.id_produto = p.id
          JOIN
-     tb_compras AS c ON cp.id_compra = c.id
+     tb_compra AS c ON cp.id_compra = c.id
 WHERE c.data_compra BETWEEN '2024-01-01' AND '2024-12-31'
 GROUP BY p.nome
 ORDER BY quantidade_vendida DESC, total_receita DESC;
 
 -- Clientes que realizaram somente uma compra
 SELECT u.nome, u.email, MAX(c.data_compra) AS ultima_compra
-FROM tb_usuarios u
-         JOIN tb_compras c ON u.id = c.id_usuario
+FROM tb_usuario u
+         JOIN tb_compra c ON u.id = c.id_usuario
 GROUP BY u.nome, u.email
 HAVING COUNT(c.id) = 1;
 
 -- Ticket médio por cliente
 SELECT u.nome, AVG(p.preco * cp.quantidade) AS ticket_medio
-FROM tb_usuarios u
-         JOIN tb_compras c ON u.id = c.id_usuario
-         JOIN tb_compras_produtos cp ON c.id = cp.id_compra
-         JOIN tb_produtos p ON cp.id_produto = p.id
+FROM tb_usuario u
+         JOIN tb_compra c ON u.id = c.id_usuario
+         JOIN tb_compra_produto cp ON c.id = cp.id_compra
+         JOIN tb_produto p ON cp.id_produto = p.id
 GROUP BY u.nome
 ORDER BY ticket_medio DESC;
 
@@ -48,13 +48,13 @@ ORDER BY ticket_medio DESC;
 SELECT u.nome                       AS cliente,
        COUNT(c.id)                  AS total_compras,
        SUM(p.preco * cp.quantidade) AS total_gasto
-FROM tb_usuarios AS u
+FROM tb_usuario AS u
          JOIN
-     tb_compras AS c ON u.id = c.id_usuario
+     tb_compra AS c ON u.id = c.id_usuario
          JOIN
-     tb_compras_produtos AS cp ON c.id = cp.id_compra
+     tb_compra_produto AS cp ON c.id = cp.id_compra
          JOIN
-     tb_produtos AS p ON cp.id_produto = p.id
+     tb_produto AS p ON cp.id_produto = p.id
 GROUP BY u.nome
 ORDER BY total_gasto DESC, total_compras;
 
@@ -63,13 +63,13 @@ ORDER BY total_gasto DESC, total_compras;
 SELECT cat.nome                     AS categoria,
        SUM(cp.quantidade)           AS quantidade_vendida,
        SUM(p.preco * cp.quantidade) AS total_receita
-FROM tb_produtos_categorias AS pc
+FROM tb_produto_categorias AS pc
          JOIN
-     tb_categorias AS cat ON pc.id_categoria = cat.id
+     tb_categoria AS cat ON pc.id_categoria = cat.id
          JOIN
-     tb_produtos AS p ON pc.id_produto = p.id
+     tb_produto AS p ON pc.id_produto = p.id
          JOIN
-     tb_compras_produtos AS cp ON p.id = cp.id_produto
+     tb_compra_produto AS cp ON p.id = cp.id_produto
 GROUP BY cat.nome
 ORDER BY total_receita DESC;
 
@@ -77,13 +77,13 @@ ORDER BY total_receita DESC;
 SELECT t.nome                       AS transportadora,
        COUNT(c.id)                  AS total_pedidos,
        SUM(p.preco * cp.quantidade) AS total_receita
-FROM tb_transportadoras AS t
+FROM tb_transportadora AS t
          JOIN
-     tb_compras AS c ON t.id = c.id_transportadora
+     tb_compra AS c ON t.id = c.id_transportadora
          JOIN
-     tb_compras_produtos AS cp ON c.id = cp.id_compra
+     tb_compra_produto AS cp ON c.id = cp.id_compra
          JOIN
-     tb_produtos AS p ON cp.id_produto = p.id
+     tb_produto AS p ON cp.id_produto = p.id
 GROUP BY t.nome
 ORDER BY total_pedidos DESC, total_receita DESC;
 
@@ -91,7 +91,7 @@ ORDER BY total_pedidos DESC, total_receita DESC;
 SELECT p.nome                                                 AS produto,
        AVG(CAST(REPLACE(cpa.avaliacao, '⭐', '') AS UNSIGNED)) AS avaliacao_media
 FROM tb_compra_produto_avaliacao cpa
-         JOIN tb_produtos p ON cpa.id_produto = p.id
+         JOIN tb_produto p ON cpa.id_produto = p.id
 GROUP BY p.nome
 ORDER BY avaliacao_media DESC;
 
@@ -99,7 +99,7 @@ ORDER BY avaliacao_media DESC;
 SELECT p.nome   AS produto,
        COUNT(*) AS total_avaliacoes_negativas
 FROM tb_compra_produto_avaliacao cpa
-         JOIN tb_produtos p ON cpa.id_produto = p.id
+         JOIN tb_produto p ON cpa.id_produto = p.id
 WHERE cpa.avaliacao IN ('⭐', '⭐⭐')
 GROUP BY p.nome
 ORDER BY total_avaliacoes_negativas DESC;
