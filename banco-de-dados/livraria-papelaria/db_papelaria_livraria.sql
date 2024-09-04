@@ -2,16 +2,30 @@ DROP DATABASE IF EXISTS db_papelaria_livraria;
 CREATE DATABASE IF NOT EXISTS db_papelaria_livraria;
 USE db_papelaria_livraria;
 
+-- Tabela para armazenar os Administradores
+CREATE TABLE IF NOT EXISTS tb_administrador
+(
+    id                   BIGINT UNSIGNED AUTO_INCREMENT,
+    nome                 VARCHAR(100),
+    email                VARCHAR(100),
+    senha                VARCHAR(100),
+    email_de_recuperacao VARCHAR(100) NULL,
+
+    UNIQUE (email),
+
+    PRIMARY KEY (id)
+);
+
 -- Tabela para armazenar as Transportadoras
 CREATE TABLE IF NOT EXISTS tb_transportadora
 (
     id                 BIGINT UNSIGNED AUTO_INCREMENT,
     nome               VARCHAR(100)   NOT NULL,
-    preco_por_km       DECIMAL(10, 2) NULL,
     cnpj               VARCHAR(20)    NOT NULL,
     inscricao_estadual VARCHAR(100)   NOT NULL,
     telefone           VARCHAR(20)    NOT NULL,
     email              VARCHAR(100)   NOT NULL,
+    preco_km           DECIMAL(10, 2) NULL,
     endereco           VARCHAR(100)   NULL,
 
     UNIQUE (cnpj),
@@ -31,6 +45,7 @@ CREATE TABLE IF NOT EXISTS tb_usuario
     email                VARCHAR(100),
     senha                VARCHAR(100),
     email_de_recuperacao VARCHAR(100) NULL,
+    saldo                DECIMAL(10, 2) DEFAULT 0,
 
     UNIQUE (cpf),
     UNIQUE (email),
@@ -43,14 +58,6 @@ CREATE TABLE IF NOT EXISTS tb_forma_de_pagamento
 (
     id         BIGINT UNSIGNED AUTO_INCREMENT,
     id_usuario BIGINT UNSIGNED NOT NULL,
-    tipo       ENUM (
-        'PIX',
-        'CARTAO_CREDITO',
-        'BOLETO',
-        'TRANSFERENCIA',
-        'CARTAO_DEBITO',
-        'DINHEIRO'
-        )                      NOT NULL,
 
     PRIMARY KEY (id),
     FOREIGN KEY (id_usuario) REFERENCES tb_usuario (id)
@@ -67,33 +74,14 @@ CREATE TABLE IF NOT EXISTS tb_pix
 );
 
 -- Tabela para armazenar detalhes específicos do Cartão de Crédito
-CREATE TABLE IF NOT EXISTS tb_cartao_credito
+CREATE TABLE IF NOT EXISTS tb_cartao
 (
-    id_forma_pgto    BIGINT UNSIGNED NOT NULL,
-    numero           VARCHAR(20)     NOT NULL,
-    validade         DATE            NOT NULL,
-    codigo_seguranca VARCHAR(10)     NOT NULL,
-    nome_dono        VARCHAR(100)    NOT NULL,
-
-    PRIMARY KEY (id_forma_pgto),
-    FOREIGN KEY (id_forma_pgto) REFERENCES tb_forma_de_pagamento (id)
-);
-
--- Tabela para armazenar detalhes específicos do Boleto
-CREATE TABLE IF NOT EXISTS tb_boleto
-(
-    id_forma_pgto BIGINT UNSIGNED NOT NULL,
-    codigo_barras VARCHAR(50)     NOT NULL,
-
-    PRIMARY KEY (id_forma_pgto),
-    FOREIGN KEY (id_forma_pgto) REFERENCES tb_forma_de_pagamento (id)
-);
-
--- Tabela para armazenar detalhes específicos da Transferência
-CREATE TABLE IF NOT EXISTS tb_transferencia
-(
-    id_forma_pgto   BIGINT UNSIGNED NOT NULL,
-    dados_bancarios VARCHAR(255)    NOT NULL,
+    id_forma_pgto    BIGINT UNSIGNED            NOT NULL,
+    numero           VARCHAR(20)                NOT NULL,
+    validade         DATE                       NOT NULL,
+    codigo_seguranca VARCHAR(10)                NOT NULL,
+    nome_dono        VARCHAR(100)               NOT NULL,
+    tipo             ENUM ('DEBITO', 'CREDITO') NOT NULL,
 
     PRIMARY KEY (id_forma_pgto),
     FOREIGN KEY (id_forma_pgto) REFERENCES tb_forma_de_pagamento (id)
@@ -136,7 +124,6 @@ CREATE TABLE IF NOT EXISTS tb_estoque
     id_produto              BIGINT UNSIGNED NOT NULL,
     quantidade              INT UNSIGNED    NOT NULL,
     localizacao             VARCHAR(70)     NULL, -- Ex: "Prateleira A", "Depósito 1", etc.
-    data_ultima_atualizacao DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     PRIMARY KEY (id),
     FOREIGN KEY (id_produto) REFERENCES tb_produto (id)
@@ -147,7 +134,6 @@ CREATE TABLE IF NOT EXISTS tb_categoria
 (
     id        BIGINT UNSIGNED AUTO_INCREMENT,
     nome      VARCHAR(50) NOT NULL,
-    descricao TEXT        NULL, -- Pode ser NULL, pois a categoria pode não ter descrição
 
     PRIMARY KEY (id)
 );
@@ -160,6 +146,24 @@ CREATE TABLE IF NOT EXISTS tb_produto_categoria
 
     FOREIGN KEY (id_produto) REFERENCES tb_produto (id),
     FOREIGN KEY (id_categoria) REFERENCES tb_categoria (id)
+);
+
+CREATE TABLE IF NOT EXISTS tb_lista_desejos
+(
+    id         BIGINT UNSIGNED NOT NULL,
+    id_usuario BIGINT UNSIGNED NOT NULL,
+
+    PRIMARY KEY (id),
+    FOREIGN KEY (id_usuario) REFERENCES tb_usuario (id)
+);
+
+CREATE TABLE IF NOT EXISTS tb_lista_desejos_produto
+(
+    id_lista_desejos BIGINT UNSIGNED NOT NULL,
+    id_produto       BIGINT UNSIGNED NOT NULL,
+
+    FOREIGN KEY (id_lista_desejos) REFERENCES tb_lista_desejos (id),
+    FOREIGN KEY (id_produto) REFERENCES tb_produto (id)
 );
 
 -- Tabela para armazenar os Carrinhos de Compras de cada Usuário
@@ -178,19 +182,19 @@ CREATE TABLE IF NOT EXISTS tb_carrinho_produto
 (
     id_produto  BIGINT UNSIGNED NOT NULL,
     id_carrinho BIGINT UNSIGNED NOT NULL,
-    quantidade  BIGINT UNSIGNED NOT NULL,
+    quantidade  INT UNSIGNED NOT NULL,
 
     FOREIGN KEY (id_produto) REFERENCES tb_produto (id),
-    FOREIGN KEY (id_carrinho) REFERENCES tb_carrinhos (id)
+    FOREIGN KEY (id_carrinho) REFERENCES tb_carrinho (id)
 );
 
 -- Tabela para armazenar as Compras
 CREATE TABLE IF NOT EXISTS tb_compra
 (
-    id          BIGINT UNSIGNED AUTO_INCREMENT,
-    id_usuario  BIGINT UNSIGNED NOT NULL,
-    id_endereco BIGINT UNSIGNED NOT NULL,
-    data_compra DATETIME        NOT NULL,
+    id             BIGINT UNSIGNED AUTO_INCREMENT,
+    id_usuario     BIGINT UNSIGNED NOT NULL,
+    id_endereco    BIGINT UNSIGNED NOT NULL,
+    data_realizada DATETIME        NOT NULL,
 
     PRIMARY KEY (id),
 
@@ -216,9 +220,24 @@ CREATE TABLE IF NOT EXISTS tb_compra_forma_pgto
 -- tabela para armazenar os produtos comprados em cada compra, além de suas opcionais avaliações
 CREATE TABLE IF NOT EXISTS tb_compra_produto
 (
+    id             BIGINT UNSIGNED                AUTO_INCREMENT,
     id_compra      BIGINT UNSIGNED                NOT NULL,
     id_produto     BIGINT UNSIGNED                NOT NULL,
     quantidade     BIGINT UNSIGNED                NOT NULL,
+    
+    UNIQUE KEY (id_compra, id_produto),
+    PRIMARY KEY (id),
+
+    FOREIGN KEY (id_compra) REFERENCES tb_compra (id),
+    FOREIGN KEY (id_produto) REFERENCES tb_produto (id)
+) CHARACTER SET utf8mb4
+  COLLATE utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS tb_avaliacao
+(
+    id                  BIGINT UNSIGNED NOT NULL,
+    id_compra_produto   BIGINT UNSIGNED NOT NULL,
+
     avaliacao      ENUM (
         '⭐',
         '⭐⭐',
@@ -228,33 +247,28 @@ CREATE TABLE IF NOT EXISTS tb_compra_produto
                        CHARACTER SET utf8mb4
                        COLLATE utf8mb4_unicode_ci NULL, -- Avaliação com emojis de estrelas (opcional)
     comentario     TEXT                           NULL, -- Comentário (opcional)
-    data_avaliacao DATETIME                       NULL, -- Data da avaliação (opcional)
 
-    UNIQUE KEY (id_compra, id_produto),
-    PRIMARY KEY (id_compra, id_produto),
-
-    FOREIGN KEY (id_compra) REFERENCES tb_compra (id),
-    FOREIGN KEY (id_produto) REFERENCES tb_produto (id)
-) CHARACTER SET utf8mb4
-  COLLATE utf8mb4_unicode_ci;
+    PRIMARY KEY (id),
+    FOREIGN KEY (id_compra_produto) REFERENCES tb_compra_produto (id)
+);
 
 -- Tabela de rastreamento de compras, com relação 1:1 com tb_compras
-CREATE TABLE IF NOT EXISTS tb_compra_rastreamento
+CREATE TABLE IF NOT EXISTS tb_entrega
 (
     id                BIGINT UNSIGNED AUTO_INCREMENT,
     id_compra         BIGINT UNSIGNED NOT NULL,
     id_transportadora BIGINT UNSIGNED NOT NULL,
+    codigo_rastreio   VARCHAR(100)    NULL,
+    data_envio        DATETIME        NULL,
+    data_recebimento  DATETIME        NULL,
     status_entrega    ENUM (
         'ENVIADO',
         'EM_TRANSITO',
         'ENTREGUE',
         'NAO_ENTREGUE')               NULL,
-    codigo_rastreio   VARCHAR(100)    NULL,
-    data_envio        DATETIME        NULL,
-    data_recebimento  DATETIME        NULL,
 
     PRIMARY KEY (id),
-    UNIQUE KEY uk_id_compra (id_compra), -- Garante que cada compra tenha apenas um rastreamento
+    UNIQUE KEY uk_id_compra (id_compra), -- Garante que cada compra tenha apenas uma entrega
 
     FOREIGN KEY (id_compra) REFERENCES tb_compra (id),
     FOREIGN KEY (id_transportadora) REFERENCES tb_transportadora (id)
@@ -265,7 +279,6 @@ CREATE TABLE IF NOT EXISTS tb_promocao
 (
     id          BIGINT UNSIGNED AUTO_INCREMENT,
     nome        VARCHAR(100)   NULL,
-    desconto    DECIMAL(10, 2) NOT NULL,
     data_inicio DATETIME       NOT NULL,
     data_fim    DATETIME       NOT NULL,
 
@@ -277,7 +290,7 @@ CREATE TABLE IF NOT EXISTS tb_promocao_produto
 (
     id_produto     BIGINT UNSIGNED NOT NULL,
     id_promocao    BIGINT UNSIGNED NOT NULL,
-    data_aplicacao DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    desconto       DECIMAL(10, 2) NOT NULL,
 
     PRIMARY KEY (id_produto, id_promocao), -- Garante que um produto tenha apenas uma promoção
 
