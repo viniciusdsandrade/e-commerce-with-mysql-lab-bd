@@ -163,7 +163,7 @@ CREATE TABLE IF NOT EXISTS tb_produto_categoria
 );
 
 -- Tabela para armazenar os Carrinhos de Compras de cada Usuário
-CREATE TABLE IF NOT EXISTS tb_carrinhos
+CREATE TABLE IF NOT EXISTS tb_carrinho
 (
     id         BIGINT UNSIGNED AUTO_INCREMENT,
     id_usuario BIGINT UNSIGNED NOT NULL,
