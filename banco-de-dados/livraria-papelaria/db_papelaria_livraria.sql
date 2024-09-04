@@ -120,10 +120,10 @@ CREATE TABLE IF NOT EXISTS tb_produto
 -- Tabela para armazenar o Estoque dos Produtos
 CREATE TABLE IF NOT EXISTS tb_estoque
 (
-    id                      BIGINT UNSIGNED AUTO_INCREMENT,
-    id_produto              BIGINT UNSIGNED NOT NULL,
-    quantidade              INT UNSIGNED    NOT NULL,
-    localizacao             VARCHAR(70)     NULL, -- Ex: "Prateleira A", "Depósito 1", etc.
+    id          BIGINT UNSIGNED AUTO_INCREMENT,
+    id_produto  BIGINT UNSIGNED NOT NULL,
+    quantidade  INT UNSIGNED    NOT NULL,
+    localizacao VARCHAR(70)     NULL, -- Ex: "Prateleira A", "Depósito 1", etc.
 
     PRIMARY KEY (id),
     FOREIGN KEY (id_produto) REFERENCES tb_produto (id)
@@ -132,8 +132,8 @@ CREATE TABLE IF NOT EXISTS tb_estoque
 -- Tabela para armazenar as Categorias
 CREATE TABLE IF NOT EXISTS tb_categoria
 (
-    id        BIGINT UNSIGNED AUTO_INCREMENT,
-    nome      VARCHAR(50) NOT NULL,
+    id   BIGINT UNSIGNED AUTO_INCREMENT,
+    nome VARCHAR(50) NOT NULL,
 
     PRIMARY KEY (id)
 );
@@ -150,7 +150,7 @@ CREATE TABLE IF NOT EXISTS tb_produto_categoria
 
 CREATE TABLE IF NOT EXISTS tb_lista_desejos
 (
-    id         BIGINT UNSIGNED NOT NULL,
+    id         BIGINT UNSIGNED AUTO_INCREMENT,
     id_usuario BIGINT UNSIGNED NOT NULL,
 
     PRIMARY KEY (id),
@@ -159,11 +159,11 @@ CREATE TABLE IF NOT EXISTS tb_lista_desejos
 
 CREATE TABLE IF NOT EXISTS tb_lista_desejos_produto
 (
-    id_lista_desejos BIGINT UNSIGNED NOT NULL,
     id_produto       BIGINT UNSIGNED NOT NULL,
+    id_lista_desejos BIGINT UNSIGNED NOT NULL,
 
-    FOREIGN KEY (id_lista_desejos) REFERENCES tb_lista_desejos (id),
-    FOREIGN KEY (id_produto) REFERENCES tb_produto (id)
+    FOREIGN KEY (id_produto) REFERENCES tb_produto (id),
+    FOREIGN KEY (id_lista_desejos) REFERENCES tb_lista_desejos (id)
 );
 
 -- Tabela para armazenar os Carrinhos de Compras de cada Usuário
@@ -182,7 +182,7 @@ CREATE TABLE IF NOT EXISTS tb_carrinho_produto
 (
     id_produto  BIGINT UNSIGNED NOT NULL,
     id_carrinho BIGINT UNSIGNED NOT NULL,
-    quantidade  INT UNSIGNED NOT NULL,
+    quantidade  INT UNSIGNED    NOT NULL,
 
     FOREIGN KEY (id_produto) REFERENCES tb_produto (id),
     FOREIGN KEY (id_carrinho) REFERENCES tb_carrinho (id)
@@ -220,11 +220,11 @@ CREATE TABLE IF NOT EXISTS tb_compra_forma_pgto
 -- tabela para armazenar os produtos comprados em cada compra, além de suas opcionais avaliações
 CREATE TABLE IF NOT EXISTS tb_compra_produto
 (
-    id             BIGINT UNSIGNED                AUTO_INCREMENT,
-    id_compra      BIGINT UNSIGNED                NOT NULL,
-    id_produto     BIGINT UNSIGNED                NOT NULL,
-    quantidade     BIGINT UNSIGNED                NOT NULL,
-    
+    id         BIGINT UNSIGNED AUTO_INCREMENT,
+    id_compra  BIGINT UNSIGNED NOT NULL,
+    id_produto BIGINT UNSIGNED NOT NULL,
+    quantidade BIGINT UNSIGNED NOT NULL,
+
     UNIQUE KEY (id_compra, id_produto),
     PRIMARY KEY (id),
 
@@ -235,18 +235,18 @@ CREATE TABLE IF NOT EXISTS tb_compra_produto
 
 CREATE TABLE IF NOT EXISTS tb_avaliacao
 (
-    id                  BIGINT UNSIGNED NOT NULL,
-    id_compra_produto   BIGINT UNSIGNED NOT NULL,
+    id                BIGINT UNSIGNED AUTO_INCREMENT,
+    id_compra_produto BIGINT UNSIGNED                NOT NULL,
 
-    avaliacao      ENUM (
+    avaliacao         ENUM (
         '⭐',
         '⭐⭐',
         '⭐⭐⭐',
         '⭐⭐⭐⭐',
         '⭐⭐⭐⭐⭐')
-                       CHARACTER SET utf8mb4
-                       COLLATE utf8mb4_unicode_ci NULL, -- Avaliação com emojis de estrelas (opcional)
-    comentario     TEXT                           NULL, -- Comentário (opcional)
+                          CHARACTER SET utf8mb4
+                          COLLATE utf8mb4_unicode_ci NULL, -- Avaliação com emojis de estrelas (opcional)
+    comentario        TEXT                           NULL, -- Comentário (opcional)
 
     PRIMARY KEY (id),
     FOREIGN KEY (id_compra_produto) REFERENCES tb_compra_produto (id)
@@ -278,9 +278,9 @@ CREATE TABLE IF NOT EXISTS tb_entrega
 CREATE TABLE IF NOT EXISTS tb_promocao
 (
     id          BIGINT UNSIGNED AUTO_INCREMENT,
-    nome        VARCHAR(100)   NULL,
-    data_inicio DATETIME       NOT NULL,
-    data_fim    DATETIME       NOT NULL,
+    nome        VARCHAR(100) NULL,
+    data_inicio DATETIME     NOT NULL,
+    data_fim    DATETIME     NOT NULL,
 
     PRIMARY KEY (id)
 );
@@ -288,9 +288,9 @@ CREATE TABLE IF NOT EXISTS tb_promocao
 -- A promoção pode estar em vários produtos, porém a promoção é aplicada individualmente a cada produto
 CREATE TABLE IF NOT EXISTS tb_promocao_produto
 (
-    id_produto     BIGINT UNSIGNED NOT NULL,
-    id_promocao    BIGINT UNSIGNED NOT NULL,
-    desconto       DECIMAL(10, 2) NOT NULL,
+    id_produto  BIGINT UNSIGNED NOT NULL,
+    id_promocao BIGINT UNSIGNED NOT NULL,
+    desconto    DECIMAL(10, 2)  NOT NULL,
 
     PRIMARY KEY (id_produto, id_promocao), -- Garante que um produto tenha apenas uma promoção
 
