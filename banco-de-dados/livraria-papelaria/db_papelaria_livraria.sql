@@ -202,21 +202,6 @@ CREATE TABLE IF NOT EXISTS tb_compra
     FOREIGN KEY (id_endereco) REFERENCES tb_endereco (id)
 );
 
--- Tabela de associação 1:N entre Compras e Formas de Pagamento
-CREATE TABLE IF NOT EXISTS tb_compra_forma_pgto
-(
-    id_compra       BIGINT UNSIGNED NOT NULL,
-    id_forma_pgto   BIGINT UNSIGNED NOT NULL,
-    valor_pago      DECIMAL(10, 2)  NOT NULL,
-    data_pagamento  DATETIME        NULL,
-    data_confirmado DATETIME        NULL,
-
-    PRIMARY KEY (id_compra, id_forma_pgto),
-
-    FOREIGN KEY (id_compra) REFERENCES tb_compra (id),
-    FOREIGN KEY (id_forma_pgto) REFERENCES tb_forma_de_pagamento (id)
-);
-
 -- tabela para armazenar os produtos comprados em cada compra, além de suas opcionais avaliações
 CREATE TABLE IF NOT EXISTS tb_compra_produto
 (
