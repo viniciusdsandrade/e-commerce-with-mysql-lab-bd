@@ -9,15 +9,7 @@ GROUP BY p.nome
 ORDER BY QuantidadeVendida DESC
 LIMIT 10;
 
--- 2. Valor total de vendas por mês:
-SELECT DATE_FORMAT(c.data_realizada, '%Y-%m') AS Mes,
-       SUM(cfp.valor_pago)                    AS ValorTotalVendas
-FROM tb_compra c
-         JOIN tb_compra_forma_pgto cfp ON c.id = cfp.id_compra
-GROUP BY Mes
-ORDER BY Mes;
-
--- 3. Média de avaliação dos produtos:
+-- 2. Média de avaliação dos produtos:
 SELECT p.nome                 AS NomeProduto,
        AVG(CASE
                WHEN a.avaliacao = '⭐' THEN 1
@@ -33,7 +25,7 @@ GROUP BY p.nome
 ORDER BY MediaAvaliacao DESC;
 
 
--- 4. Categoria de produto mais vendida:
+-- 3. Categoria de produto mais vendida:
 SELECT cat.nome           AS NomeCategoria,
        SUM(cp.quantidade) AS QuantidadeVendida
 FROM tb_compra_produto cp
@@ -44,7 +36,7 @@ GROUP BY cat.nome
 ORDER BY QuantidadeVendida DESC;
 
 
--- 5. Valor total gasto por forma de pagamento:
+-- 4. Usuários que mais compraram:
 SELECT u.nome      AS NomeUsuario,
        COUNT(c.id) AS NumeroCompras
 FROM tb_compra c
@@ -54,7 +46,7 @@ ORDER BY NumeroCompras DESC
 LIMIT 10;
 
 
--- 6. Taxa de conversão de carrinho para compra:
+-- 5. Taxa de conversão de carrinho para compra:
 SELECT (COUNT(DISTINCT c.id) / COUNT(DISTINCT car.id)) * 100 AS TaxaConversao
 FROM tb_carrinho car
          LEFT JOIN tb_compra c ON car.id_usuario = c.id_usuario
@@ -62,7 +54,7 @@ FROM tb_carrinho car
 -- Considerando compras nos últimos 30 dias
 
 
--- 7. Cupons mais utilizados:
+-- 6. Cupons mais utilizados:
 SELECT cupom.nome AS NomeCupom,
        COUNT(*)   AS QuantidadeUtilizada
 FROM tb_cupom cupom
@@ -72,7 +64,7 @@ ORDER BY QuantidadeUtilizada DESC
 LIMIT 10;
 
 
--- 8. Produtos com mais avaliações positivas:
+-- 7. Produtos com mais avaliações positivas:
 SELECT p.nome      AS NomeProduto,
        COUNT(a.id) AS NumeroAvaliacoesPositivas
 FROM tb_produto p
@@ -83,7 +75,7 @@ GROUP BY p.nome
 ORDER BY NumeroAvaliacoesPositivas DESC
 LIMIT 10;
 
--- 9. Usuários que desejam produtos que nunca compraram:
+-- 8. Usuários que desejam produtos que nunca compraram:
 SELECT u.nome                         AS NomeUsuario,
        COUNT(DISTINCT ldp.id_produto) AS ProdutosDesejados,
        COUNT(DISTINCT cp.id_produto)  AS ProdutosComprados
@@ -97,7 +89,7 @@ HAVING ProdutosDesejados > 0
 ORDER BY ProdutosDesejados DESC
 LIMIT 10;
 
--- 18. Avaliação média dos produtos por categoria:
+-- 9. Avaliação média dos produtos por categoria:
 SELECT c.nome                 AS NomeCategoria,
        AVG(CASE
                WHEN a.avaliacao = '⭐' THEN 1
@@ -114,7 +106,7 @@ FROM tb_categoria c
 GROUP BY c.nome
 ORDER BY MediaAvaliacao DESC;
 
--- 11. Valor total gasto por usuário:
+-- 10. Valor total gasto por usuário:
 SELECT u.nome                       AS nome_usuario,
        u.telefone                   AS telefone_usuario,
        u.email                      AS email_usuario,
@@ -133,7 +125,7 @@ FROM tb_compra c
 GROUP BY u.nome, u.telefone, u.email, e.estado, DATE(c.data_realizada)
 ORDER BY dia_da_compra, nome_usuario;
 
--- 12. Valor e quantidade de produtos em estoque:
+-- 11. Valor e quantidade de produtos em estoque:
 SELECT p.nome                   AS nome_produto,
        p.preco                  AS preco_produto,
        e.quantidade             AS quantidade_estoque,
