@@ -1,33 +1,33 @@
 USE db_papelaria_livraria;
 
-DROP TRIGGER IF EXISTS tr_produto_exclusao;
-DROP TRIGGER IF EXISTS atualizar_estoque_apos_insercao;
-DROP TRIGGER IF EXISTS calcular_preco_unitario_before_insert;
-DROP TRIGGER IF EXISTS atualizar_preco_compra_apos_insercao_item;
-DROP TRIGGER IF EXISTS tr_produto_preco_historico;
+DROP TRIGGER IF EXISTS tr_atualizar_estoque_after_insert;
+DROP TRIGGER IF EXISTS tr_calcular_preco_unitario_before_insert;
+DROP TRIGGER IF EXISTS tr_atualizar_preco_compra_after_insert;
+DROP TRIGGER IF EXISTS tr_log_produto_preco_historico_before_update;
+DROP TRIGGER IF EXISTS tr_log_produto_after_delete;
 
 -- Trigger para registrar a exclusão de produtos na tabela de histórico
 DELIMITER //
-CREATE TRIGGER tr_produto_exclusao
+CREATE TRIGGER tr_log_produto_after_delete
     AFTER DELETE
     ON tb_produto
     FOR EACH ROW
 BEGIN
     -- Inserir o produto excluído na tabela de histórico com novo id e id_produto_original
-    INSERT INTO tb_produto_excluido (id_produto_original, nome, preco)
+    INSERT INTO log_produto_excluido (id_produto_original, nome, preco)
     VALUES (OLD.id, OLD.nome, OLD.preco);
 END //
 DELIMITER ;
 
 -- Trigger para registrar a alteração de preço na tabela de histórico
 DELIMITER //
-CREATE TRIGGER tr_produto_preco_historico
+CREATE TRIGGER tr_log_produto_preco_historico_before_update
     BEFORE UPDATE
     ON tb_produto
     FOR EACH ROW
 BEGIN
     IF OLD.preco != NEW.preco THEN
-        INSERT INTO tb_produto_preco_historico (id_produto, preco_anterior, preco_novo)
+        INSERT INTO log_produto_preco_historico (id_produto, preco_anterior, preco_novo)
         VALUES (OLD.id, OLD.preco, NEW.preco);
     END IF;
 END //
@@ -66,7 +66,7 @@ END;
 DELIMITER ;
 
 DELIMITER //
-CREATE TRIGGER IF NOT EXISTS atualizar_estoque_apos_insercao
+CREATE TRIGGER IF NOT EXISTS tr_atualizar_estoque_after_insert
     AFTER INSERT
     ON tb_compra_produto
     FOR EACH ROW
@@ -79,17 +79,17 @@ END;
 DELIMITER ;
 
 DELIMITER //
-CREATE TRIGGER IF NOT EXISTS atualizar_preco_compra_apos_insercao_item
+CREATE TRIGGER IF NOT EXISTS tr_atualizar_preco_compra_after_insert
     AFTER INSERT
     ON tb_compra_produto
     FOR EACH ROW
 BEGIN
     -- Atualizar o preço total da compra na tabela tb_compra
     UPDATE tb_compra
-    SET preco_total = preco_total + (
-        NEW.quantidade * (SELECT preco
-                          FROM tb_produto
-                          WHERE id = NEW.id_produto))
+    SET preco_total =
+            preco_total + (NEW.quantidade * (SELECT preco
+                                             FROM tb_produto
+                                             WHERE id = NEW.id_produto))
     WHERE id = NEW.id_compra;
 END;
 DELIMITER ;
