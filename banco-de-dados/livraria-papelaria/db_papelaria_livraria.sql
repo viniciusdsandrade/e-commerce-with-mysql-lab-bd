@@ -6,8 +6,8 @@ USE db_papelaria_livraria;
 CREATE TABLE IF NOT EXISTS tb_administrador
 (
     id                   BIGINT UNSIGNED AUTO_INCREMENT,
-    nome                 VARCHAR(100),
-    email                VARCHAR(100),
+    nome                 VARCHAR(100) NOT NULL,
+    email                VARCHAR(100) NOT NULL,
     senha                VARCHAR(100),
     email_de_recuperacao VARCHAR(100) NULL,
 
@@ -112,7 +112,7 @@ CREATE TABLE IF NOT EXISTS tb_produto
     id         BIGINT UNSIGNED AUTO_INCREMENT,
     nome       VARCHAR(50)    NOT NULL,
     preco      DECIMAL(10, 2) NOT NULL,
-    descricao  TEXT           NULL, -- Pode ser NULL, pois o produto pode não ter descrição
+    descricao  TEXT           NULL,
     is_ativo   BOOLEAN   DEFAULT TRUE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -152,7 +152,7 @@ CREATE TABLE IF NOT EXISTS tb_estoque
     id          BIGINT UNSIGNED AUTO_INCREMENT,
     id_produto  BIGINT UNSIGNED NOT NULL,
     quantidade  INT UNSIGNED    NOT NULL,
-    localizacao VARCHAR(70)     NULL, -- Ex: "Prateleira A", "Depósito 1", etc.,
+    localizacao VARCHAR(70)     NULL,
     created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
