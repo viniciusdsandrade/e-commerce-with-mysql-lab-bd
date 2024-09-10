@@ -113,6 +113,7 @@ CREATE TABLE IF NOT EXISTS tb_produto
     nome       VARCHAR(50)    NOT NULL,
     preco      DECIMAL(10, 2) NOT NULL,
     descricao  TEXT           NULL, -- Pode ser NULL, pois o produto pode não ter descrição
+    is_ativo   BOOLEAN   DEFAULT TRUE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
@@ -133,13 +134,14 @@ CREATE TABLE IF NOT EXISTS log_produto_preco_historico
 );
 
 -- Tabela para armazenar os produtos excluídos
-CREATE TABLE IF NOT EXISTS log_produto_excluido
+CREATE TABLE log_produto_inativos
 (
-    id                  BIGINT UNSIGNED AUTO_INCREMENT,
-    id_produto_original BIGINT UNSIGNED NOT NULL, -- Armazena o ID original do produto excluído
-    nome                VARCHAR(255)    NOT NULL,
-    preco               DECIMAL(10, 2)  NOT NULL,
-    data_exclusao       TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    id              BIGINT UNSIGNED AUTO_INCREMENT,
+    id_produto      BIGINT UNSIGNED NOT NULL,
+    nome            VARCHAR(255)    NOT NULL,
+    preco           DECIMAL(10, 2)  NOT NULL,
+    data_inativacao DATETIME        NOT NULL,
+    data_reativacao DATETIME,
 
     PRIMARY KEY (id)
 );
