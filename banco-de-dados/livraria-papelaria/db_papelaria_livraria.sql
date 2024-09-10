@@ -109,10 +109,37 @@ CREATE TABLE IF NOT EXISTS tb_endereco
 -- Tabela para armazenar os Produtos
 CREATE TABLE IF NOT EXISTS tb_produto
 (
-    id        BIGINT UNSIGNED AUTO_INCREMENT,
-    nome      VARCHAR(50)    NOT NULL,
-    preco     DECIMAL(10, 2) NOT NULL,
-    descricao TEXT           NULL, -- Pode ser NULL, pois o produto pode não ter descrição
+    id         BIGINT UNSIGNED AUTO_INCREMENT,
+    nome       VARCHAR(50)    NOT NULL,
+    preco      DECIMAL(10, 2) NOT NULL,
+    descricao  TEXT           NULL, -- Pode ser NULL, pois o produto pode não ter descrição
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+    PRIMARY KEY (id)
+);
+
+-- Tabela para registrar o histórico de preços dos produtos
+CREATE TABLE IF NOT EXISTS log_produto_preco_historico
+(
+    id             BIGINT UNSIGNED AUTO_INCREMENT,
+    id_produto     BIGINT UNSIGNED NOT NULL,
+    preco_anterior DECIMAL(10, 2)  NOT NULL,
+    preco_novo     DECIMAL(10, 2)  NOT NULL,
+    data_alteracao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    PRIMARY KEY (id),
+    FOREIGN KEY (id_produto) REFERENCES tb_produto (id)
+);
+
+-- Tabela para armazenar os produtos excluídos
+CREATE TABLE IF NOT EXISTS log_produto_excluido
+(
+    id                  BIGINT UNSIGNED AUTO_INCREMENT,
+    id_produto_original BIGINT UNSIGNED NOT NULL, -- Armazena o ID original do produto excluído
+    nome                VARCHAR(255)    NOT NULL,
+    preco               DECIMAL(10, 2)  NOT NULL,
+    data_exclusao       TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
     PRIMARY KEY (id)
 );
@@ -123,7 +150,9 @@ CREATE TABLE IF NOT EXISTS tb_estoque
     id          BIGINT UNSIGNED AUTO_INCREMENT,
     id_produto  BIGINT UNSIGNED NOT NULL,
     quantidade  INT UNSIGNED    NOT NULL,
-    localizacao VARCHAR(70)     NULL, -- Ex: "Prateleira A", "Depósito 1", etc.
+    localizacao VARCHAR(70)     NULL, -- Ex: "Prateleira A", "Depósito 1", etc.,
+    created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
     PRIMARY KEY (id),
     FOREIGN KEY (id_produto) REFERENCES tb_produto (id)
@@ -195,6 +224,9 @@ CREATE TABLE IF NOT EXISTS tb_compra
     id_usuario     BIGINT UNSIGNED NOT NULL,
     id_endereco    BIGINT UNSIGNED NOT NULL,
     data_realizada DATETIME        NOT NULL,
+    preco_total    DECIMAL(10, 2) DEFAULT 0,
+    created_at     TIMESTAMP      DEFAULT CURRENT_TIMESTAMP,
+    updated_at     TIMESTAMP      DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
     PRIMARY KEY (id),
 
@@ -231,7 +263,9 @@ CREATE TABLE IF NOT EXISTS tb_avaliacao
         '⭐⭐⭐⭐⭐')
                           CHARACTER SET utf8mb4
                           COLLATE utf8mb4_unicode_ci NULL, -- Avaliação com emojis de estrelas (opcional)
-    comentario        TEXT                           NULL, -- Comentário (opcional)
+    comentario        TEXT                           NULL, -- Comentário (opcional),
+    created_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
     PRIMARY KEY (id),
     FOREIGN KEY (id_compra_produto) REFERENCES tb_compra_produto (id)
@@ -251,6 +285,8 @@ CREATE TABLE IF NOT EXISTS tb_entrega
         'EM_TRANSITO',
         'ENTREGUE',
         'NAO_ENTREGUE')               NULL,
+    created_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
     PRIMARY KEY (id),
     UNIQUE KEY uk_id_compra (id_compra), -- Garante que cada compra tenha apenas uma entrega

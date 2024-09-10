@@ -45,64 +45,7 @@ CREATE TABLE IF NOT EXISTS tb_itens_venda
     FOREIGN KEY (venda_id) REFERENCES tb_venda (id),
     FOREIGN KEY (produto_id) REFERENCES tb_produto (id)
 );
-DELIMITER //
 
-DELIMITER //
-
-CREATE TRIGGER IF NOT EXISTS calcular_preco_unitario_before_insert
-    BEFORE INSERT
-    ON tb_itens_venda
-    FOR EACH ROW
-BEGIN
-    DECLARE estoque_atual INT;
-
-    -- Obter a quantidade em estoque do produto
-    SELECT estoque
-    INTO estoque_atual
-    FROM tb_produto
-    WHERE id = NEW.produto_id;
-
-    -- Verificar se há estoque suficiente
-    IF estoque_atual >= NEW.quantidade THEN
-        -- Calcular o preco_unitario se houver estoque
-        SET NEW.preco_unitario = (SELECT preco
-                                  FROM tb_produto
-                                  WHERE id = NEW.produto_id);
-    ELSE
-        -- Lançar um erro caso não haja estoque suficiente, impedindo a inserção
-        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Estoque insuficiente para o produto.';
-    END IF;
-END;
-//
-
-DELIMITER ;
-
-DELIMITER //
-
-CREATE TRIGGER IF NOT EXISTS atualizar_estoque_apos_insercao
-    AFTER INSERT
-    ON tb_itens_venda
-    FOR EACH ROW
-BEGIN
-    UPDATE tb_produto
-    SET estoque = estoque - NEW.quantidade
-    WHERE id = NEW.produto_id;
-END;
-//
-
-DELIMITER ;
-
-CREATE TRIGGER IF NOT EXISTS atualizar_preco_venda_apos_insercao_item
-    AFTER INSERT
-    ON tb_itens_venda
-    FOR EACH ROW
-BEGIN
-    UPDATE tb_venda
-    SET preco_venda = preco_venda + (NEW.preco_unitario * NEW.quantidade)
-    WHERE id = NEW.venda_id;
-END;
-
-DELIMITER ;
 
 -- Inserindo produtos
 INSERT INTO tb_produto (nome, categoria, preco, estoque) VALUES ('Notebook', 'Eletrônicos', 2999.99, 10);
