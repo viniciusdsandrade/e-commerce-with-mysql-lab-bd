@@ -10,14 +10,14 @@ ORDER BY QuantidadeVendida DESC
 LIMIT 10;
 
 -- 2. Média de avaliação dos produtos comprados (de 1 a 5 estrelas):
-SELECT p.nome                 AS NomeProduto,
+SELECT p.nome   AS NomeProduto,
        AVG(CASE
                WHEN a.avaliacao = '⭐' THEN 1
                WHEN a.avaliacao = '⭐⭐' THEN 2
                WHEN a.avaliacao = '⭐⭐⭐' THEN 3
                WHEN a.avaliacao = '⭐⭐⭐⭐' THEN 4
                WHEN a.avaliacao = '⭐⭐⭐⭐⭐' THEN 5
-               ELSE NULL END) AS MediaAvaliacao
+           END) AS MediaAvaliacao
 FROM tb_produto p
          JOIN tb_compra_produto cp ON p.id = cp.id_produto
          LEFT JOIN tb_avaliacao a ON cp.id = a.id_compra_produto
@@ -89,14 +89,14 @@ ORDER BY ProdutosDesejados DESC
 LIMIT 10;
 
 -- 9. Avaliação média dos produtos por categoria:
-SELECT c.nome                 AS NomeCategoria,
+SELECT c.nome   AS NomeCategoria,
        AVG(CASE
                WHEN a.avaliacao = '⭐' THEN 1
                WHEN a.avaliacao = '⭐⭐' THEN 2
                WHEN a.avaliacao = '⭐⭐⭐' THEN 3
                WHEN a.avaliacao = '⭐⭐⭐⭐' THEN 4
                WHEN a.avaliacao = '⭐⭐⭐⭐⭐' THEN 5
-               ELSE NULL END) AS MediaAvaliacao
+           END) AS MediaAvaliacao
 FROM tb_categoria c
          JOIN tb_produto_categoria pc ON c.id = pc.id_categoria
          JOIN tb_produto p ON pc.id_produto = p.id
