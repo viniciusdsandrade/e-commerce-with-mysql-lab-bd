@@ -1,6 +1,7 @@
 USE db_papelaria_livraria;
 
 DROP PROCEDURE IF EXISTS sp_alterar_status_produto;
+DROP FUNCTION IF EXISTS fun_calcular_desconto_promocao;
 DROP FUNCTION IF EXISTS fun_gerar_row_num;
 DROP FUNCTION IF EXISTS fun_verificar_produto_ativo;
 DROP FUNCTION IF EXISTS fun_desativar_produto;
@@ -10,13 +11,33 @@ DROP TRIGGER IF EXISTS tr_log_produto_preco_historico_before_update;
 DROP TRIGGER IF EXISTS tr_calcular_preco_unitario_before_insert;
 DROP TRIGGER IF EXISTS tr_atualizar_preco_compra_after_insert;
 DROP TRIGGER IF EXISTS tr_atualizar_estoque_after_insert;
+DROP TRIGGER IF EXISTS tr_aplicar_cupom_after_insert;
+
 DROP VIEW IF EXISTS vw_stored_procedures;
 DROP VIEW IF EXISTS vw_views;
 DROP VIEW IF EXISTS vw_functions;
 DROP VIEW IF EXISTS vw_triggers;
 DROP VIEW IF EXISTS vw_todos_os_recursos;
 
--- Função para verificar se um produto está ativo
+DELIMITER //
+CREATE FUNCTION IF NOT EXISTS fun_calcular_desconto_promocao(id_produto_param BIGINT UNSIGNED)
+    RETURNS DECIMAL(10, 2)
+    READS SQL DATA
+BEGIN
+    DECLARE desconto_promocao DECIMAL(10, 2);
+
+    SELECT p.desconto
+    INTO desconto_promocao
+    FROM tb_promocao_produto pp
+             JOIN tb_promocao p ON pp.id_promocao = p.id
+    WHERE pp.id_produto = id_produto_param
+      AND NOW() BETWEEN p.data_inicio AND p.data_fim
+    LIMIT 1; -- Garante que apenas um desconto seja retornado
+
+    RETURN IFNULL(desconto_promocao, 0);
+END;
+DELIMITER ;
+
 DELIMITER //
 CREATE FUNCTION IF NOT EXISTS fun_verificar_produto_ativo(id_produto BIGINT UNSIGNED)
     RETURNS BOOLEAN
@@ -28,10 +49,9 @@ BEGIN
     SELECT is_ativo INTO is_ativo FROM tb_produto WHERE id = id_produto;
 
     RETURN is_ativo;
-END //
+END;
 DELIMITER ;
 
--- Função para desativar um produto
 DELIMITER //
 CREATE FUNCTION IF NOT EXISTS fun_desativar_produto(id_produto BIGINT UNSIGNED)
     RETURNS BOOLEAN
@@ -47,10 +67,9 @@ BEGIN
         -- Retornar false se o produto não existe ou já está inativo
         RETURN FALSE;
     END IF;
-END //
+END;
 DELIMITER ;
 
--- Função para ativar um produto
 DELIMITER //
 CREATE FUNCTION IF NOT EXISTS fun_ativar_produto(id_produto BIGINT UNSIGNED)
     RETURNS BOOLEAN
@@ -66,11 +85,11 @@ BEGIN
         -- Retornar false se o produto não existe ou já está ativo
         RETURN FALSE;
     END IF;
-END //
+END;
 DELIMITER ;
 
 DELIMITER //
-CREATE PROCEDURE sp_alterar_status_produto(
+CREATE PROCEDURE IF NOT EXISTS sp_alterar_status_produto(
     IN id_produto BIGINT UNSIGNED,
     IN acao VARCHAR(10) -- 'ativar' ou 'desativar'
 )
@@ -102,14 +121,12 @@ BEGIN
         END IF;
 
     ELSE
-        -- Se a ação não for nem 'ativar' nem 'desativar'
+        -- Se a ação não for nem 'ativar', nem 'desativar'
         SELECT 'Ação inválida. Utilize ''ativar'' ou ''desativar''.' AS mensagem;
     END IF;
-
-END //
+END;
 DELIMITER ;
 
--- Trigger para registrar a inativação e reativação de produtos na tabela de log
 DELIMITER //
 CREATE TRIGGER IF NOT EXISTS tr_log_produto_inativado_after_update
     AFTER UPDATE
@@ -135,10 +152,27 @@ BEGIN
     ELSE
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Não é possível atualizar um produto inativo.';
     END IF;
-END //
+END;
 DELIMITER ;
 
--- Trigger para registrar a alteração de preço na tabela de histórico
+DELIMITER //
+CREATE TRIGGER IF NOT EXISTS tr_aplicar_cupom_after_insert
+    AFTER INSERT
+    ON tb_cupom_compra
+    FOR EACH ROW
+BEGIN
+    DECLARE desconto_cupom DECIMAL(10, 2);
+
+    -- Obter o desconto do cupom
+    SELECT desconto INTO desconto_cupom FROM tb_cupom WHERE id = NEW.id_cupom;
+
+    -- Atualizar o preço total da compra com o desconto do cupom
+    UPDATE tb_compra
+    SET preco_total = preco_total - desconto_cupom
+    WHERE id = NEW.id_compra;
+END;
+DELIMITER ;
+
 DELIMITER //
 CREATE TRIGGER IF NOT EXISTS tr_log_produto_preco_historico_before_update
     BEFORE UPDATE
@@ -154,12 +188,11 @@ BEGIN
     ELSE
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Não é possível atualizar o preço de um produto inativo.';
     END IF;
-END //
+END;
 DELIMITER ;
 
--- Trigger para calcular o preço unitário da compra e atualizar o estoque
 DELIMITER //
-CREATE TRIGGER IF NOT EXISTS tr_calcular_preco_unitario_before_insert
+CREATE TRIGGER tr_calcular_preco_unitario_before_insert
     BEFORE INSERT
     ON tb_compra_produto
     FOR EACH ROW
@@ -167,6 +200,7 @@ BEGIN
     DECLARE estoque_atual INT;
     DECLARE preco_produto DECIMAL(10, 2);
     DECLARE produto_ativo BOOLEAN;
+    DECLARE desconto_promocao DECIMAL(10, 2);
 
     -- Obter a quantidade em estoque e o status do produto
     SELECT quantidade, is_ativo
@@ -180,10 +214,20 @@ BEGIN
         -- Obter o preço do produto
         SELECT preco INTO preco_produto FROM tb_produto WHERE id = NEW.id_produto;
 
+        -- Calcular o desconto da promoção (se houver)
+        SELECT p.desconto
+        INTO desconto_promocao
+        FROM tb_promocao_produto pp
+                 JOIN tb_promocao p ON pp.id_promocao = p.id
+        WHERE pp.id_produto = NEW.id_produto
+          AND NOW() BETWEEN p.data_inicio AND p.data_fim
+        LIMIT 1;
+        -- Garante que apenas um desconto seja aplicado, caso haja mais de uma promoção
+
         -- Verificar se há estoque suficiente
         IF estoque_atual >= NEW.quantidade THEN
-            -- Definir o preço unitário como o preço do produto
-            SET NEW.quantidade = preco_produto;
+            -- Definir o preço unitário como o preço do produto com desconto da promoção (se houver)
+            SET NEW.quantidade = preco_produto * (1 - IFNULL(desconto_promocao, 0) / 100);
         ELSE
             SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Estoque insuficiente para o produto.';
         END IF;
@@ -193,7 +237,6 @@ BEGIN
 END;
 DELIMITER ;
 
--- Trigger para atualizar o estoque e o preço total da compra
 DELIMITER //
 CREATE TRIGGER IF NOT EXISTS tr_atualizar_preco_compra_after_insert
     AFTER INSERT
@@ -217,7 +260,6 @@ BEGIN
 END;
 DELIMITER ;
 
--- Trigger para atualizar o preço total da compraX
 DELIMITER //
 CREATE TRIGGER IF NOT EXISTS tr_atualizar_preco_compra_after_insert
     AFTER INSERT
@@ -237,7 +279,7 @@ END;
 DELIMITER ;
 
 DELIMITER //
-CREATE TRIGGER tr_atualizar_estoque_after_insert
+CREATE TRIGGER IF NOT EXISTS tr_atualizar_estoque_after_insert
     AFTER INSERT
     ON tb_compra_produto
     FOR EACH ROW
@@ -271,7 +313,7 @@ CREATE FUNCTION IF NOT EXISTS fun_gerar_row_num()
     READS SQL DATA
 BEGIN
     RETURN ROW_NUMBER() OVER (ORDER BY NULL); -- Numeração sequencial sem variáveis
-END //
+END;
 DELIMITER ;
 
 -- View para listar Stored Procedures
@@ -310,22 +352,28 @@ WHERE TRIGGER_SCHEMA = 'db_papelaria_livraria';
 
 -- View para listar todos os recursos (Stored Procedures, Views, Functions e Triggers)
 CREATE OR REPLACE VIEW vw_todos_os_recursos AS
-SELECT
-    ROW_NUMBER() OVER (ORDER BY object_type, object_name) AS row_num,  -- Numeração sequencial após a união
-    object_name,
-    object_type
-FROM (
-    SELECT object_name, object_type FROM vw_stored_procedures
-    UNION ALL
-    SELECT object_name, object_type FROM vw_views
-    UNION ALL
-    SELECT object_name, object_type FROM vw_functions
-    UNION ALL
-    SELECT object_name, object_type FROM vw_triggers
-) AS recursos;
+SELECT ROW_NUMBER() OVER (ORDER BY object_type, object_name) AS row_num, -- Numeração sequencial após a união
+       object_name,
+       object_type
+FROM (SELECT object_name, object_type
+      FROM vw_stored_procedures
+      UNION ALL
+      SELECT object_name, object_type
+      FROM vw_views
+      UNION ALL
+      SELECT object_name, object_type
+      FROM vw_functions
+      UNION ALL
+      SELECT object_name, object_type
+      FROM vw_triggers) AS recursos;
 
-SELECT * FROM vw_stored_procedures;
-SELECT * FROM vw_views;
-SELECT * FROM vw_functions;
-SELECT * FROM vw_triggers;
-SELECT * FROM vw_todos_os_recursos;
+SELECT *
+FROM vw_stored_procedures;
+SELECT *
+FROM vw_views;
+SELECT *
+FROM vw_functions;
+SELECT *
+FROM vw_triggers;
+SELECT *
+FROM vw_todos_os_recursos;

@@ -312,7 +312,6 @@ INSERT INTO tb_compra (data_realizada, id_usuario, id_endereco) VALUES ('2024-08
 INSERT INTO tb_compra (data_realizada, id_usuario, id_endereco) VALUES ('2024-08-19 09:30:00', 4, 4);
 INSERT INTO tb_compra (data_realizada, id_usuario, id_endereco) VALUES ('2024-08-20 12:45:00', 5, 5);
 
-
 -- Inserindo dados na tabela tb_compra_produto
 -- Compra 1
 INSERT INTO tb_compra_produto (id_compra, id_produto, quantidade) VALUES (1, 1, 2);
@@ -440,14 +439,11 @@ INSERT INTO tb_compra_produto (id_compra, id_produto, quantidade) VALUES (18, 9,
 INSERT INTO tb_compra_produto (id_compra, id_produto, quantidade) VALUES (18, 6, 2);
 INSERT INTO tb_compra_produto (id_compra, id_produto, quantidade) VALUES (18, 2, 1);
 
-
 -- Compra 19
 INSERT INTO tb_compra_produto (id_compra, id_produto, quantidade) VALUES (19, 5, 3);
 INSERT INTO tb_compra_produto (id_compra, id_produto, quantidade) VALUES (19, 7, 1);
 INSERT INTO tb_compra_produto (id_compra, id_produto, quantidade) VALUES (19, 3, 2);
 INSERT INTO tb_compra_produto (id_compra, id_produto, quantidade) VALUES (19, 10, 2);
-
-
 
 -- Criando algumas avaliações (opcional)
 INSERT INTO tb_avaliacao (id_compra_produto, avaliacao, comentario) VALUES (1, '⭐⭐⭐⭐', 'Ótimo produto!');
@@ -471,51 +467,60 @@ INSERT INTO tb_avaliacao (id_compra_produto, avaliacao, comentario) VALUES (18, 
 INSERT INTO tb_avaliacao (id_compra_produto, avaliacao, comentario) VALUES (19, '⭐⭐', 'Não recomendo.');
 INSERT INTO tb_avaliacao (id_compra_produto, avaliacao, comentario) VALUES (20, '⭐⭐⭐⭐', 'Satisfeito com a compra.');
 
-
 -- Inserindo dados na tabela tb_promocao
-INSERT INTO tb_promocao (nome, data_inicio, data_fim) VALUES ('Promoção de Volta às Aulas', '2024-08-01 00:00:00', '2024-08-31 23:59:59');
-INSERT INTO tb_promocao (nome, data_inicio, data_fim) VALUES ('Semana do Escritório', '2024-08-15 00:00:00', '2024-08-22 23:59:59');
-INSERT INTO tb_promocao (nome, data_inicio, data_fim) VALUES ('Liquidação de Tecnologia', '2024-08-25 00:00:00', '2024-09-05 23:59:59');
-INSERT INTO tb_promocao (nome, data_inicio, data_fim) VALUES ('Promoção de Fim de Ano', '2024-12-01 00:00:00', '2024-12-31 23:59:59');
-INSERT INTO tb_promocao (nome, data_inicio, data_fim) VALUES ('Dia das Mães', '2024-05-01 00:00:00', '2024-05-15 23:59:59');
-INSERT INTO tb_promocao (nome, data_inicio, data_fim) VALUES ('Dia dos Pais', '2024-08-01 00:00:00', '2024-08-15 23:59:59');
-INSERT INTO tb_promocao (nome, data_inicio, data_fim) VALUES ('Black Friday', '2024-11-25 00:00:00', '2024-11-30 23:59:59');
-INSERT INTO tb_promocao (nome, data_inicio, data_fim) VALUES ('Cyber Monday', '2024-12-01 00:00:00', '2024-12-05 23:59:59');
-INSERT INTO tb_promocao (nome, data_inicio, data_fim) VALUES ('Natal', '2024-12-15 00:00:00', '2024-12-25 23:59:59');
-INSERT INTO tb_promocao (nome, data_inicio, data_fim) VALUES ('Ano Novo', '2024-12-26 00:00:00', '2025-01-05 23:59:59');
-INSERT INTO tb_promocao (nome, data_inicio, data_fim) VALUES ('Carnaval', '2024-02-15 00:00:00', '2024-03-01 23:59:59');
-INSERT INTO tb_promocao (nome, data_inicio, data_fim) VALUES ('Páscoa', '2024-04-01 00:00:00', '2024-04-15 23:59:59');
-INSERT INTO tb_promocao (nome, data_inicio, data_fim) VALUES ('Dia dos Namorados', '2024-06-01 00:00:00', '2024-06-15 23:59:59');
-INSERT INTO tb_promocao (nome, data_inicio, data_fim) VALUES ('Promoção Relâmpago', '2024-09-10 00:00:00', '2024-09-10 23:59:59');
-INSERT INTO tb_promocao (nome, data_inicio, data_fim) VALUES ('Super Ofertas', '2024-10-01 00:00:00', '2024-10-31 23:59:59');
-INSERT INTO tb_promocao (nome, data_inicio, data_fim) VALUES ('Descontos Imperdíveis', '2024-11-01 00:00:00', '2024-11-15 23:59:59');
-INSERT INTO tb_promocao (nome, data_inicio, data_fim) VALUES ('Queima de Estoque', '2024-12-05 00:00:00', '2024-12-14 23:59:59');
-INSERT INTO tb_promocao (nome, data_inicio, data_fim) VALUES ('Festa de Aniversário da Loja', '2024-07-01 00:00:00', '2024-07-31 23:59:59');
-INSERT INTO tb_promocao (nome, data_inicio, data_fim) VALUES ('Semana da Criança', '2024-10-10 00:00:00', '2024-10-17 23:59:59');
-
+INSERT INTO tb_promocao (nome, desconto, data_inicio, data_fim) VALUES ('Promoção de Volta às Aulas', 10.00, '2024-08-01 00:00:00', '2024-08-31 23:59:59');
+INSERT INTO tb_promocao (nome, desconto, data_inicio, data_fim) VALUES ('Semana do Escritório', 15.00, '2024-08-15 00:00:00', '2024-08-22 23:59:59');
+INSERT INTO tb_promocao (nome, desconto, data_inicio, data_fim) VALUES ('Liquidação de Tecnologia', 20.00, '2024-08-25 00:00:00', '2024-09-05 23:59:59');
+INSERT INTO tb_promocao (nome, desconto, data_inicio, data_fim) VALUES ('Promoção de Fim de Ano', 25.00, '2024-12-01 00:00:00', '2024-12-31 23:59:59');
+INSERT INTO tb_promocao (nome, desconto, data_inicio, data_fim) VALUES ('Dia das Mães', 10.00, '2024-05-01 00:00:00', '2024-05-15 23:59:59');
+INSERT INTO tb_promocao (nome, desconto, data_inicio, data_fim) VALUES ('Dia dos Pais', 15.00, '2024-08-01 00:00:00', '2024-08-15 23:59:59');
+INSERT INTO tb_promocao (nome, desconto, data_inicio, data_fim) VALUES ('Black Friday', 20.00, '2024-11-25 00:00:00', '2024-11-30 23:59:59');
+INSERT INTO tb_promocao (nome, desconto, data_inicio, data_fim) VALUES ('Cyber Monday', 25.00, '2024-12-01 00:00:00', '2024-12-05 23:59:59');
+INSERT INTO tb_promocao (nome, desconto, data_inicio, data_fim) VALUES ('Natal', 10.00, '2024-12-15 00:00:00', '2024-12-25 23:59:59');
+INSERT INTO tb_promocao (nome, desconto, data_inicio, data_fim) VALUES ('Ano Novo', 15.00, '2024-12-26 00:00:00', '2025-01-05 23:59:59');
+INSERT INTO tb_promocao (nome, desconto, data_inicio, data_fim) VALUES ('Carnaval', 20.00, '2024-02-15 00:00:00', '2024-03-01 23:59:59');
+INSERT INTO tb_promocao (nome, desconto, data_inicio, data_fim) VALUES ('Páscoa', 25.00, '2024-04-01 00:00:00', '2024-04-15 23:59:59');
+INSERT INTO tb_promocao (nome, desconto, data_inicio, data_fim) VALUES ('Dia dos Namorados', 10.00, '2024-06-01 00:00:00', '2024-06-15 23:59:59');
+INSERT INTO tb_promocao (nome, desconto, data_inicio, data_fim) VALUES ('Promoção Relâmpago', 15.00, '2024-09-10 00:00:00', '2024-09-10 23:59:59');
+INSERT INTO tb_promocao (nome, desconto, data_inicio, data_fim) VALUES ('Super Ofertas', 20.00, '2024-10-01 00:00:00', '2024-10-31 23:59:59');
+INSERT INTO tb_promocao (nome, desconto, data_inicio, data_fim) VALUES ('Descontos Imperdíveis', 25.00, '2024-11-01 00:00:00', '2024-11-15 23:59:59');
+INSERT INTO tb_promocao (nome, desconto, data_inicio, data_fim) VALUES ('Queima de Estoque', 10.00, '2024-12-05 00:00:00', '2024-12-14 23:59:59');
+INSERT INTO tb_promocao (nome, desconto, data_inicio, data_fim) VALUES ('Festa de Aniversário da Loja', 15.00, '2024-07-01 00:00:00', '2024-07-31 23:59:59');
+INSERT INTO tb_promocao (nome, desconto, data_inicio, data_fim) VALUES ('Semana da Criança', 20.00, '2024-10-10 00:00:00', '2024-10-17 23:59:59');
 
 -- Inserindo dados na tabela tb_promocao_produto
-INSERT INTO tb_promocao_produto (id_produto, id_promocao, desconto) VALUES (1, 1, 10.00);
-INSERT INTO tb_promocao_produto (id_produto, id_promocao, desconto) VALUES (2, 1, 5.00);
-INSERT INTO tb_promocao_produto (id_produto, id_promocao, desconto) VALUES (6, 2, 15.00);
-INSERT INTO tb_promocao_produto (id_produto, id_promocao, desconto) VALUES (9, 3, 20.00);
-INSERT INTO tb_promocao_produto (id_produto, id_promocao, desconto) VALUES (3, 1, 15.00);
-INSERT INTO tb_promocao_produto (id_produto, id_promocao, desconto) VALUES (4, 2, 10.00);
-INSERT INTO tb_promocao_produto (id_produto, id_promocao, desconto) VALUES (5, 3, 5.00);
-INSERT INTO tb_promocao_produto (id_produto, id_promocao, desconto) VALUES (7, 4, 20.00);
-INSERT INTO tb_promocao_produto (id_produto, id_promocao, desconto) VALUES (8, 5, 25.00);
-INSERT INTO tb_promocao_produto (id_produto, id_promocao, desconto) VALUES (10, 6, 10.00);
-INSERT INTO tb_promocao_produto (id_produto, id_promocao, desconto) VALUES (11, 7, 5.00);
-INSERT INTO tb_promocao_produto (id_produto, id_promocao, desconto) VALUES (12, 8, 15.00);
-INSERT INTO tb_promocao_produto (id_produto, id_promocao, desconto) VALUES (13, 9, 20.00);
-INSERT INTO tb_promocao_produto (id_produto, id_promocao, desconto) VALUES (14, 10, 25.00);
-INSERT INTO tb_promocao_produto (id_produto, id_promocao, desconto) VALUES (15, 1, 10.00);
-INSERT INTO tb_promocao_produto (id_produto, id_promocao, desconto) VALUES (16, 2, 5.00);
-INSERT INTO tb_promocao_produto (id_produto, id_promocao, desconto) VALUES (17, 3, 15.00);
-INSERT INTO tb_promocao_produto (id_produto, id_promocao, desconto) VALUES (18, 4, 20.00);
-INSERT INTO tb_promocao_produto (id_produto, id_promocao, desconto) VALUES (19, 5, 25.00);
-INSERT INTO tb_promocao_produto (id_produto, id_promocao, desconto) VALUES (20, 6, 10.00);
+INSERT INTO tb_promocao_produto (id_produto, id_promocao) VALUES (1, 1);
+INSERT INTO tb_promocao_produto (id_produto, id_promocao) VALUES (2, 1);
+INSERT INTO tb_promocao_produto (id_produto, id_promocao) VALUES (6, 2);
+INSERT INTO tb_promocao_produto (id_produto, id_promocao) VALUES (9, 3);
+INSERT INTO tb_promocao_produto (id_produto, id_promocao) VALUES (3, 1);
+INSERT INTO tb_promocao_produto (id_produto, id_promocao) VALUES (4, 2);
+INSERT INTO tb_promocao_produto (id_produto, id_promocao) VALUES (5, 3);
+INSERT INTO tb_promocao_produto (id_produto, id_promocao) VALUES (7, 4);
+INSERT INTO tb_promocao_produto (id_produto, id_promocao) VALUES (8, 5);
+INSERT INTO tb_promocao_produto (id_produto, id_promocao) VALUES (10, 6);
+INSERT INTO tb_promocao_produto (id_produto, id_promocao) VALUES (11, 7);
+INSERT INTO tb_promocao_produto (id_produto, id_promocao) VALUES (12, 8);
+INSERT INTO tb_promocao_produto (id_produto, id_promocao) VALUES (13, 9);
+INSERT INTO tb_promocao_produto (id_produto, id_promocao) VALUES (14, 10);
+INSERT INTO tb_promocao_produto (id_produto, id_promocao) VALUES (15, 1);
+INSERT INTO tb_promocao_produto (id_produto, id_promocao) VALUES (16, 2);
+INSERT INTO tb_promocao_produto (id_produto, id_promocao) VALUES (17, 3);
+INSERT INTO tb_promocao_produto (id_produto, id_promocao) VALUES (18, 4);
+INSERT INTO tb_promocao_produto (id_produto, id_promocao) VALUES (19, 5);
+INSERT INTO tb_promocao_produto (id_produto, id_promocao) VALUES (20, 6);
 
+-- Inserindo dados na tabela tb_cupom
+INSERT INTO tb_cupom (nome, desconto, data_inicio, data_fim) VALUES ('Cupom1', 5.00, '2024-08-01 00:00:00', '2024-08-31 23:59:59');
+INSERT INTO tb_cupom (nome, desconto, data_inicio, data_fim) VALUES ('Cupom2', 10.00, '2024-08-01 00:00:00', '2024-08-31 23:59:59');
+INSERT INTO tb_cupom (nome, desconto, data_inicio, data_fim) VALUES ('Cupom3', 15.00, '2024-08-01 00:00:00', '2024-08-31 23:59:59');
+INSERT INTO tb_cupom (nome, desconto, data_inicio, data_fim) VALUES ('Cupom4', 20.00, '2024-08-01 00:00:00', '2024-08-31 23:59:59');
+INSERT INTO tb_cupom (nome, desconto, data_inicio, data_fim) VALUES ('Cupom5', 25.00, '2024-08-01 00:00:00', '2024-08-31 23:59:59');
+INSERT INTO tb_cupom (nome, desconto, data_inicio, data_fim) VALUES ('Cupom6', 30.00, '2024-08-01 00:00:00', '2024-08-31 23:59:59');
+INSERT INTO tb_cupom (nome, desconto, data_inicio, data_fim) VALUES ('Cupom7', 35.00, '2024-08-01 00:00:00', '2024-08-31 23:59:59');
+INSERT INTO tb_cupom (nome, desconto, data_inicio, data_fim) VALUES ('Cupom8', 40.00, '2024-08-01 00:00:00', '2024-08-31 23:59:59');
+INSERT INTO tb_cupom (nome, desconto, data_inicio, data_fim) VALUES ('Cupom9', 45.00, '2024-08-01 00:00:00', '2024-08-31 23:59:59');
+INSERT INTO tb_cupom (nome, desconto, data_inicio, data_fim) VALUES ('Cupom10', 50.00, '2024-08-01 00:00:00', '2024-08-31 23:59:59');
 
 -- Inserindo dados na tabela tb_cupom_compra (opcional)
 INSERT INTO tb_cupom_compra (id_compra, id_cupom) VALUES (1, 1);

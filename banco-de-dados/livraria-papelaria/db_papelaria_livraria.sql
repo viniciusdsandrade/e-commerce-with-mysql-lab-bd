@@ -179,6 +179,7 @@ CREATE TABLE IF NOT EXISTS tb_produto_categoria
     FOREIGN KEY (id_categoria) REFERENCES tb_categoria (id)
 );
 
+-- Tabela para armazenar as Avaliações dos Produtos
 CREATE TABLE IF NOT EXISTS tb_lista_desejos
 (
     id         BIGINT UNSIGNED AUTO_INCREMENT,
@@ -188,6 +189,7 @@ CREATE TABLE IF NOT EXISTS tb_lista_desejos
     FOREIGN KEY (id_usuario) REFERENCES tb_usuario (id)
 );
 
+-- Tabela de associação N:N entre Listas de Desejos e Produtos
 CREATE TABLE IF NOT EXISTS tb_lista_desejos_produto
 (
     id_produto       BIGINT UNSIGNED NOT NULL,
@@ -252,6 +254,7 @@ CREATE TABLE IF NOT EXISTS tb_compra_produto
 ) CHARACTER SET utf8mb4
   COLLATE utf8mb4_unicode_ci;
 
+-- Tabela para armazenar as avaliações dos produtos comprados
 CREATE TABLE IF NOT EXISTS tb_avaliacao
 (
     id                BIGINT UNSIGNED AUTO_INCREMENT,
@@ -297,25 +300,25 @@ CREATE TABLE IF NOT EXISTS tb_entrega
     FOREIGN KEY (id_transportadora) REFERENCES tb_transportadora (id)
 );
 
--- Definição: uma promoção é um desconto aplicado a UM PRODUTO específico
+-- Definição: uma promoção é um desconto aplicado a UM ou MAIS PRODUTOS
 CREATE TABLE IF NOT EXISTS tb_promocao
 (
     id          BIGINT UNSIGNED AUTO_INCREMENT,
-    nome        VARCHAR(100) NULL,
-    data_inicio DATETIME     NOT NULL,
-    data_fim    DATETIME     NOT NULL,
+    nome        VARCHAR(100)   NULL,
+    desconto    DECIMAL(10, 2) NOT NULL, -- Desconto da promoção
+    data_inicio DATETIME       NOT NULL,
+    data_fim    DATETIME       NOT NULL,
 
     PRIMARY KEY (id)
 );
 
--- A promoção pode estar em vários produtos, porém a promoção é aplicada individualmente a cada produto
+-- A promoção pode estar em vários produtos
 CREATE TABLE IF NOT EXISTS tb_promocao_produto
 (
     id_produto  BIGINT UNSIGNED NOT NULL,
     id_promocao BIGINT UNSIGNED NOT NULL,
-    desconto    DECIMAL(10, 2)  NOT NULL,
 
-    PRIMARY KEY (id_produto, id_promocao), -- Garante que um produto tenha apenas uma promoção
+    PRIMARY KEY (id_produto, id_promocao), -- Garante que um produto participe de uma promoção apenas uma vez
 
     FOREIGN KEY (id_produto) REFERENCES tb_produto (id),
     FOREIGN KEY (id_promocao) REFERENCES tb_promocao (id)
