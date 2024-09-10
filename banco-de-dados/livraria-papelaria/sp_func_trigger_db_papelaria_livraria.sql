@@ -1,14 +1,20 @@
 USE db_papelaria_livraria;
 
 DROP PROCEDURE IF EXISTS sp_alterar_status_produto;
+DROP FUNCTION IF EXISTS fun_gerar_row_num;
 DROP FUNCTION IF EXISTS fun_verificar_produto_ativo;
 DROP FUNCTION IF EXISTS fun_desativar_produto;
 DROP FUNCTION IF EXISTS fun_ativar_produto;
-DROP TRIGGER IF EXISTS tr_atualizar_estoque_after_insert;
+DROP TRIGGER IF EXISTS tr_log_produto_inativado_after_update;
+DROP TRIGGER IF EXISTS tr_log_produto_preco_historico_before_update;
 DROP TRIGGER IF EXISTS tr_calcular_preco_unitario_before_insert;
 DROP TRIGGER IF EXISTS tr_atualizar_preco_compra_after_insert;
-DROP TRIGGER IF EXISTS tr_log_produto_preco_historico_before_update;
-DROP TRIGGER IF EXISTS tr_log_produto_inativado_after_update;
+DROP TRIGGER IF EXISTS tr_atualizar_estoque_after_insert;
+DROP VIEW IF EXISTS vw_stored_procedures;
+DROP VIEW IF EXISTS vw_views;
+DROP VIEW IF EXISTS vw_functions;
+DROP VIEW IF EXISTS vw_triggers;
+DROP VIEW IF EXISTS vw_todos_os_recursos;
 
 -- Função para verificar se um produto está ativo
 DELIMITER //
@@ -103,7 +109,6 @@ BEGIN
 END //
 DELIMITER ;
 
-
 -- Trigger para registrar a inativação e reativação de produtos na tabela de log
 DELIMITER //
 CREATE TRIGGER IF NOT EXISTS tr_log_produto_inativado_after_update
@@ -161,20 +166,19 @@ CREATE TRIGGER IF NOT EXISTS tr_calcular_preco_unitario_before_insert
 BEGIN
     DECLARE estoque_atual INT;
     DECLARE preco_produto DECIMAL(10, 2);
+    DECLARE produto_ativo BOOLEAN;
 
-    -- Verificar se o produto está ativo usando a função
-    IF fun_verificar_produto_ativo(NEW.id_produto) THEN
-        -- Obter a quantidade em estoque do produto
-        SELECT quantidade
-        INTO estoque_atual
-        FROM tb_estoque
-        WHERE id_produto = NEW.id_produto;
+    -- Obter a quantidade em estoque e o status do produto
+    SELECT quantidade, is_ativo
+    INTO estoque_atual, produto_ativo
+    FROM tb_estoque
+             JOIN tb_produto ON tb_estoque.id_produto = tb_produto.id
+    WHERE id_produto = NEW.id_produto;
 
+    -- Verificar se o produto está ativo
+    IF produto_ativo = TRUE THEN
         -- Obter o preço do produto
-        SELECT preco
-        INTO preco_produto
-        FROM tb_produto
-        WHERE id = NEW.id_produto;
+        SELECT preco INTO preco_produto FROM tb_produto WHERE id = NEW.id_produto;
 
         -- Verificar se há estoque suficiente
         IF estoque_atual >= NEW.quantidade THEN
@@ -191,19 +195,24 @@ DELIMITER ;
 
 -- Trigger para atualizar o estoque e o preço total da compra
 DELIMITER //
-CREATE TRIGGER IF NOT EXISTS tr_atualizar_estoque_after_insert
+CREATE TRIGGER IF NOT EXISTS tr_atualizar_preco_compra_after_insert
     AFTER INSERT
     ON tb_compra_produto
     FOR EACH ROW
 BEGIN
-    -- Verificar se o produto está ativo usando a função
-    IF fun_verificar_produto_ativo(NEW.id_produto) THEN
-        -- Atualizar o estoque na tabela tb_estoque
-        UPDATE tb_estoque
-        SET quantidade = quantidade - NEW.quantidade
-        WHERE id_produto = NEW.id_produto;
+    DECLARE produto_ativo BOOLEAN;
+
+    -- Obter o status do produto antes da atualização do preço da compra
+    SELECT is_ativo INTO produto_ativo FROM tb_produto WHERE id = NEW.id_produto;
+
+    -- Verificar se o produto está ativo usando a variável
+    IF produto_ativo = TRUE THEN
+        -- Atualizar o preço total da compra na tabela tb_compra
+        UPDATE tb_compra
+        SET preco_total = preco_total + (NEW.quantidade * (SELECT preco FROM tb_produto WHERE id = NEW.id_produto))
+        WHERE id = NEW.id_compra;
     ELSE
-        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Não é possível atualizar o estoque de um produto inativo.';
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Não é possível atualizar o preço da compra com um produto inativo.';
     END IF;
 END;
 DELIMITER ;
@@ -215,7 +224,7 @@ CREATE TRIGGER IF NOT EXISTS tr_atualizar_preco_compra_after_insert
     ON tb_compra_produto
     FOR EACH ROW
 BEGIN
-    -- Verificar se o produto está ativo usando a função
+    -- Verificar se o produto está ativo
     IF fun_verificar_produto_ativo(NEW.id_produto) THEN
         -- Atualizar o preço total da compra na tabela tb_compra
         UPDATE tb_compra
@@ -226,3 +235,97 @@ BEGIN
     END IF;
 END;
 DELIMITER ;
+
+DELIMITER //
+CREATE TRIGGER tr_atualizar_estoque_after_insert
+    AFTER INSERT
+    ON tb_compra_produto
+    FOR EACH ROW
+BEGIN
+    DECLARE produto_ativo BOOLEAN;
+
+    -- Obter o status do produto antes da atualização do estoque
+    SELECT is_ativo INTO produto_ativo FROM tb_produto WHERE id = NEW.id_produto;
+
+    -- Verificar se o produto está ativo usando a variável
+    IF produto_ativo = TRUE THEN
+        -- Atualizar o estoque na tabela tb_estoque
+        UPDATE tb_estoque
+        SET quantidade = quantidade - NEW.quantidade
+        WHERE id_produto = NEW.id_produto;
+
+        -- Verificar se a quantidade em estoque ficou negativa
+        IF (SELECT quantidade FROM tb_estoque WHERE id_produto = NEW.id_produto) < 0 THEN
+            -- Lançar um erro para cancelar a operação
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Estoque insuficiente para o produto.';
+        END IF;
+    ELSE
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Não é possível atualizar o estoque de um produto inativo.';
+    END IF;
+END;
+DELIMITER ;
+
+DELIMITER //
+CREATE FUNCTION IF NOT EXISTS fun_gerar_row_num()
+    RETURNS INTEGER
+    READS SQL DATA
+BEGIN
+    RETURN ROW_NUMBER() OVER (ORDER BY NULL); -- Numeração sequencial sem variáveis
+END //
+DELIMITER ;
+
+-- View para listar Stored Procedures
+CREATE OR REPLACE VIEW vw_stored_procedures AS
+SELECT ROW_NUMBER() over (ORDER BY SPECIFIC_NAME) AS row_num, -- Numeração sequencial
+       SPECIFIC_NAME                              AS object_name,
+       'PROCEDURE'                                AS object_type
+FROM information_schema.ROUTINES
+WHERE ROUTINE_TYPE = 'PROCEDURE'
+  AND ROUTINE_SCHEMA = 'db_papelaria_livraria';
+
+-- View para listar Views
+CREATE OR REPLACE VIEW vw_views AS
+SELECT ROW_NUMBER() OVER (ORDER BY TABLE_NAME) AS row_num, -- Numeração sequencial
+       TABLE_NAME                              AS object_name,
+       'VIEW'                                  AS object_type
+FROM information_schema.VIEWS
+WHERE TABLE_SCHEMA = 'db_papelaria_livraria';
+
+-- View para listar Functions
+CREATE OR REPLACE VIEW vw_functions AS
+SELECT ROW_NUMBER() OVER (ORDER BY ROUTINE_NAME) AS row_num, -- Numeração sequencial
+       ROUTINE_NAME                              AS object_name,
+       'FUNCTION'                                AS object_type
+FROM information_schema.ROUTINES
+WHERE ROUTINE_TYPE = 'FUNCTION'
+  AND ROUTINE_SCHEMA = 'db_papelaria_livraria';
+
+-- View para listar Triggers
+CREATE OR REPLACE VIEW vw_triggers AS
+SELECT ROW_NUMBER() OVER (ORDER BY TRIGGER_NAME) AS row_num, -- Numeração sequencial
+       TRIGGER_NAME                              AS object_name,
+       'TRIGGER'                                 AS object_type
+FROM information_schema.TRIGGERS
+WHERE TRIGGER_SCHEMA = 'db_papelaria_livraria';
+
+-- View para listar todos os recursos (Stored Procedures, Views, Functions e Triggers)
+CREATE OR REPLACE VIEW vw_todos_os_recursos AS
+SELECT
+    ROW_NUMBER() OVER (ORDER BY object_type, object_name) AS row_num,  -- Numeração sequencial após a união
+    object_name,
+    object_type
+FROM (
+    SELECT object_name, object_type FROM vw_stored_procedures
+    UNION ALL
+    SELECT object_name, object_type FROM vw_views
+    UNION ALL
+    SELECT object_name, object_type FROM vw_functions
+    UNION ALL
+    SELECT object_name, object_type FROM vw_triggers
+) AS recursos;
+
+SELECT * FROM vw_stored_procedures;
+SELECT * FROM vw_views;
+SELECT * FROM vw_functions;
+SELECT * FROM vw_triggers;
+SELECT * FROM vw_todos_os_recursos;
