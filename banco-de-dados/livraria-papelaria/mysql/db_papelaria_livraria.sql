@@ -5,13 +5,27 @@ USE db_papelaria_livraria;
 -- Tabela para armazenar os Administradores
 CREATE TABLE IF NOT EXISTS tb_administrador
 (
+
     id                   BIGINT UNSIGNED AUTO_INCREMENT,
     nome                 VARCHAR(100) NOT NULL,
     email                VARCHAR(100) NOT NULL,
-    senha                VARCHAR(100),
     email_de_recuperacao VARCHAR(100) NULL,
+    senha_hash           VARCHAR(255) NOT NULL,
+    salt                 VARCHAR(255) NOT NULL, -- Valor aleatório único que é adicionado à senha antes de ser criptografada
+    status               ENUM (
+        'ativo',
+        'inativo',
+        'bloqueado'
+        )                             NOT NULL DEFAULT 'ativo',
+    nivel_acesso         ENUM (
+        'administrador',
+        'superadministrador'
+        )                             NOT NULL DEFAULT 'administrador',
+    created_at           TIMESTAMP             DEFAULT CURRENT_TIMESTAMP,
+    updated_at           TIMESTAMP             DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
     UNIQUE (email),
+    UNIQUE (salt),
 
     PRIMARY KEY (id)
 );
@@ -39,18 +53,48 @@ CREATE TABLE IF NOT EXISTS tb_transportadora
 CREATE TABLE IF NOT EXISTS tb_usuario
 (
     id                   BIGINT UNSIGNED AUTO_INCREMENT,
-    nome                 VARCHAR(100),
-    cpf                  VARCHAR(20),
-    telefone             VARCHAR(20),
-    email                VARCHAR(100),
-    senha                VARCHAR(100),
+    foto_perfil          VARCHAR(255) NULL,
+    nome                 VARCHAR(100) NOT NULL,
+    data_nascimento      DATE         NULL,
+    cpf                  VARCHAR(20)  NOT NULL,
+    email                VARCHAR(100) NOT NULL,
     email_de_recuperacao VARCHAR(100) NULL,
-    saldo                DECIMAL(10, 2) DEFAULT 0,
+    senha_hash           VARCHAR(255) NOT NULL,
+    salt                 VARCHAR(255) NOT NULL, -- Valor aleatório único que é adicionado à senha antes de ser criptografada
+    telefone             VARCHAR(20)  NULL,
+    saldo                DECIMAL(10, 2)        DEFAULT 0,
+    status               ENUM (
+        'ativo',
+        'inativo',
+        'bloqueado'
+        )                             NOT NULL DEFAULT 'ativo',
+    created_at           TIMESTAMP             DEFAULT CURRENT_TIMESTAMP,
+    updated_at           TIMESTAMP             DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
     UNIQUE (cpf),
     UNIQUE (email),
+    UNIQUE (salt),
 
     PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS tb_log_acesso
+(
+    id              BIGINT UNSIGNED AUTO_INCREMENT,
+    tipo_usuario    ENUM (
+        'administrador',
+        'superadministrador',
+        'usuario'
+        )                           NOT NULL,
+    usuario_id      BIGINT UNSIGNED NOT NULL,
+    data_hora_login TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    ip_address      VARCHAR(45)     NULL,
+    user_agent      VARCHAR(255)    NULL,
+
+    PRIMARY KEY (id),
+
+    FOREIGN KEY (usuario_id) REFERENCES tb_usuario (id) ON DELETE CASCADE,      -- Ajustar se o ID do administrador vier de outra tabela
+    FOREIGN KEY (usuario_id) REFERENCES tb_administrador (id) ON DELETE CASCADE -- Ajustar se o ID do administrador vier de outra tabela
 );
 
 -- Tabela para armazenar as formas de pagamento
@@ -92,12 +136,12 @@ CREATE TABLE IF NOT EXISTS tb_endereco
 (
     id           BIGINT UNSIGNED AUTO_INCREMENT,
     id_usuario   BIGINT UNSIGNED NOT NULL,
-    rua          VARCHAR(100),
-    numero       VARCHAR(8),
-    bairro       VARCHAR(100),
-    cidade       VARCHAR(100),
-    estado       VARCHAR(100),
-    cep          VARCHAR(20),
+    rua          VARCHAR(100)    NULL,
+    numero       VARCHAR(8)      NULL,
+    bairro       VARCHAR(100)    NULL,
+    cidade       VARCHAR(100)    NULL,
+    estado       VARCHAR(100)    NULL,
+    cep          VARCHAR(20)     NULL,
     complemento  VARCHAR(50)     NULL,
     is_principal BOOLEAN DEFAULT FALSE,
 
@@ -141,7 +185,7 @@ CREATE TABLE log_produto_inativos
     nome            VARCHAR(255)    NOT NULL,
     preco           DECIMAL(10, 2)  NOT NULL,
     data_inativacao DATETIME        NOT NULL,
-    data_reativacao DATETIME,
+    data_reativacao DATETIME        NULL,
 
     PRIMARY KEY (id)
 );
@@ -150,9 +194,9 @@ CREATE TABLE log_produto_inativos
 CREATE TABLE IF NOT EXISTS tb_estoque
 (
     id          BIGINT UNSIGNED AUTO_INCREMENT,
-    id_produto  BIGINT UNSIGNED NOT NULL,
-    quantidade  INT UNSIGNED    NOT NULL,
-    localizacao VARCHAR(70)     NULL,
+    id_produto  BIGINT UNSIGNED    NOT NULL,
+    quantidade  MEDIUMINT UNSIGNED NOT NULL,
+    localizacao VARCHAR(70)        NULL,
     created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
@@ -202,10 +246,9 @@ CREATE TABLE IF NOT EXISTS tb_lista_desejos_produto
 -- Tabela para armazenar os Carrinhos de Compras de cada Usuário
 CREATE TABLE IF NOT EXISTS tb_carrinho
 (
-    id         BIGINT UNSIGNED AUTO_INCREMENT,
     id_usuario BIGINT UNSIGNED NOT NULL,
 
-    PRIMARY KEY (id),
+    PRIMARY KEY (id_usuario),
 
     FOREIGN KEY (id_usuario) REFERENCES tb_usuario (id)
 );
@@ -218,7 +261,7 @@ CREATE TABLE IF NOT EXISTS tb_carrinho_produto
     quantidade  INT UNSIGNED    NOT NULL,
 
     FOREIGN KEY (id_produto) REFERENCES tb_produto (id),
-    FOREIGN KEY (id_carrinho) REFERENCES tb_carrinho (id)
+    FOREIGN KEY (id_carrinho) REFERENCES tb_carrinho (id_usuario)
 );
 
 -- Tabela para armazenar as Compras
@@ -242,9 +285,9 @@ CREATE TABLE IF NOT EXISTS tb_compra
 CREATE TABLE IF NOT EXISTS tb_compra_produto
 (
     id         BIGINT UNSIGNED AUTO_INCREMENT,
-    id_compra  BIGINT UNSIGNED NOT NULL,
-    id_produto BIGINT UNSIGNED NOT NULL,
-    quantidade BIGINT UNSIGNED NOT NULL,
+    id_compra  BIGINT UNSIGNED    NOT NULL,
+    id_produto BIGINT UNSIGNED    NOT NULL,
+    quantidade MEDIUMINT UNSIGNED NOT NULL,
 
     UNIQUE KEY (id_compra, id_produto),
     PRIMARY KEY (id),
@@ -265,8 +308,8 @@ CREATE TABLE IF NOT EXISTS tb_avaliacao
         '⭐⭐',
         '⭐⭐⭐',
         '⭐⭐⭐⭐',
-        '⭐⭐⭐⭐⭐')
-                          CHARACTER SET utf8mb4
+        '⭐⭐⭐⭐⭐'
+        ) CHARACTER SET utf8mb4
                           COLLATE utf8mb4_unicode_ci NULL, -- Avaliação com emojis de estrelas (opcional)
     comentario        TEXT                           NULL, -- Comentário (opcional),
     created_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -289,7 +332,8 @@ CREATE TABLE IF NOT EXISTS tb_entrega
         'ENVIADO',
         'EM_TRANSITO',
         'ENTREGUE',
-        'NAO_ENTREGUE')               NULL,
+        'NAO_ENTREGUE'
+        )                             NULL,
     created_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
