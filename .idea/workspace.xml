@@ -4,10 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b5a0105b-a7e3-4fd4-b847-12f67e83ddc8" name="Changes" comment="style:">
-      <change beforePath="$PROJECT_DIR$/banco-de-dados/livraria-papelaria/mysql/db_papelaria_livraria.sql" beforeDir="false" afterPath="$PROJECT_DIR$/banco-de-dados/livraria-papelaria/mysql/db_papelaria_livraria.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/banco-de-dados/livraria-papelaria/mysql/db_papelaria_livraria_seed.sql" beforeDir="false" afterPath="$PROJECT_DIR$/banco-de-dados/livraria-papelaria/mysql/db_papelaria_livraria_seed.sql" afterDir="false" />
-    </list>
+    <list default="true" id="b5a0105b-a7e3-4fd4-b847-12f67e83ddc8" name="Changes" comment="update: security pattern in tb_usuario and tb_administrador" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -55,6 +52,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="update: db_papelaria_livraria.sql" />
     <MESSAGE value="style:" />
-    <option name="LAST_COMMIT_MESSAGE" value="style:" />
+    <MESSAGE value="update: security pattern in tb_usuario and tb_administrador" />
+    <option name="LAST_COMMIT_MESSAGE" value="update: security pattern in tb_usuario and tb_administrador" />
   </component>
 </project>
