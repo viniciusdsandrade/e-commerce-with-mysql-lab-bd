@@ -23,33 +23,33 @@ INSERT INTO tb_funcao (nome, descricao) VALUES ('DIRETOR_EXECUTIVO', 'Dirige a e
 INSERT INTO tb_funcao (nome, descricao) VALUES ('ENGENHEIRO_DE_SOFTWARE', 'Desenvolve e implementa soluções de software na empresa.');
 
 -- Inserindo dados na tabela tb_permissao
-INSERT INTO tb_permissao (nome, descricao) VALUES ('PODE_BANIR_USUARIO', 'Permissão para banir usuários do sistema.');
-INSERT INTO tb_permissao (nome, descricao) VALUES ('PODE_CONVERSAR_COM_USUARIO', 'Permissão para conversar diretamente com os usuários.');
-INSERT INTO tb_permissao (nome, descricao) VALUES ('PODE_VISUALIZAR_CATEGORIAS', 'Permissão para visualizar categorias no sistema.');
-INSERT INTO tb_permissao (nome, descricao) VALUES ('PODE_CRIAR_CATEGORIAS', 'Permissão para criar novas categorias.');
-INSERT INTO tb_permissao (nome, descricao) VALUES ('PODE_EDITAR_CATEGORIAS', 'Permissão para editar categorias existentes.');
-INSERT INTO tb_permissao (nome, descricao) VALUES ('PODE_REMOVER_CATEGORIAS', 'Permissão para remover categorias do sistema.');
-INSERT INTO tb_permissao (nome, descricao) VALUES ('PODE_VISUALIZAR_PRODUTOS', 'Permissão para visualizar produtos no sistema.');
-INSERT INTO tb_permissao (nome, descricao) VALUES ('PODE_CRIAR_PRODUTOS', 'Permissão para adicionar novos produtos.');
-INSERT INTO tb_permissao (nome, descricao) VALUES ('PODE_EDITAR_PRODUTOS', 'Permissão para editar informações de produtos.');
-INSERT INTO tb_permissao (nome, descricao) VALUES ('PODE_REMOVER_PRODUTOS', 'Permissão para remover produtos do sistema.');
-INSERT INTO tb_permissao (nome, descricao) VALUES ('PODE_VISUALIZAR_ESTOQUES', 'Permissão para visualizar o estoque de produtos.');
-INSERT INTO tb_permissao (nome, descricao) VALUES ('PODE_CRIAR_ESTOQUES', 'Permissão para criar novos registros de estoque.');
-INSERT INTO tb_permissao (nome, descricao) VALUES ('PODE_EDITAR_ESTOQUES', 'Permissão para editar informações de estoque.');
-INSERT INTO tb_permissao (nome, descricao) VALUES ('PODE_REMOVER_ESTOQUES', 'Permissão para remover registros de estoque.');
-INSERT INTO tb_permissao (nome, descricao) VALUES ('PODE_VISUALIZAR_PROMOCOES', 'Permissão para visualizar promoções de produtos.');
-INSERT INTO tb_permissao (nome, descricao) VALUES ('PODE_CRIAR_PROMOCOES', 'Permissão para criar novas promoções.');
-INSERT INTO tb_permissao (nome, descricao) VALUES ('PODE_EDITAR_PROMOCOES', 'Permissão para editar promoções existentes.');
-INSERT INTO tb_permissao (nome, descricao) VALUES ('PODE_REMOVER_PROMOCOES', 'Permissão para remover promoções do sistema.');
-INSERT INTO tb_permissao (nome, descricao) VALUES ('PODE_CRIAR_TRANSPORTADORA', 'Permissão para adicionar novas transportadoras.');
-INSERT INTO tb_permissao (nome, descricao) VALUES ('PODE_EDITAR_TRANSPORTADORA', 'Permissão para editar transportadoras.');
-INSERT INTO tb_permissao (nome, descricao) VALUES ('PODE_REMOVER_TRANSPORTADORA', 'Permissão para remover transportadoras do sistema.');
-INSERT INTO tb_permissao (nome, descricao) VALUES ('PODE_VISUALIZAR_AVALIACOES', 'Permissão para visualizar as avaliações de produtos.');
-INSERT INTO tb_permissao (nome, descricao) VALUES ('PODE_REMOVER_AVALIACOES', 'Permissão para remover avaliações de produtos.');
-INSERT INTO tb_permissao (nome, descricao) VALUES ('PODE_VISUALIZAR_CUPONS', 'Permissão para visualizar cupons de desconto.');
-INSERT INTO tb_permissao (nome, descricao) VALUES ('PODE_CRIAR_CUPONS', 'Permissão para criar novos cupons de desconto.');
-INSERT INTO tb_permissao (nome, descricao) VALUES ('PODE_EDITAR_CUPONS', 'Permissão para editar cupons de desconto existentes.');
-INSERT INTO tb_permissao (nome, descricao) VALUES ('PODE_REMOVER_CUPONS', 'Permissão para remover cupons de desconto.');
+INSERT INTO tb_permissao (nome, descricao) VALUES ('BANIR_USUARIO', 'Permissão para banir usuários do sistema.');
+INSERT INTO tb_permissao (nome, descricao) VALUES ('CONVERSAR_COM_USUARIO', 'Permissão para conversar diretamente com os usuários.');
+INSERT INTO tb_permissao (nome, descricao) VALUES ('VISUALIZAR_CATEGORIAS', 'Permissão para visualizar categorias no sistema.');
+INSERT INTO tb_permissao (nome, descricao) VALUES ('CRIAR_CATEGORIAS', 'Permissão para criar novas categorias.');
+INSERT INTO tb_permissao (nome, descricao) VALUES ('EDITAR_CATEGORIAS', 'Permissão para editar categorias existentes.');
+INSERT INTO tb_permissao (nome, descricao) VALUES ('REMOVER_CATEGORIAS', 'Permissão para remover categorias do sistema.');
+INSERT INTO tb_permissao (nome, descricao) VALUES ('VISUALIZAR_PRODUTOS', 'Permissão para visualizar produtos no sistema.');
+INSERT INTO tb_permissao (nome, descricao) VALUES ('CRIAR_PRODUTOS', 'Permissão para adicionar novos produtos.');
+INSERT INTO tb_permissao (nome, descricao) VALUES ('EDITAR_PRODUTOS', 'Permissão para editar informações de produtos.');
+INSERT INTO tb_permissao (nome, descricao) VALUES ('REMOVER_PRODUTOS', 'Permissão para remover produtos do sistema.');
+INSERT INTO tb_permissao (nome, descricao) VALUES ('VISUALIZAR_ESTOQUES', 'Permissão para visualizar o estoque de produtos.');
+INSERT INTO tb_permissao (nome, descricao) VALUES ('CRIAR_ESTOQUES', 'Permissão para criar novos registros de estoque.');
+INSERT INTO tb_permissao (nome, descricao) VALUES ('EDITAR_ESTOQUES', 'Permissão para editar informações de estoque.');
+INSERT INTO tb_permissao (nome, descricao) VALUES ('REMOVER_ESTOQUES', 'Permissão para remover registros de estoque.');
+INSERT INTO tb_permissao (nome, descricao) VALUES ('VISUALIZAR_PROMOCOES', 'Permissão para visualizar promoções de produtos.');
+INSERT INTO tb_permissao (nome, descricao) VALUES ('CRIAR_PROMOCOES', 'Permissão para criar novas promoções.');
+INSERT INTO tb_permissao (nome, descricao) VALUES ('EDITAR_PROMOCOES', 'Permissão para editar promoções existentes.');
+INSERT INTO tb_permissao (nome, descricao) VALUES ('REMOVER_PROMOCOES', 'Permissão para remover promoções do sistema.');
+INSERT INTO tb_permissao (nome, descricao) VALUES ('CRIAR_TRANSPORTADORA', 'Permissão para adicionar novas transportadoras.');
+INSERT INTO tb_permissao (nome, descricao) VALUES ('EDITAR_TRANSPORTADORA', 'Permissão para editar transportadoras.');
+INSERT INTO tb_permissao (nome, descricao) VALUES ('REMOVER_TRANSPORTADORA', 'Permissão para remover transportadoras do sistema.');
+INSERT INTO tb_permissao (nome, descricao) VALUES ('VISUALIZAR_AVALIACOES', 'Permissão para visualizar as avaliações de produtos.');
+INSERT INTO tb_permissao (nome, descricao) VALUES ('REMOVER_AVALIACOES', 'Permissão para remover avaliações de produtos.');
+INSERT INTO tb_permissao (nome, descricao) VALUES ('VISUALIZAR_CUPONS', 'Permissão para visualizar cupons de desconto.');
+INSERT INTO tb_permissao (nome, descricao) VALUES ('CRIAR_CUPONS', 'Permissão para criar novos cupons de desconto.');
+INSERT INTO tb_permissao (nome, descricao) VALUES ('EDITAR_CUPONS', 'Permissão para editar cupons de desconto existentes.');
+INSERT INTO tb_permissao (nome, descricao) VALUES ('REMOVER_CUPONS', 'Permissão para remover cupons de desconto.');
 
 -- Associando o papel 'ADMINISTRADOR' a várias permissões
 INSERT INTO tb_permissao_funcao (id_role, id_permissao) VALUES (1, 1); -- ADMINISTRADOR pode banir usuários
