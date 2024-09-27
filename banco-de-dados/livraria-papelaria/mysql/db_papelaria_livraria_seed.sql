@@ -1,26 +1,26 @@
 USE db_papelaria_livraria;
 
 -- Inserindo dados na tabela tb_administrador
-INSERT INTO tb_role (nome, descricao) VALUES ('ADMINISTRADOR', 'Responsável por gerenciar todo o sistema, incluindo permissões e usuários.');
-INSERT INTO tb_role (nome, descricao) VALUES ('GERENTE', 'Gerente de operações, responsável por supervisionar processos e aprovar mudanças.');
-INSERT INTO tb_role (nome, descricao) VALUES ('SUPORTE', 'Função de suporte ao cliente e solução de problemas.');
-INSERT INTO tb_role (nome, descricao) VALUES ('OPERADOR_FINANCEIRO', 'Responsável pela gestão financeira, incluindo controle de pagamentos.');
-INSERT INTO tb_role (nome, descricao) VALUES ('GERENTE_DE_VENDAS', 'Gerente de vendas, responsável por monitorar e incentivar vendas.');
-INSERT INTO tb_role (nome, descricao) VALUES ('ANALISTA_DE_DADOS', 'Responsável pela análise de dados e relatórios do sistema.');
-INSERT INTO tb_role (nome, descricao) VALUES ('DESENVOLVEDOR', 'Responsável pelo desenvolvimento e manutenção do sistema.');
-INSERT INTO tb_role (nome, descricao) VALUES ('TESTADOR', 'Responsável pela validação e testes de funcionalidades do sistema.');
-INSERT INTO tb_role (nome, descricao) VALUES ('SUPERVISOR', 'Supervisiona as atividades operacionais e garante o cumprimento dos procedimentos.');
-INSERT INTO tb_role (nome, descricao) VALUES ('COORDENADOR', 'Coordena as equipes e assegura a execução correta das operações.');
-INSERT INTO tb_role (nome, descricao) VALUES ('ANALISTA_DE_SUPORTE', 'Responsável pelo atendimento de suporte técnico e solução de dúvidas.');
-INSERT INTO tb_role (nome, descricao) VALUES ('GERENTE_DE_TI', 'Gerencia a infraestrutura de TI e a equipe de suporte técnico.');
-INSERT INTO tb_role (nome, descricao) VALUES ('OPERADOR_DE_ESTOQUE', 'Responsável pelo controle e organização do estoque.');
-INSERT INTO tb_role (nome, descricao) VALUES ('ADMINISTRADOR_DE_REDE', 'Gerencia e monitora a rede da empresa.');
-INSERT INTO tb_role (nome, descricao) VALUES ('GERENTE_DE_MARKETING', 'Gerencia campanhas e estratégias de marketing da empresa.');
-INSERT INTO tb_role (nome, descricao) VALUES ('ANALISTA_FINANCEIRO', 'Analista responsável pelas finanças e relatórios financeiros.');
-INSERT INTO tb_role (nome, descricao) VALUES ('COORDENADOR_DE_ATENDIMENTO', 'Coordena a equipe de atendimento ao cliente.');
-INSERT INTO tb_role (nome, descricao) VALUES ('OPERADOR_DE_LOGISTICA', 'Responsável pelo gerenciamento logístico e entregas.');
-INSERT INTO tb_role (nome, descricao) VALUES ('DIRETOR_EXECUTIVO', 'Dirige a empresa em nível estratégico.');
-INSERT INTO tb_role (nome, descricao) VALUES ('ENGENHEIRO_DE_SOFTWARE', 'Desenvolve e implementa soluções de software na empresa.');
+INSERT INTO tb_funcao (nome, descricao) VALUES ('ADMINISTRADOR', 'Responsável por gerenciar todo o sistema, incluindo permissões e usuários.');
+INSERT INTO tb_funcao (nome, descricao) VALUES ('GERENTE', 'Gerente de operações, responsável por supervisionar processos e aprovar mudanças.');
+INSERT INTO tb_funcao (nome, descricao) VALUES ('SUPORTE', 'Função de suporte ao cliente e solução de problemas.');
+INSERT INTO tb_funcao (nome, descricao) VALUES ('OPERADOR_FINANCEIRO', 'Responsável pela gestão financeira, incluindo controle de pagamentos.');
+INSERT INTO tb_funcao (nome, descricao) VALUES ('GERENTE_DE_VENDAS', 'Gerente de vendas, responsável por monitorar e incentivar vendas.');
+INSERT INTO tb_funcao (nome, descricao) VALUES ('ANALISTA_DE_DADOS', 'Responsável pela análise de dados e relatórios do sistema.');
+INSERT INTO tb_funcao (nome, descricao) VALUES ('DESENVOLVEDOR', 'Responsável pelo desenvolvimento e manutenção do sistema.');
+INSERT INTO tb_funcao (nome, descricao) VALUES ('TESTADOR', 'Responsável pela validação e testes de funcionalidades do sistema.');
+INSERT INTO tb_funcao (nome, descricao) VALUES ('SUPERVISOR', 'Supervisiona as atividades operacionais e garante o cumprimento dos procedimentos.');
+INSERT INTO tb_funcao (nome, descricao) VALUES ('COORDENADOR', 'Coordena as equipes e assegura a execução correta das operações.');
+INSERT INTO tb_funcao (nome, descricao) VALUES ('ANALISTA_DE_SUPORTE', 'Responsável pelo atendimento de suporte técnico e solução de dúvidas.');
+INSERT INTO tb_funcao (nome, descricao) VALUES ('GERENTE_DE_TI', 'Gerencia a infraestrutura de TI e a equipe de suporte técnico.');
+INSERT INTO tb_funcao (nome, descricao) VALUES ('OPERADOR_DE_ESTOQUE', 'Responsável pelo controle e organização do estoque.');
+INSERT INTO tb_funcao (nome, descricao) VALUES ('ADMINISTRADOR_DE_REDE', 'Gerencia e monitora a rede da empresa.');
+INSERT INTO tb_funcao (nome, descricao) VALUES ('GERENTE_DE_MARKETING', 'Gerencia campanhas e estratégias de marketing da empresa.');
+INSERT INTO tb_funcao (nome, descricao) VALUES ('ANALISTA_FINANCEIRO', 'Analista responsável pelas finanças e relatórios financeiros.');
+INSERT INTO tb_funcao (nome, descricao) VALUES ('COORDENADOR_DE_ATENDIMENTO', 'Coordena a equipe de atendimento ao cliente.');
+INSERT INTO tb_funcao (nome, descricao) VALUES ('OPERADOR_DE_LOGISTICA', 'Responsável pelo gerenciamento logístico e entregas.');
+INSERT INTO tb_funcao (nome, descricao) VALUES ('DIRETOR_EXECUTIVO', 'Dirige a empresa em nível estratégico.');
+INSERT INTO tb_funcao (nome, descricao) VALUES ('ENGENHEIRO_DE_SOFTWARE', 'Desenvolve e implementa soluções de software na empresa.');
 
 -- Inserindo dados na tabela tb_permissao
 INSERT INTO tb_permissao (nome, descricao) VALUES ('PODE_BANIR_USUARIO', 'Permissão para banir usuários do sistema.');
@@ -52,35 +52,35 @@ INSERT INTO tb_permissao (nome, descricao) VALUES ('PODE_EDITAR_CUPONS', 'Permis
 INSERT INTO tb_permissao (nome, descricao) VALUES ('PODE_REMOVER_CUPONS', 'Permissão para remover cupons de desconto.');
 
 -- Associando o papel 'ADMINISTRADOR' a várias permissões
-INSERT INTO tb_role_permissao (id_role, id_permissao) VALUES (1, 1); -- ADMINISTRADOR pode banir usuários
-INSERT INTO tb_role_permissao (id_role, id_permissao) VALUES (1, 2); -- ADMINISTRADOR pode conversar com usuários
-INSERT INTO tb_role_permissao (id_role, id_permissao) VALUES (1, 3); -- ADMINISTRADOR pode visualizar categorias
-INSERT INTO tb_role_permissao (id_role, id_permissao) VALUES (1, 4); -- ADMINISTRADOR pode criar categorias
+INSERT INTO tb_permissao_funcao (id_role, id_permissao) VALUES (1, 1); -- ADMINISTRADOR pode banir usuários
+INSERT INTO tb_permissao_funcao (id_role, id_permissao) VALUES (1, 2); -- ADMINISTRADOR pode conversar com usuários
+INSERT INTO tb_permissao_funcao (id_role, id_permissao) VALUES (1, 3); -- ADMINISTRADOR pode visualizar categorias
+INSERT INTO tb_permissao_funcao (id_role, id_permissao) VALUES (1, 4); -- ADMINISTRADOR pode criar categorias
 
 -- Associando o papel 'GERENTE' a algumas permissões
-INSERT INTO tb_role_permissao (id_role, id_permissao) VALUES (2, 3); -- GERENTE pode visualizar categorias
-INSERT INTO tb_role_permissao (id_role, id_permissao) VALUES (2, 5); -- GERENTE pode editar categorias
-INSERT INTO tb_role_permissao (id_role, id_permissao) VALUES (2, 7); -- GERENTE pode visualizar produtos
+INSERT INTO tb_permissao_funcao (id_role, id_permissao) VALUES (2, 3); -- GERENTE pode visualizar categorias
+INSERT INTO tb_permissao_funcao (id_role, id_permissao) VALUES (2, 5); -- GERENTE pode editar categorias
+INSERT INTO tb_permissao_funcao (id_role, id_permissao) VALUES (2, 7); -- GERENTE pode visualizar produtos
 
 -- Associando o papel 'SUPORTE' a permissões relacionadas ao atendimento de usuários
-INSERT INTO tb_role_permissao (id_role, id_permissao) VALUES (3, 2); -- SUPORTE pode conversar com usuários
-INSERT INTO tb_role_permissao (id_role, id_permissao) VALUES (3, 10); -- SUPORTE pode remover produtos
-INSERT INTO tb_role_permissao (id_role, id_permissao) VALUES (3, 12); -- SUPORTE pode criar estoques
+INSERT INTO tb_permissao_funcao (id_role, id_permissao) VALUES (3, 2); -- SUPORTE pode conversar com usuários
+INSERT INTO tb_permissao_funcao (id_role, id_permissao) VALUES (3, 10); -- SUPORTE pode remover produtos
+INSERT INTO tb_permissao_funcao (id_role, id_permissao) VALUES (3, 12); -- SUPORTE pode criar estoques
 
 -- Associando o papel 'OPERADOR_FINANCEIRO' a permissões financeiras
-INSERT INTO tb_role_permissao (id_role, id_permissao) VALUES (4, 24); -- OPERADOR_FINANCEIRO pode visualizar cupons
-INSERT INTO tb_role_permissao (id_role, id_permissao) VALUES (4, 25); -- OPERADOR_FINANCEIRO pode criar cupons
-INSERT INTO tb_role_permissao (id_role, id_permissao) VALUES (4, 26); -- OPERADOR_FINANCEIRO pode editar cupons
+INSERT INTO tb_permissao_funcao (id_role, id_permissao) VALUES (4, 24); -- OPERADOR_FINANCEIRO pode visualizar cupons
+INSERT INTO tb_permissao_funcao (id_role, id_permissao) VALUES (4, 25); -- OPERADOR_FINANCEIRO pode criar cupons
+INSERT INTO tb_permissao_funcao (id_role, id_permissao) VALUES (4, 26); -- OPERADOR_FINANCEIRO pode editar cupons
 
 -- Associando o papel 'GERENTE_DE_VENDAS' a permissões relacionadas a produtos e promoções
-INSERT INTO tb_role_permissao (id_role, id_permissao) VALUES (5, 7);  -- GERENTE_DE_VENDAS pode visualizar produtos
-INSERT INTO tb_role_permissao (id_role, id_permissao) VALUES (5, 16); -- GERENTE_DE_VENDAS pode visualizar promoções
-INSERT INTO tb_role_permissao (id_role, id_permissao) VALUES (5, 17); -- GERENTE_DE_VENDAS pode criar promoções
+INSERT INTO tb_permissao_funcao (id_role, id_permissao) VALUES (5, 7);  -- GERENTE_DE_VENDAS pode visualizar produtos
+INSERT INTO tb_permissao_funcao (id_role, id_permissao) VALUES (5, 16); -- GERENTE_DE_VENDAS pode visualizar promoções
+INSERT INTO tb_permissao_funcao (id_role, id_permissao) VALUES (5, 17); -- GERENTE_DE_VENDAS pode criar promoções
 
 -- Associando o papel 'ANALISTA_DE_DADOS' a permissões de visualização
-INSERT INTO tb_role_permissao (id_role, id_permissao) VALUES (6, 3);  -- ANALISTA_DE_DADOS pode visualizar categorias
-INSERT INTO tb_role_permissao (id_role, id_permissao) VALUES (6, 7);  -- ANALISTA_DE_DADOS pode visualizar produtos
-INSERT INTO tb_role_permissao (id_role, id_permissao) VALUES (6, 11); -- ANALISTA_DE_DADOS pode visualizar estoques
+INSERT INTO tb_permissao_funcao (id_role, id_permissao) VALUES (6, 3);  -- ANALISTA_DE_DADOS pode visualizar categorias
+INSERT INTO tb_permissao_funcao (id_role, id_permissao) VALUES (6, 7);  -- ANALISTA_DE_DADOS pode visualizar produtos
+INSERT INTO tb_permissao_funcao (id_role, id_permissao) VALUES (6, 11); -- ANALISTA_DE_DADOS pode visualizar estoques
 
 -- Inserindo 20 pessoas na tabela tb_pessoa
 INSERT INTO tb_pessoa (nome, data_nascimento, cpf, email, senha_hash, salt, telefone) VALUES ('João Silva', '1990-01-15', '123.456.789-00', 'joao.silva@email.com', 'hash_senha1', 'salt1', '11999999999');
@@ -276,28 +276,28 @@ INSERT INTO tb_produto_categoria (id_produto, id_categoria) VALUES (19, 4);
 INSERT INTO tb_produto_categoria (id_produto, id_categoria) VALUES (20, 3);
 
 -- Inserções na tabela de Lista de Desejos
-INSERT INTO tb_lista_desejos (id_usuario) VALUES (11);
-INSERT INTO tb_lista_desejos (id_usuario) VALUES (12);
-INSERT INTO tb_lista_desejos (id_usuario) VALUES (13);
-INSERT INTO tb_lista_desejos (id_usuario) VALUES (14);
-INSERT INTO tb_lista_desejos (id_usuario) VALUES (15);
-INSERT INTO tb_lista_desejos (id_usuario) VALUES (16);
-INSERT INTO tb_lista_desejos (id_usuario) VALUES (17);
-INSERT INTO tb_lista_desejos (id_usuario) VALUES (18);
-INSERT INTO tb_lista_desejos (id_usuario) VALUES (19);
-INSERT INTO tb_lista_desejos (id_usuario) VALUES (20);
+INSERT INTO tb_lista_desejo (id_usuario) VALUES (11);
+INSERT INTO tb_lista_desejo (id_usuario) VALUES (12);
+INSERT INTO tb_lista_desejo (id_usuario) VALUES (13);
+INSERT INTO tb_lista_desejo (id_usuario) VALUES (14);
+INSERT INTO tb_lista_desejo (id_usuario) VALUES (15);
+INSERT INTO tb_lista_desejo (id_usuario) VALUES (16);
+INSERT INTO tb_lista_desejo (id_usuario) VALUES (17);
+INSERT INTO tb_lista_desejo (id_usuario) VALUES (18);
+INSERT INTO tb_lista_desejo (id_usuario) VALUES (19);
+INSERT INTO tb_lista_desejo (id_usuario) VALUES (20);
 
 -- Inserções na tabela de Lista de Desejos e Produtos
-INSERT INTO tb_lista_desejos_produto (id_lista_desejos, id_produto) VALUES (1, 3);
-INSERT INTO tb_lista_desejos_produto (id_lista_desejos, id_produto) VALUES (2, 8);
-INSERT INTO tb_lista_desejos_produto (id_lista_desejos, id_produto) VALUES (3, 12);
-INSERT INTO tb_lista_desejos_produto (id_lista_desejos, id_produto) VALUES (4, 1);
-INSERT INTO tb_lista_desejos_produto (id_lista_desejos, id_produto) VALUES (5, 15);
-INSERT INTO tb_lista_desejos_produto (id_lista_desejos, id_produto) VALUES (6, 6);
-INSERT INTO tb_lista_desejos_produto (id_lista_desejos, id_produto) VALUES (7, 18);
-INSERT INTO tb_lista_desejos_produto (id_lista_desejos, id_produto) VALUES (8, 9);
-INSERT INTO tb_lista_desejos_produto (id_lista_desejos, id_produto) VALUES (9, 2);
-INSERT INTO tb_lista_desejos_produto (id_lista_desejos, id_produto) VALUES (10, 11);
+INSERT INTO tb_lista_desejo_produto (id_lista_desejo, id_produto) VALUES (1, 3);
+INSERT INTO tb_lista_desejo_produto (id_lista_desejo, id_produto) VALUES (2, 8);
+INSERT INTO tb_lista_desejo_produto (id_lista_desejo, id_produto) VALUES (3, 12);
+INSERT INTO tb_lista_desejo_produto (id_lista_desejo, id_produto) VALUES (4, 1);
+INSERT INTO tb_lista_desejo_produto (id_lista_desejo, id_produto) VALUES (5, 15);
+INSERT INTO tb_lista_desejo_produto (id_lista_desejo, id_produto) VALUES (6, 6);
+INSERT INTO tb_lista_desejo_produto (id_lista_desejo, id_produto) VALUES (7, 18);
+INSERT INTO tb_lista_desejo_produto (id_lista_desejo, id_produto) VALUES (8, 9);
+INSERT INTO tb_lista_desejo_produto (id_lista_desejo, id_produto) VALUES (9, 2);
+INSERT INTO tb_lista_desejo_produto (id_lista_desejo, id_produto) VALUES (10, 11);
 
 -- Inserções na tabela de Carrinho de Compras
 INSERT INTO tb_carrinho (id_usuario) VALUES (11);

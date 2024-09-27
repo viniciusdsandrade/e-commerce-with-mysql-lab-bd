@@ -3,7 +3,7 @@ CREATE DATABASE IF NOT EXISTS db_papelaria_livraria;
 USE db_papelaria_livraria;
 
 -- Tabela de Papéis (Roles)
-CREATE TABLE IF NOT EXISTS tb_role
+CREATE TABLE IF NOT EXISTS tb_funcao
 (
     id         BIGINT UNSIGNED AUTO_INCREMENT,
     nome       VARCHAR(100) NOT NULL, -- Ex: 'ADMINISTRADOR', 'GERENTE', 'SUPORTE'
@@ -59,14 +59,14 @@ CREATE TABLE IF NOT EXISTS tb_permissao
 );
 
 -- Tabela de Associação entre Papéis e Permissões
-CREATE TABLE IF NOT EXISTS tb_role_permissao
+CREATE TABLE IF NOT EXISTS tb_permissao_funcao
 (
     id_role      BIGINT UNSIGNED NOT NULL, -- Referência para a tabela de roles
     id_permissao BIGINT UNSIGNED NOT NULL, -- Referência para a tabela de permissões
     created_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
     PRIMARY KEY (id_role, id_permissao),   -- Chave composta para garantir unicidade
-    FOREIGN KEY (id_role) REFERENCES tb_role (id) ON DELETE CASCADE,
+    FOREIGN KEY (id_role) REFERENCES tb_funcao (id) ON DELETE CASCADE,
     FOREIGN KEY (id_permissao) REFERENCES tb_permissao (id) ON DELETE CASCADE
 );
 
@@ -103,7 +103,7 @@ CREATE TABLE IF NOT EXISTS tb_funcionario
 
     PRIMARY KEY (id_pessoa),                                                 -- Usa a PK da tabela pessoa como PK
     FOREIGN KEY (id_pessoa) REFERENCES tb_pessoa (id) ON DELETE CASCADE,     -- FK para a tabela pessoa
-    FOREIGN KEY (id_nivel_acesso) REFERENCES tb_role (id) ON DELETE RESTRICT -- Nível de acesso referenciado na tb_role
+    FOREIGN KEY (id_nivel_acesso) REFERENCES tb_funcao (id) ON DELETE RESTRICT -- Nível de acesso referenciado na tb_role
 );
 
 -- Tabela para armazenar os dados específicos de Usuários, referenciando tb_pessoa
@@ -155,7 +155,7 @@ CREATE TABLE IF NOT EXISTS tb_usuario_role
 
     PRIMARY KEY (id_usuario, id_role),   -- Chave composta para garantir unicidade
     FOREIGN KEY (id_usuario) REFERENCES tb_usuario (id_pessoa) ON DELETE CASCADE,
-    FOREIGN KEY (id_role) REFERENCES tb_role (id) ON DELETE CASCADE
+    FOREIGN KEY (id_role) REFERENCES tb_funcao (id) ON DELETE CASCADE
 );
 
 -- Atualizando a tabela de funcionários (sem necessidade de duplicação de dados)
@@ -335,7 +335,7 @@ CREATE TABLE IF NOT EXISTS tb_produto_categoria
 );
 
 -- Tabela para armazenar as Avaliações dos Produtos
-CREATE TABLE IF NOT EXISTS tb_lista_desejos
+CREATE TABLE IF NOT EXISTS tb_lista_desejo
 (
     id         BIGINT UNSIGNED AUTO_INCREMENT,
     id_usuario BIGINT UNSIGNED NOT NULL,
@@ -345,13 +345,13 @@ CREATE TABLE IF NOT EXISTS tb_lista_desejos
 );
 
 -- Tabela de associação N:N entre Listas de Desejos e Produtos
-CREATE TABLE IF NOT EXISTS tb_lista_desejos_produto
+CREATE TABLE IF NOT EXISTS tb_lista_desejo_produto
 (
     id_produto       BIGINT UNSIGNED NOT NULL,
-    id_lista_desejos BIGINT UNSIGNED NOT NULL,
+    id_lista_desejo BIGINT UNSIGNED NOT NULL,
 
     FOREIGN KEY (id_produto) REFERENCES tb_produto (id),
-    FOREIGN KEY (id_lista_desejos) REFERENCES tb_lista_desejos (id)
+    FOREIGN KEY (id_lista_desejo) REFERENCES tb_lista_desejo (id)
 );
 
 -- Tabela para armazenar os Carrinhos de Compras de cada Usuário
