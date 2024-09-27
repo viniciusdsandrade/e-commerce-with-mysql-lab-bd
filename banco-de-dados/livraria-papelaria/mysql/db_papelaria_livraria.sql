@@ -77,7 +77,7 @@ CREATE TABLE IF NOT EXISTS tb_pessoa
     nome            VARCHAR(100) NOT NULL, -- Nome da pessoa
     data_nascimento DATE         NULL,     -- Data de nascimento comum
     cpf             VARCHAR(20)  NOT NULL, -- CPF único para ambas as tabelas
-    email           VARCHAR(100) NOT NULL, -- Email comum
+    email           VARCHAR(100) NOT NULL, -- E-mail comum
     senha_hash      VARCHAR(255) NOT NULL, -- Senha comum
     salt            VARCHAR(255) NOT NULL, -- Salt para segurança
     telefone        VARCHAR(20)  NULL,     -- Telefone comum
@@ -85,7 +85,7 @@ CREATE TABLE IF NOT EXISTS tb_pessoa
     updated_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
     UNIQUE (cpf),                          -- CPF deve ser único
-    UNIQUE (email),                        -- Email deve ser único
+    UNIQUE (email),                        -- E-mail deve ser único
     UNIQUE (salt),                         -- Salt também deve ser único para garantir segurança
 
     PRIMARY KEY (id)
@@ -95,7 +95,7 @@ CREATE TABLE IF NOT EXISTS tb_pessoa
 CREATE TABLE IF NOT EXISTS tb_funcionario
 (
     id_pessoa         BIGINT UNSIGNED NOT NULL,                              -- FK para tb_pessoa
-    email_recuperacao VARCHAR(100)    NULL,                                  -- Email de recuperação, específico de funcionários
+    email_recuperacao VARCHAR(100)    NULL,                                  -- E-mail de recuperação, específico de funcionários
     id_nivel_acesso   BIGINT UNSIGNED NOT NULL,                              -- Nível de acesso para funcionários
 
     created_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -147,7 +147,7 @@ CREATE TABLE IF NOT EXISTS tb_transportadora
 );
 
 -- Tabela de Associação entre Usuários e Papéis
-CREATE TABLE IF NOT EXISTS tb_usuario_role
+CREATE TABLE IF NOT EXISTS tb_permissao_usuario
 (
     id_usuario BIGINT UNSIGNED NOT NULL, -- Referência para a tabela de usuários
     id_role    BIGINT UNSIGNED NOT NULL, -- Referência para a tabela de roles

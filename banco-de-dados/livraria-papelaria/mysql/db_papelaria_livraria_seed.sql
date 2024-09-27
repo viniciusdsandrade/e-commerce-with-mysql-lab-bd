@@ -152,16 +152,16 @@ INSERT INTO tb_transportadora (nome, preco_km, cnpj, inscricao_estadual, telefon
 INSERT INTO tb_transportadora (nome, preco_km, cnpj, inscricao_estadual, telefone, email, endereco) VALUES ('Transportadora Upsilon', 6.10, '02.345.678/0001-19', '0234567891', '(11) 98765-4321', 'upsilon@transportadora.com', 'Rua T, 913');
 
 -- Associando cada usuário a um role na tabela tb_usuario_role
-INSERT INTO tb_usuario_role (id_usuario, id_role) VALUES (11, 1); -- Usuário com id_pessoa 11 recebe o role 1 (ex: ADMINISTRADOR)
-INSERT INTO tb_usuario_role (id_usuario, id_role) VALUES (12, 2); -- Usuário com id_pessoa 12 recebe o role 2 (ex: GERENTE)
-INSERT INTO tb_usuario_role (id_usuario, id_role) VALUES (13, 3); -- Usuário com id_pessoa 13 recebe o role 3 (ex: SUPORTE)
-INSERT INTO tb_usuario_role (id_usuario, id_role) VALUES (14, 4); -- Usuário com id_pessoa 14 recebe o role 4 (ex: OPERADOR_FINANCEIRO)
-INSERT INTO tb_usuario_role (id_usuario, id_role) VALUES (15, 5); -- Usuário com id_pessoa 15 recebe o role 5 (ex: GERENTE_DE_VENDAS)
-INSERT INTO tb_usuario_role (id_usuario, id_role) VALUES (16, 1); -- Usuário com id_pessoa 16 recebe o role 1 (ex: ADMINISTRADOR)
-INSERT INTO tb_usuario_role (id_usuario, id_role) VALUES (17, 2); -- Usuário com id_pessoa 17 recebe o role 2 (ex: GERENTE)
-INSERT INTO tb_usuario_role (id_usuario, id_role) VALUES (18, 3); -- Usuário com id_pessoa 18 recebe o role 3 (ex: SUPORTE)
-INSERT INTO tb_usuario_role (id_usuario, id_role) VALUES (19, 4); -- Usuário com id_pessoa 19 recebe o role 4 (ex: OPERADOR_FINANCEIRO)
-INSERT INTO tb_usuario_role (id_usuario, id_role) VALUES (20, 5); -- Usuário com id_pessoa 20 recebe o role 5 (ex: GERENTE_DE_VENDAS)
+INSERT INTO tb_permissao_usuario (id_usuario, id_role) VALUES (11, 1); -- Usuário com id_pessoa 11 recebe o role 1 (ex: ADMINISTRADOR)
+INSERT INTO tb_permissao_usuario (id_usuario, id_role) VALUES (12, 2); -- Usuário com id_pessoa 12 recebe o role 2 (ex: GERENTE)
+INSERT INTO tb_permissao_usuario (id_usuario, id_role) VALUES (13, 3); -- Usuário com id_pessoa 13 recebe o role 3 (ex: SUPORTE)
+INSERT INTO tb_permissao_usuario (id_usuario, id_role) VALUES (14, 4); -- Usuário com id_pessoa 14 recebe o role 4 (ex: OPERADOR_FINANCEIRO)
+INSERT INTO tb_permissao_usuario (id_usuario, id_role) VALUES (15, 5); -- Usuário com id_pessoa 15 recebe o role 5 (ex: GERENTE_DE_VENDAS)
+INSERT INTO tb_permissao_usuario (id_usuario, id_role) VALUES (16, 1); -- Usuário com id_pessoa 16 recebe o role 1 (ex: ADMINISTRADOR)
+INSERT INTO tb_permissao_usuario (id_usuario, id_role) VALUES (17, 2); -- Usuário com id_pessoa 17 recebe o role 2 (ex: GERENTE)
+INSERT INTO tb_permissao_usuario (id_usuario, id_role) VALUES (18, 3); -- Usuário com id_pessoa 18 recebe o role 3 (ex: SUPORTE)
+INSERT INTO tb_permissao_usuario (id_usuario, id_role) VALUES (19, 4); -- Usuário com id_pessoa 19 recebe o role 4 (ex: OPERADOR_FINANCEIRO)
+INSERT INTO tb_permissao_usuario (id_usuario, id_role) VALUES (20, 5); -- Usuário com id_pessoa 20 recebe o role 5 (ex: GERENTE_DE_VENDAS)
 
 -- Endereços principais
 INSERT INTO tb_endereco (id_usuario, rua, numero, bairro, cidade, estado, cep, complemento, is_principal) VALUES (11, 'Rua A', '123', 'Centro', 'São Paulo', 'SP', '01000-000', NULL, TRUE);
