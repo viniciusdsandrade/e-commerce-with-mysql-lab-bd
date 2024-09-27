@@ -1,26 +1,133 @@
 USE db_papelaria_livraria;
 
 -- Inserindo dados na tabela tb_administrador
-INSERT INTO tb_administrador (nome, email, email_de_recuperacao, senha_hash, salt) VALUES ('Administrador 1', 'admin1@papelaria.com', 'admin1_recuperacao@papelaria.com', '$2a$10$nUHl.wLWcJr..yIscP1e0uxoSEs5L289.rN1.t8IWDy6a.7t', 'salt_aleatorio_1');
-INSERT INTO tb_administrador (nome, email, email_de_recuperacao, senha_hash, salt) VALUES ('Administrador 2', 'admin2@papelaria.com', 'admin2_recuperacao@papelaria.com', '$2a$10$fYgH.kLWcJr..yIscP1e0uxoSEs5L289.rN1.t8IWDy6a.8u', 'salt_aleatorio_2');
-INSERT INTO tb_administrador (nome, email, email_de_recuperacao, senha_hash, salt) VALUES ('Administrador 3', 'admin3@papelaria.com', NULL, '$2a$10$aBcH.jLWcJr..yIscP1e0uxoSEs5L289.rN1.t8IWDy6a.9i', 'salt_aleatorio_3');
-INSERT INTO tb_administrador (nome, email, email_de_recuperacao, senha_hash, salt) VALUES ('Administrador 4', 'admin4@papelaria.com', 'admin4_recuperacao@papelaria.com', '$2a$10$gDlH.pLWcJr..yIscP1e0uxoSEs5L289.rN1.t8IWDy6a.0o', 'salt_aleatorio_4');
-INSERT INTO tb_administrador (nome, email, email_de_recuperacao, senha_hash, salt) VALUES ('Administrador 5', 'admin5@papelaria.com', 'admin5_recuperacao@papelaria.com', '$2a$10$hEmH.qLWcJr..yIscP1e0uxoSEs5L289.rN1.t8IWDy6a.1p', 'salt_aleatorio_5');
-INSERT INTO tb_administrador (nome, email, email_de_recuperacao, senha_hash, salt) VALUES ('Administrador 6', 'admin6@papelaria.com', 'admin6_recuperacao@papelaria.com', '$2a$10$iFnH.rLWcJr..yIscP1e0uxoSEs5L289.rN1.t8IWDy6a.2q', 'salt_aleatorio_6');
-INSERT INTO tb_administrador (nome, email, email_de_recuperacao, senha_hash, salt) VALUES ('Administrador 7', 'admin7@papelaria.com', 'admin7_recuperacao@papelaria.com', '$2a$10$jGoH.sLWcJr..yIscP1e0uxoSEs5L289.rN1.t8IWDy6a.3r', 'salt_aleatorio_7');
-INSERT INTO tb_administrador (nome, email, email_de_recuperacao, senha_hash, salt) VALUES ('Administrador 8', 'admin8@papelaria.com', 'admin8_recuperacao@papelaria.com', '$2a$10$kHpI.tLWcJr..yIscP1e0uxoSEs5L289.rN1.t8IWDy6a.4s', 'salt_aleatorio_8');
-INSERT INTO tb_administrador (nome, email, email_de_recuperacao, senha_hash, salt) VALUES ('Administrador 9', 'admin9@papelaria.com', 'admin9_recuperacao@papelaria.com', '$2a$10$lIqJ.uLWcJr..yIscP1e0uxoSEs5L289.rN1.t8IWDy6a.5t', 'salt_aleatorio_9');
-INSERT INTO tb_administrador (nome, email, email_de_recuperacao, senha_hash, salt) VALUES ('Administrador 10', 'admin10@papelaria.com', 'admin10_recuperacao@papelaria.com', '$2a$10$mJrK.vLWcJr..yIscP1e0uxoSEs5L289.rN1.t8IWDy6a.6u', 'salt_aleatorio_10');
-INSERT INTO tb_administrador (nome, email, email_de_recuperacao, senha_hash, salt) VALUES ('Administrador 11', 'admin11@papelaria.com', 'admin11_recuperacao@papelaria.com', '$2a$10$nKsL.wLWcJr..yIscP1e0uxoSEs5L289.rN1.t8IWDy6a.7v', 'salt_aleatorio_11');
-INSERT INTO tb_administrador (nome, email, email_de_recuperacao, senha_hash, salt) VALUES ('Administrador 12', 'admin12@papelaria.com', 'admin12_recuperacao@papelaria.com', '$2a$10$oLtM.xLWcJr..yIscP1e0uxoSEs5L289.rN1.t8IWDy6a.8w', 'salt_aleatorio_12');
-INSERT INTO tb_administrador (nome, email, email_de_recuperacao, senha_hash, salt) VALUES ('Administrador 13', 'admin13@papelaria.com', 'admin13_recuperacao@papelaria.com', '$2a$10$pMuN.yLWcJr..yIscP1e0uxoSEs5L289.rN1.t8IWDy6a.9x', 'salt_aleatorio_13');
-INSERT INTO tb_administrador (nome, email, email_de_recuperacao, senha_hash, salt) VALUES ('Administrador 14', 'admin14@papelaria.com', 'admin14_recuperacao@papelaria.com', '$2a$10$qNvO.zLWcJr..yIscP1e0uxoSEs5L289.rN1.t8IWDy6a.0y', 'salt_aleatorio_14');
-INSERT INTO tb_administrador (nome, email, email_de_recuperacao, senha_hash, salt) VALUES ('Administrador 15', 'admin15@papelaria.com', 'admin15_recuperacao@papelaria.com', '$2a$10$rOwP.aLWcJr..yIscP1e0uxoSEs5L289.rN1.t8IWDy6a.1z', 'salt_aleatorio_15');
-INSERT INTO tb_administrador (nome, email, email_de_recuperacao, senha_hash, salt) VALUES ('Administrador 16', 'admin16@papelaria.com', 'admin16_recuperacao@papelaria.com', '$2a$10$sPxQ.bLWcJr..yIscP1e0uxoSEs5L289.rN1.t8IWDy6a.2a', 'salt_aleatorio_16');
-INSERT INTO tb_administrador (nome, email, email_de_recuperacao, senha_hash, salt) VALUES ('Administrador 17', 'admin17@papelaria.com', 'admin17_recuperacao@papelaria.com', '$2a$10$tQyR.cLWcJr..yIscP1e0uxoSEs5L289.rN1.t8IWDy6a.3b', 'salt_aleatorio_17');
-INSERT INTO tb_administrador (nome, email, email_de_recuperacao, senha_hash, salt) VALUES ('Administrador 18', 'admin18@papelaria.com', 'admin18_recuperacao@papelaria.com', '$2a$10$uRzS.dLWcJr..yIscP1e0uxoSEs5L289.rN1.t8IWDy6a.4c', 'salt_aleatorio_18');
-INSERT INTO tb_administrador (nome, email, email_de_recuperacao, senha_hash, salt) VALUES ('Administrador 19', 'admin19@papelaria.com', 'admin19_recuperacao@papelaria.com', '$2a$10$vSaT.eLWcJr..yIscP1e0uxoSEs5L289.rN1.t8IWDy6a.5d', 'salt_aleatorio_19');
-INSERT INTO tb_administrador (nome, email, email_de_recuperacao, senha_hash, salt) VALUES ('Administrador 20', 'admin20@papelaria.com', 'admin20_recuperacao@papelaria.com', '$2a$10$wTbU.fLWcJr..yIscP1e0uxoSEs5L289.rN1.t8IWDy6a.6e', 'salt_aleatorio_20');
+INSERT INTO tb_role (nome, descricao) VALUES ('ADMINISTRADOR', 'Responsável por gerenciar todo o sistema, incluindo permissões e usuários.');
+INSERT INTO tb_role (nome, descricao) VALUES ('GERENTE', 'Gerente de operações, responsável por supervisionar processos e aprovar mudanças.');
+INSERT INTO tb_role (nome, descricao) VALUES ('SUPORTE', 'Função de suporte ao cliente e solução de problemas.');
+INSERT INTO tb_role (nome, descricao) VALUES ('OPERADOR_FINANCEIRO', 'Responsável pela gestão financeira, incluindo controle de pagamentos.');
+INSERT INTO tb_role (nome, descricao) VALUES ('GERENTE_DE_VENDAS', 'Gerente de vendas, responsável por monitorar e incentivar vendas.');
+INSERT INTO tb_role (nome, descricao) VALUES ('ANALISTA_DE_DADOS', 'Responsável pela análise de dados e relatórios do sistema.');
+INSERT INTO tb_role (nome, descricao) VALUES ('DESENVOLVEDOR', 'Responsável pelo desenvolvimento e manutenção do sistema.');
+INSERT INTO tb_role (nome, descricao) VALUES ('TESTADOR', 'Responsável pela validação e testes de funcionalidades do sistema.');
+INSERT INTO tb_role (nome, descricao) VALUES ('SUPERVISOR', 'Supervisiona as atividades operacionais e garante o cumprimento dos procedimentos.');
+INSERT INTO tb_role (nome, descricao) VALUES ('COORDENADOR', 'Coordena as equipes e assegura a execução correta das operações.');
+INSERT INTO tb_role (nome, descricao) VALUES ('ANALISTA_DE_SUPORTE', 'Responsável pelo atendimento de suporte técnico e solução de dúvidas.');
+INSERT INTO tb_role (nome, descricao) VALUES ('GERENTE_DE_TI', 'Gerencia a infraestrutura de TI e a equipe de suporte técnico.');
+INSERT INTO tb_role (nome, descricao) VALUES ('OPERADOR_DE_ESTOQUE', 'Responsável pelo controle e organização do estoque.');
+INSERT INTO tb_role (nome, descricao) VALUES ('ADMINISTRADOR_DE_REDE', 'Gerencia e monitora a rede da empresa.');
+INSERT INTO tb_role (nome, descricao) VALUES ('GERENTE_DE_MARKETING', 'Gerencia campanhas e estratégias de marketing da empresa.');
+INSERT INTO tb_role (nome, descricao) VALUES ('ANALISTA_FINANCEIRO', 'Analista responsável pelas finanças e relatórios financeiros.');
+INSERT INTO tb_role (nome, descricao) VALUES ('COORDENADOR_DE_ATENDIMENTO', 'Coordena a equipe de atendimento ao cliente.');
+INSERT INTO tb_role (nome, descricao) VALUES ('OPERADOR_DE_LOGISTICA', 'Responsável pelo gerenciamento logístico e entregas.');
+INSERT INTO tb_role (nome, descricao) VALUES ('DIRETOR_EXECUTIVO', 'Dirige a empresa em nível estratégico.');
+INSERT INTO tb_role (nome, descricao) VALUES ('ENGENHEIRO_DE_SOFTWARE', 'Desenvolve e implementa soluções de software na empresa.');
+
+-- Inserindo dados na tabela tb_permissao
+INSERT INTO tb_permissao (nome, descricao) VALUES ('PODE_BANIR_USUARIO', 'Permissão para banir usuários do sistema.');
+INSERT INTO tb_permissao (nome, descricao) VALUES ('PODE_CONVERSAR_COM_USUARIO', 'Permissão para conversar diretamente com os usuários.');
+INSERT INTO tb_permissao (nome, descricao) VALUES ('PODE_VISUALIZAR_CATEGORIAS', 'Permissão para visualizar categorias no sistema.');
+INSERT INTO tb_permissao (nome, descricao) VALUES ('PODE_CRIAR_CATEGORIAS', 'Permissão para criar novas categorias.');
+INSERT INTO tb_permissao (nome, descricao) VALUES ('PODE_EDITAR_CATEGORIAS', 'Permissão para editar categorias existentes.');
+INSERT INTO tb_permissao (nome, descricao) VALUES ('PODE_REMOVER_CATEGORIAS', 'Permissão para remover categorias do sistema.');
+INSERT INTO tb_permissao (nome, descricao) VALUES ('PODE_VISUALIZAR_PRODUTOS', 'Permissão para visualizar produtos no sistema.');
+INSERT INTO tb_permissao (nome, descricao) VALUES ('PODE_CRIAR_PRODUTOS', 'Permissão para adicionar novos produtos.');
+INSERT INTO tb_permissao (nome, descricao) VALUES ('PODE_EDITAR_PRODUTOS', 'Permissão para editar informações de produtos.');
+INSERT INTO tb_permissao (nome, descricao) VALUES ('PODE_REMOVER_PRODUTOS', 'Permissão para remover produtos do sistema.');
+INSERT INTO tb_permissao (nome, descricao) VALUES ('PODE_VISUALIZAR_ESTOQUES', 'Permissão para visualizar o estoque de produtos.');
+INSERT INTO tb_permissao (nome, descricao) VALUES ('PODE_CRIAR_ESTOQUES', 'Permissão para criar novos registros de estoque.');
+INSERT INTO tb_permissao (nome, descricao) VALUES ('PODE_EDITAR_ESTOQUES', 'Permissão para editar informações de estoque.');
+INSERT INTO tb_permissao (nome, descricao) VALUES ('PODE_REMOVER_ESTOQUES', 'Permissão para remover registros de estoque.');
+INSERT INTO tb_permissao (nome, descricao) VALUES ('PODE_VISUALIZAR_PROMOCOES', 'Permissão para visualizar promoções de produtos.');
+INSERT INTO tb_permissao (nome, descricao) VALUES ('PODE_CRIAR_PROMOCOES', 'Permissão para criar novas promoções.');
+INSERT INTO tb_permissao (nome, descricao) VALUES ('PODE_EDITAR_PROMOCOES', 'Permissão para editar promoções existentes.');
+INSERT INTO tb_permissao (nome, descricao) VALUES ('PODE_REMOVER_PROMOCOES', 'Permissão para remover promoções do sistema.');
+INSERT INTO tb_permissao (nome, descricao) VALUES ('PODE_CRIAR_TRANSPORTADORA', 'Permissão para adicionar novas transportadoras.');
+INSERT INTO tb_permissao (nome, descricao) VALUES ('PODE_EDITAR_TRANSPORTADORA', 'Permissão para editar transportadoras.');
+INSERT INTO tb_permissao (nome, descricao) VALUES ('PODE_REMOVER_TRANSPORTADORA', 'Permissão para remover transportadoras do sistema.');
+INSERT INTO tb_permissao (nome, descricao) VALUES ('PODE_VISUALIZAR_AVALIACOES', 'Permissão para visualizar as avaliações de produtos.');
+INSERT INTO tb_permissao (nome, descricao) VALUES ('PODE_REMOVER_AVALIACOES', 'Permissão para remover avaliações de produtos.');
+INSERT INTO tb_permissao (nome, descricao) VALUES ('PODE_VISUALIZAR_CUPONS', 'Permissão para visualizar cupons de desconto.');
+INSERT INTO tb_permissao (nome, descricao) VALUES ('PODE_CRIAR_CUPONS', 'Permissão para criar novos cupons de desconto.');
+INSERT INTO tb_permissao (nome, descricao) VALUES ('PODE_EDITAR_CUPONS', 'Permissão para editar cupons de desconto existentes.');
+INSERT INTO tb_permissao (nome, descricao) VALUES ('PODE_REMOVER_CUPONS', 'Permissão para remover cupons de desconto.');
+
+-- Associando o papel 'ADMINISTRADOR' a várias permissões
+INSERT INTO tb_role_permissao (id_role, id_permissao) VALUES (1, 1); -- ADMINISTRADOR pode banir usuários
+INSERT INTO tb_role_permissao (id_role, id_permissao) VALUES (1, 2); -- ADMINISTRADOR pode conversar com usuários
+INSERT INTO tb_role_permissao (id_role, id_permissao) VALUES (1, 3); -- ADMINISTRADOR pode visualizar categorias
+INSERT INTO tb_role_permissao (id_role, id_permissao) VALUES (1, 4); -- ADMINISTRADOR pode criar categorias
+
+-- Associando o papel 'GERENTE' a algumas permissões
+INSERT INTO tb_role_permissao (id_role, id_permissao) VALUES (2, 3); -- GERENTE pode visualizar categorias
+INSERT INTO tb_role_permissao (id_role, id_permissao) VALUES (2, 5); -- GERENTE pode editar categorias
+INSERT INTO tb_role_permissao (id_role, id_permissao) VALUES (2, 7); -- GERENTE pode visualizar produtos
+
+-- Associando o papel 'SUPORTE' a permissões relacionadas ao atendimento de usuários
+INSERT INTO tb_role_permissao (id_role, id_permissao) VALUES (3, 2); -- SUPORTE pode conversar com usuários
+INSERT INTO tb_role_permissao (id_role, id_permissao) VALUES (3, 10); -- SUPORTE pode remover produtos
+INSERT INTO tb_role_permissao (id_role, id_permissao) VALUES (3, 12); -- SUPORTE pode criar estoques
+
+-- Associando o papel 'OPERADOR_FINANCEIRO' a permissões financeiras
+INSERT INTO tb_role_permissao (id_role, id_permissao) VALUES (4, 24); -- OPERADOR_FINANCEIRO pode visualizar cupons
+INSERT INTO tb_role_permissao (id_role, id_permissao) VALUES (4, 25); -- OPERADOR_FINANCEIRO pode criar cupons
+INSERT INTO tb_role_permissao (id_role, id_permissao) VALUES (4, 26); -- OPERADOR_FINANCEIRO pode editar cupons
+
+-- Associando o papel 'GERENTE_DE_VENDAS' a permissões relacionadas a produtos e promoções
+INSERT INTO tb_role_permissao (id_role, id_permissao) VALUES (5, 7);  -- GERENTE_DE_VENDAS pode visualizar produtos
+INSERT INTO tb_role_permissao (id_role, id_permissao) VALUES (5, 16); -- GERENTE_DE_VENDAS pode visualizar promoções
+INSERT INTO tb_role_permissao (id_role, id_permissao) VALUES (5, 17); -- GERENTE_DE_VENDAS pode criar promoções
+
+-- Associando o papel 'ANALISTA_DE_DADOS' a permissões de visualização
+INSERT INTO tb_role_permissao (id_role, id_permissao) VALUES (6, 3);  -- ANALISTA_DE_DADOS pode visualizar categorias
+INSERT INTO tb_role_permissao (id_role, id_permissao) VALUES (6, 7);  -- ANALISTA_DE_DADOS pode visualizar produtos
+INSERT INTO tb_role_permissao (id_role, id_permissao) VALUES (6, 11); -- ANALISTA_DE_DADOS pode visualizar estoques
+
+-- Inserindo 20 pessoas na tabela tb_pessoa
+INSERT INTO tb_pessoa (nome, data_nascimento, cpf, email, senha_hash, salt, telefone) VALUES ('João Silva', '1990-01-15', '123.456.789-00', 'joao.silva@email.com', 'hash_senha1', 'salt1', '11999999999');
+INSERT INTO tb_pessoa (nome, data_nascimento, cpf, email, senha_hash, salt, telefone) VALUES ('Maria Oliveira', '1985-03-22', '123.456.789-01', 'maria.oliveira@email.com', 'hash_senha2', 'salt2', '11988888888');
+INSERT INTO tb_pessoa (nome, data_nascimento, cpf, email, senha_hash, salt, telefone) VALUES ('Pedro Santos', '1992-06-30', '123.456.789-02', 'pedro.santos@email.com', 'hash_senha3', 'salt3', '11977777777');
+INSERT INTO tb_pessoa (nome, data_nascimento, cpf, email, senha_hash, salt, telefone) VALUES ('Ana Costa', '1995-09-12', '123.456.789-03', 'ana.costa@email.com', 'hash_senha4', 'salt4', '11966666666');
+INSERT INTO tb_pessoa (nome, data_nascimento, cpf, email, senha_hash, salt, telefone) VALUES ('Lucas Lima', '1993-04-25', '123.456.789-04', 'lucas.lima@email.com', 'hash_senha5', 'salt5', '11955555555');
+INSERT INTO tb_pessoa (nome, data_nascimento, cpf, email, senha_hash, salt, telefone) VALUES ('Julia Mendes', '1988-11-05', '123.456.789-05', 'julia.mendes@email.com', 'hash_senha6', 'salt6', '11944444444');
+INSERT INTO tb_pessoa (nome, data_nascimento, cpf, email, senha_hash, salt, telefone) VALUES ('Fernando Sousa', '1987-08-20', '123.456.789-06', 'fernando.sousa@email.com', 'hash_senha7', 'salt7', '11933333333');
+INSERT INTO tb_pessoa (nome, data_nascimento, cpf, email, senha_hash, salt, telefone) VALUES ('Clara Rodrigues', '1991-02-10', '123.456.789-07', 'clara.rodrigues@email.com', 'hash_senha8', 'salt8', '11922222222');
+INSERT INTO tb_pessoa (nome, data_nascimento, cpf, email, senha_hash, salt, telefone) VALUES ('Rafael Teixeira', '1996-12-31', '123.456.789-08', 'rafael.teixeira@email.com', 'hash_senha9', 'salt9', '11911111111');
+INSERT INTO tb_pessoa (nome, data_nascimento, cpf, email, senha_hash, salt, telefone) VALUES ('Marina Ferreira', '1994-07-18', '123.456.789-09', 'marina.ferreira@email.com', 'hash_senha10', 'salt10', '11900000000');
+INSERT INTO tb_pessoa (nome, data_nascimento, cpf, email, senha_hash, salt, telefone) VALUES ('Gustavo Nunes', '1990-01-15', '123.456.789-10', 'gustavo.nunes@email.com', 'hash_senha11', 'salt11', '11999999900');
+INSERT INTO tb_pessoa (nome, data_nascimento, cpf, email, senha_hash, salt, telefone) VALUES ('Isabel Souza', '1985-03-22', '123.456.789-11', 'isabel.souza@email.com', 'hash_senha12', 'salt12', '11988888800');
+INSERT INTO tb_pessoa (nome, data_nascimento, cpf, email, senha_hash, salt, telefone) VALUES ('Vinicius Farias', '1992-06-30', '123.456.789-12', 'vinicius.farias@email.com', 'hash_senha13', 'salt13', '11977777700');
+INSERT INTO tb_pessoa (nome, data_nascimento, cpf, email, senha_hash, salt, telefone) VALUES ('Paula Borges', '1995-09-12', '123.456.789-13', 'paula.borges@email.com', 'hash_senha14', 'salt14', '11966666600');
+INSERT INTO tb_pessoa (nome, data_nascimento, cpf, email, senha_hash, salt, telefone) VALUES ('Hugo Matos', '1993-04-25', '123.456.789-14', 'hugo.matos@email.com', 'hash_senha15', 'salt15', '11955555500');
+INSERT INTO tb_pessoa (nome, data_nascimento, cpf, email, senha_hash, salt, telefone) VALUES ('Livia Cardoso', '1988-11-05', '123.456.789-15', 'livia.cardoso@email.com', 'hash_senha16', 'salt16', '11944444400');
+INSERT INTO tb_pessoa (nome, data_nascimento, cpf, email, senha_hash, salt, telefone) VALUES ('Bruno Almeida', '1987-08-20', '123.456.789-16', 'bruno.almeida@email.com', 'hash_senha17', 'salt17', '11933333300');
+INSERT INTO tb_pessoa (nome, data_nascimento, cpf, email, senha_hash, salt, telefone) VALUES ('Camila Ribeiro', '1991-02-10', '123.456.789-17', 'camila.ribeiro@email.com', 'hash_senha18', 'salt18', '11922222200');
+INSERT INTO tb_pessoa (nome, data_nascimento, cpf, email, senha_hash, salt, telefone) VALUES ('Daniel Martins', '1996-12-31', '123.456.789-18', 'daniel.martins@email.com', 'hash_senha19', 'salt19', '11911111100');
+INSERT INTO tb_pessoa (nome, data_nascimento, cpf, email, senha_hash, salt, telefone) VALUES ('Sara Rocha', '1994-07-18', '123.456.789-19', 'sara.rocha@email.com', 'hash_senha20', 'salt20', '11900000000');
+
+-- Associando 10 pessoas como funcionários na tabela tb_funcionario
+INSERT INTO tb_funcionario (id_pessoa, email_recuperacao, id_nivel_acesso) VALUES (1, 'joao.recupera@email.com', 1);
+INSERT INTO tb_funcionario (id_pessoa, email_recuperacao, id_nivel_acesso) VALUES (2, 'maria.recupera@email.com', 2);
+INSERT INTO tb_funcionario (id_pessoa, email_recuperacao, id_nivel_acesso) VALUES (3, 'pedro.recupera@email.com', 1);
+INSERT INTO tb_funcionario (id_pessoa, email_recuperacao, id_nivel_acesso) VALUES (4, 'ana.recupera@email.com', 3);
+INSERT INTO tb_funcionario (id_pessoa, email_recuperacao, id_nivel_acesso) VALUES (5, 'lucas.recupera@email.com', 1);
+INSERT INTO tb_funcionario (id_pessoa, email_recuperacao, id_nivel_acesso) VALUES (6, 'julia.recupera@email.com', 4);
+INSERT INTO tb_funcionario (id_pessoa, email_recuperacao, id_nivel_acesso) VALUES (7, 'fernando.recupera@email.com', 2);
+INSERT INTO tb_funcionario (id_pessoa, email_recuperacao, id_nivel_acesso) VALUES (8, 'clara.recupera@email.com', 5);
+INSERT INTO tb_funcionario (id_pessoa, email_recuperacao, id_nivel_acesso) VALUES (9, 'rafael.recupera@email.com', 1);
+INSERT INTO tb_funcionario (id_pessoa, email_recuperacao, id_nivel_acesso) VALUES (10, 'marina.recupera@email.com', 3);
+
+-- Associando 10 pessoas como usuários na tabela tb_usuario
+INSERT INTO tb_usuario (id_pessoa, saldo, estado, data_final_suspensao) VALUES (11, 500.00, 'ATIVO', NULL);
+INSERT INTO tb_usuario (id_pessoa, saldo, estado, data_final_suspensao) VALUES (12, 100.00, 'SUSPENSO', '2024-10-30');
+INSERT INTO tb_usuario (id_pessoa, saldo, estado, data_final_suspensao) VALUES (13, 250.00, 'BANIDO', NULL);
+INSERT INTO tb_usuario (id_pessoa, saldo, estado, data_final_suspensao) VALUES (14, 0.00, 'AGUARDANDO_VERIFICACAO', NULL);
+INSERT INTO tb_usuario (id_pessoa, saldo, estado, data_final_suspensao) VALUES (15, 800.00, 'ATIVO', NULL);
+INSERT INTO tb_usuario (id_pessoa, saldo, estado, data_final_suspensao) VALUES (16, 50.00, 'ATIVO', NULL);
+INSERT INTO tb_usuario (id_pessoa, saldo, estado, data_final_suspensao) VALUES (17, 0.00, 'SUSPENSO', '2024-12-01');
+INSERT INTO tb_usuario (id_pessoa, saldo, estado, data_final_suspensao) VALUES (18, 1200.00, 'ATIVO', NULL);
+INSERT INTO tb_usuario (id_pessoa, saldo, estado, data_final_suspensao) VALUES (19, 300.00, 'BANIDO', NULL);
+INSERT INTO tb_usuario (id_pessoa, saldo, estado, data_final_suspensao) VALUES (20, 75.00, 'ATIVO', NULL);
+
 
 -- Inserções na tabela de Transportadoras
 INSERT INTO tb_transportadora (nome, preco_km, cnpj, inscricao_estadual, telefone, email, endereco) VALUES ('Transportadora Alpha', 5.00, '12.345.678/0001-00', '1234567890', '(11) 98765-4321', 'alpha@transportadora.com', 'Rua A, 123');
@@ -44,59 +151,41 @@ INSERT INTO tb_transportadora (nome, preco_km, cnpj, inscricao_estadual, telefon
 INSERT INTO tb_transportadora (nome, preco_km, cnpj, inscricao_estadual, telefone, email, endereco) VALUES ('Transportadora Tau', 5.30, '91.234.567/0001-18', '9123456780', '(11) 98765-5432', 'tau@transportadora.com', 'Rua S, 802');
 INSERT INTO tb_transportadora (nome, preco_km, cnpj, inscricao_estadual, telefone, email, endereco) VALUES ('Transportadora Upsilon', 6.10, '02.345.678/0001-19', '0234567891', '(11) 98765-4321', 'upsilon@transportadora.com', 'Rua T, 913');
 
--- Inserindo dados na tabela tb_usuario
-INSERT INTO tb_usuario (nome, cpf, telefone, email, senha_hash, salt, email_de_recuperacao) VALUES ('João Silva', '123.456.789-00', '(11) 91234-5678', 'joao@exemplo.com', '$2a$10$JoaoHash.Aleatorio', 'salt_joao', 'joao.recuperacao@exemplo.com');
-INSERT INTO tb_usuario (nome, cpf, telefone, email, senha_hash, salt, email_de_recuperacao) VALUES ('Maria Oliveira', '234.567.890-11', '(21) 92345-6789', 'maria@exemplo.com', '$2a$10$MariaHash.Aleatorio', 'salt_maria', 'maria.recuperacao@exemplo.com');
-INSERT INTO tb_usuario (nome, cpf, telefone, email, senha_hash, salt, email_de_recuperacao) VALUES ('José Santos', '345.678.901-22', '(31) 93456-7890', 'jose@exemplo.com', '$2a$10$JoseHash.Aleatorio', 'salt_jose', 'jose.recuperacao@exemplo.com');
-INSERT INTO tb_usuario (nome, cpf, telefone, email, senha_hash, salt, email_de_recuperacao) VALUES ('Ana Souza', '456.789.012-33', '(41) 94567-8901', 'ana@exemplo.com', '$2a$10$AnaHash.Aleatorio', 'salt_ana', 'ana.recuperacao@exemplo.com');
-INSERT INTO tb_usuario (nome, cpf, telefone, email, senha_hash, salt, email_de_recuperacao) VALUES ('Pedro Lima', '567.890.123-44', '(51) 95678-9012', 'pedro@exemplo.com', '$2a$10$PedroHash.Aleatorio', 'salt_pedro', 'pedro.recuperacao@exemplo.com');
-INSERT INTO tb_usuario (nome, cpf, telefone, email, senha_hash, salt, email_de_recuperacao) VALUES ('Paula Costa', '678.901.234-55', '(61) 96789-0123', 'paula@exemplo.com', '$2a$10$PaulaHash.Aleatorio', 'salt_paula', 'paula.recuperacao@exemplo.com');
-INSERT INTO tb_usuario (nome, cpf, telefone, email, senha_hash, salt, email_de_recuperacao) VALUES ('Carlos Pereira', '789.012.345-66', '(71) 97890-1234', 'carlos@exemplo.com', '$2a$10$CarlosHash.Aleatorio', 'salt_carlos', 'carlos.recuperacao@exemplo.com');
-INSERT INTO tb_usuario (nome, cpf, telefone, email, senha_hash, salt, email_de_recuperacao) VALUES ('Julia Melo', '890.123.456-77', '(81) 98901-2345', 'julia@exemplo.com', '$2a$10$JuliaHash.Aleatorio', 'salt_julia', 'julia.recuperacao@exemplo.com');
-INSERT INTO tb_usuario (nome, cpf, telefone, email, senha_hash, salt, email_de_recuperacao) VALUES ('Roberto Almeida', '901.234.567-88', '(91) 99012-3456', 'roberto@exemplo.com', '$2a$10$RobertoHash.Aleatorio', 'salt_roberto', 'roberto.recuperacao@exemplo.com');
-INSERT INTO tb_usuario (nome, cpf, telefone, email, senha_hash, salt, email_de_recuperacao) VALUES ('Carla Fernandes', '012.345.678-99', '(11) 91123-4567', 'carla@exemplo.com', '$2a$10$CarlaHash.Aleatorio', 'salt_carla', 'carla.recuperacao@exemplo.com');
-INSERT INTO tb_usuario (nome, cpf, telefone, email, senha_hash, salt, email_de_recuperacao) VALUES ('Fernando Rodrigues', '111.222.333-44', '(12) 91234-0987', 'fernando@exemplo.com', '$2a$10$FernandoHash.Aleatorio', 'salt_fernando', 'fernando.recuperacao@exemplo.com');
-INSERT INTO tb_usuario (nome, cpf, telefone, email, senha_hash, salt, email_de_recuperacao) VALUES ('Isabela Castro', '222.333.444-55', '(22) 92345-1098', 'isabela@exemplo.com', '$2a$10$IsabelaHash.Aleatorio', 'salt_isabela', 'isabela.recuperacao@exemplo.com');
-INSERT INTO tb_usuario (nome, cpf, telefone, email, senha_hash, salt, email_de_recuperacao) VALUES ('Ricardo Barbosa', '333.444.555-66', '(32) 93456-2109', 'ricardo@exemplo.com', '$2a$10$RicardoHash.Aleatorio', 'salt_ricardo', 'ricardo.recuperacao@exemplo.com');
-INSERT INTO tb_usuario (nome, cpf, telefone, email, senha_hash, salt, email_de_recuperacao) VALUES ('Mariana Cunha', '444.555.666-77', '(42) 94567-3210', 'mariana@exemplo.com', '$2a$10$MarianaHash.Aleatorio', 'salt_mariana', 'mariana.recuperacao@exemplo.com');
-INSERT INTO tb_usuario (nome, cpf, telefone, email, senha_hash, salt, email_de_recuperacao) VALUES ('Gustavo Lima', '555.666.777-88', '(52) 95678-4321', 'gustavo@exemplo.com', '$2a$10$GustavoHash.Aleatorio', 'salt_gustavo', 'gustavo.recuperacao@exemplo.com');
-INSERT INTO tb_usuario (nome, cpf, telefone, email, senha_hash, salt, email_de_recuperacao) VALUES ('Amanda Gomes', '666.777.888-99', '(62) 96789-5432', 'amanda@exemplo.com', '$2a$10$AmandaHash.Aleatorio', 'salt_amanda', 'amanda.recuperacao@exemplo.com');
-INSERT INTO tb_usuario (nome, cpf, telefone, email, senha_hash, salt, email_de_recuperacao) VALUES ('Rafael Freitas', '777.888.999-00', '(72) 97890-6543', 'rafael@exemplo.com', '$2a$10$RafaelHash.Aleatorio', 'salt_rafael', 'rafael.recuperacao@exemplo.com');
-INSERT INTO tb_usuario (nome, cpf, telefone, email, senha_hash, salt, email_de_recuperacao) VALUES ('Bruna Cardoso', '888.999.000-11', '(82) 98901-7654', 'bruna@exemplo.com', '$2a$10$BrunaHash.Aleatorio', 'salt_bruna', 'bruna.recuperacao@exemplo.com');
-INSERT INTO tb_usuario (nome, cpf, telefone, email, senha_hash, salt, email_de_recuperacao) VALUES ('Leonardo Dias', '999.000.111-22', '(92) 99012-8765', 'leonardo@exemplo.com', '$2a$10$LeonardoHash.Aleatorio', 'salt_leonardo', 'leonardo.recuperacao@exemplo.com');
-INSERT INTO tb_usuario (nome, cpf, telefone, email, senha_hash, salt, email_de_recuperacao) VALUES ('Vitória Moraes', '000.111.222-33', '(13) 91123-9876', 'vitoria@exemplo.com', '$2a$10$VitoriaHash.Aleatorio', 'salt_vitoria', 'vitoria.recuperacao@exemplo.com');
+-- Associando cada usuário a um role na tabela tb_usuario_role
+INSERT INTO tb_usuario_role (id_usuario, id_role) VALUES (11, 1); -- Usuário com id_pessoa 11 recebe o role 1 (ex: ADMINISTRADOR)
+INSERT INTO tb_usuario_role (id_usuario, id_role) VALUES (12, 2); -- Usuário com id_pessoa 12 recebe o role 2 (ex: GERENTE)
+INSERT INTO tb_usuario_role (id_usuario, id_role) VALUES (13, 3); -- Usuário com id_pessoa 13 recebe o role 3 (ex: SUPORTE)
+INSERT INTO tb_usuario_role (id_usuario, id_role) VALUES (14, 4); -- Usuário com id_pessoa 14 recebe o role 4 (ex: OPERADOR_FINANCEIRO)
+INSERT INTO tb_usuario_role (id_usuario, id_role) VALUES (15, 5); -- Usuário com id_pessoa 15 recebe o role 5 (ex: GERENTE_DE_VENDAS)
+INSERT INTO tb_usuario_role (id_usuario, id_role) VALUES (16, 1); -- Usuário com id_pessoa 16 recebe o role 1 (ex: ADMINISTRADOR)
+INSERT INTO tb_usuario_role (id_usuario, id_role) VALUES (17, 2); -- Usuário com id_pessoa 17 recebe o role 2 (ex: GERENTE)
+INSERT INTO tb_usuario_role (id_usuario, id_role) VALUES (18, 3); -- Usuário com id_pessoa 18 recebe o role 3 (ex: SUPORTE)
+INSERT INTO tb_usuario_role (id_usuario, id_role) VALUES (19, 4); -- Usuário com id_pessoa 19 recebe o role 4 (ex: OPERADOR_FINANCEIRO)
+INSERT INTO tb_usuario_role (id_usuario, id_role) VALUES (20, 5); -- Usuário com id_pessoa 20 recebe o role 5 (ex: GERENTE_DE_VENDAS)
 
--- Inserindo dados na tabela tb_endereco
-INSERT INTO tb_endereco (id_usuario, rua, numero, bairro, cidade, estado, cep, complemento, is_principal) VALUES (1, 'Rua A', '123', 'Centro', 'São Paulo', 'SP', '01000-000', NULL, TRUE);
-INSERT INTO tb_endereco (id_usuario, rua, numero, bairro, cidade, estado, cep, complemento, is_principal) VALUES (2, 'Rua B', '456', 'Jardim', 'Rio de Janeiro', 'RJ', '02000-000', NULL, TRUE);
-INSERT INTO tb_endereco (id_usuario, rua, numero, bairro, cidade, estado, cep, complemento, is_principal) VALUES (3, 'Rua C', '789', 'Vila', 'Belo Horizonte', 'MG', '03000-000', NULL, TRUE);
-INSERT INTO tb_endereco (id_usuario, rua, numero, bairro, cidade, estado, cep, complemento, is_principal) VALUES (4, 'Rua D', '012', 'Centro', 'Curitiba', 'PR', '04000-000', NULL, TRUE);
-INSERT INTO tb_endereco (id_usuario, rua, numero, bairro, cidade, estado, cep, complemento, is_principal) VALUES (5, 'Rua E', '345', 'Bairro', 'Porto Alegre', 'RS', '05000-000', NULL, TRUE);
-INSERT INTO tb_endereco (id_usuario, rua, numero, bairro, cidade, estado, cep, complemento, is_principal) VALUES (6, 'Rua F', '678', 'Centro', 'Brasília', 'DF', '06000-000', NULL, TRUE);
-INSERT INTO tb_endereco (id_usuario, rua, numero, bairro, cidade, estado, cep, complemento, is_principal) VALUES (7, 'Rua G', '901', 'Jardim', 'Salvador', 'BA', '07000-000', NULL, TRUE);
-INSERT INTO tb_endereco (id_usuario, rua, numero, bairro, cidade, estado, cep, complemento, is_principal) VALUES (8, 'Rua H', '234', 'Vila', 'Fortaleza', 'CE', '08000-000', NULL, TRUE);
-INSERT INTO tb_endereco (id_usuario, rua, numero, bairro, cidade, estado, cep, complemento, is_principal) VALUES (9, 'Rua I', '567', 'Centro', 'Manaus', 'AM', '09000-000', NULL, TRUE);
-INSERT INTO tb_endereco (id_usuario, rua, numero, bairro, cidade, estado, cep, complemento, is_principal) VALUES (10, 'Rua J', '890', 'Bairro', 'Recife', 'PE', '10000-000', NULL, TRUE);
-INSERT INTO tb_endereco (id_usuario, rua, numero, bairro, cidade, estado, cep, complemento, is_principal) VALUES (11, 'Rua K', '135', 'Vila Nova', 'Campinas', 'SP', '01100-000', 'Ap 101', TRUE);
-INSERT INTO tb_endereco (id_usuario, rua, numero, bairro, cidade, estado, cep, complemento, is_principal) VALUES (12, 'Rua L', '246', 'Centro', 'Niterói', 'RJ', '02200-000', NULL, TRUE);
-INSERT INTO tb_endereco (id_usuario, rua, numero, bairro, cidade, estado, cep, complemento, is_principal) VALUES (13, 'Rua M', '357', 'Jardim', 'Contagem', 'MG', '03300-000', 'Casa 2', TRUE);
-INSERT INTO tb_endereco (id_usuario, rua, numero, bairro, cidade, estado, cep, complemento, is_principal) VALUES (14, 'Rua N', '468', 'Bairro', 'São José dos Pinhais', 'PR', '04400-000', NULL, TRUE);
-INSERT INTO tb_endereco (id_usuario, rua, numero, bairro, cidade, estado, cep, complemento, is_principal) VALUES (15, 'Rua O', '579', 'Centro', 'Canoas', 'RS', '05500-000', 'Ap 202', TRUE);
-INSERT INTO tb_endereco (id_usuario, rua, numero, bairro, cidade, estado, cep, complemento, is_principal) VALUES (16, 'Rua P', '680', 'Asa Norte', 'Brasília', 'DF', '06600-000', NULL, TRUE);
-INSERT INTO tb_endereco (id_usuario, rua, numero, bairro, cidade, estado, cep, complemento, is_principal) VALUES (17, 'Rua Q', '791', 'Pituba', 'Salvador', 'BA', '07700-000', 'Casa 3', TRUE);
-INSERT INTO tb_endereco (id_usuario, rua, numero, bairro, cidade, estado, cep, complemento, is_principal) VALUES (18, 'Rua R', '802', 'Meireles', 'Fortaleza', 'CE', '08800-000', NULL, TRUE);
-INSERT INTO tb_endereco (id_usuario, rua, numero, bairro, cidade, estado, cep, complemento, is_principal) VALUES (19, 'Rua S', '913', 'Adrianópolis', 'Manaus', 'AM', '09900-000', 'Ap 303', TRUE);
-INSERT INTO tb_endereco (id_usuario, rua, numero, bairro, cidade, estado, cep, complemento, is_principal) VALUES (20, 'Rua T', '024', 'Boa Viagem', 'Recife', 'PE', '10100-000', NULL, TRUE);
-INSERT INTO tb_endereco (id_usuario, rua, numero, bairro, cidade, estado, cep, complemento, is_principal) VALUES (1, 'Rua X', '987', 'Outro Bairro', 'São Paulo', 'SP', '01234-567', 'Fundos', FALSE);
-INSERT INTO tb_endereco (id_usuario, rua, numero, bairro, cidade, estado, cep, complemento, is_principal) VALUES (2, 'Rua Y', '654', 'Zona Sul', 'Rio de Janeiro', 'RJ', '23456-789', NULL, FALSE);
-INSERT INTO tb_endereco (id_usuario, rua, numero, bairro, cidade, estado, cep, complemento, is_principal) VALUES (3, 'Rua Z', '321', 'Região Leste', 'Belo Horizonte', 'MG', '34567-890', 'Bloco A', FALSE);
-INSERT INTO tb_endereco (id_usuario, rua, numero, bairro, cidade, estado, cep, complemento, is_principal) VALUES (4, 'Rua W', '159', 'Novo Bairro', 'Curitiba', 'PR', '45678-901', NULL, FALSE);
-INSERT INTO tb_endereco (id_usuario, rua, numero, bairro, cidade, estado, cep, complemento, is_principal) VALUES (5, 'Rua V', '753', 'Litoral', 'Porto Alegre', 'RS', '56789-012', 'Casa 10', FALSE);
-INSERT INTO tb_endereco (id_usuario, rua, numero, bairro, cidade, estado, cep, complemento, is_principal) VALUES (6, 'Rua U', '086', 'Asa Sul', 'Brasília', 'DF', '67890-123', NULL, FALSE);
-INSERT INTO tb_endereco (id_usuario, rua, numero, bairro, cidade, estado, cep, complemento, is_principal) VALUES (7, 'Rua T', '420', 'Barra', 'Salvador', 'BA', '78901-234', 'Ap 501', FALSE);
-INSERT INTO tb_endereco (id_usuario, rua, numero, bairro, cidade, estado, cep, complemento, is_principal) VALUES (8, 'Rua S', '137', 'Praia', 'Fortaleza', 'CE', '89012-345', NULL, FALSE);
-INSERT INTO tb_endereco (id_usuario, rua, numero, bairro, cidade, estado, cep, complemento, is_principal) VALUES (9, 'Rua R', '963', 'Centro-Sul', 'Manaus', 'AM', '90123-456', 'Casa 5', FALSE);
-INSERT INTO tb_endereco (id_usuario, rua, numero, bairro, cidade, estado, cep, complemento, is_principal) VALUES (10, 'Rua Q', '258', 'Zona Norte', 'Recife', 'PE', '01234-567', NULL, FALSE);
+-- Endereços principais
+INSERT INTO tb_endereco (id_usuario, rua, numero, bairro, cidade, estado, cep, complemento, is_principal) VALUES (11, 'Rua A', '123', 'Centro', 'São Paulo', 'SP', '01000-000', NULL, TRUE);
+INSERT INTO tb_endereco (id_usuario, rua, numero, bairro, cidade, estado, cep, complemento, is_principal) VALUES (12, 'Rua B', '456', 'Jardim', 'Rio de Janeiro', 'RJ', '02000-000', NULL, TRUE);
+INSERT INTO tb_endereco (id_usuario, rua, numero, bairro, cidade, estado, cep, complemento, is_principal) VALUES (13, 'Rua C', '789', 'Vila', 'Belo Horizonte', 'MG', '03000-000', NULL, TRUE);
+INSERT INTO tb_endereco (id_usuario, rua, numero, bairro, cidade, estado, cep, complemento, is_principal) VALUES (14, 'Rua D', '012', 'Centro', 'Curitiba', 'PR', '04000-000', NULL, TRUE);
+INSERT INTO tb_endereco (id_usuario, rua, numero, bairro, cidade, estado, cep, complemento, is_principal) VALUES (15, 'Rua E', '345', 'Bairro', 'Porto Alegre', 'RS', '05000-000', NULL, TRUE);
+INSERT INTO tb_endereco (id_usuario, rua, numero, bairro, cidade, estado, cep, complemento, is_principal) VALUES (16, 'Rua F', '678', 'Centro', 'Brasília', 'DF', '06000-000', NULL, TRUE);
+INSERT INTO tb_endereco (id_usuario, rua, numero, bairro, cidade, estado, cep, complemento, is_principal) VALUES (17, 'Rua G', '901', 'Jardim', 'Salvador', 'BA', '07000-000', NULL, TRUE);
+INSERT INTO tb_endereco (id_usuario, rua, numero, bairro, cidade, estado, cep, complemento, is_principal) VALUES (18, 'Rua H', '234', 'Vila', 'Fortaleza', 'CE', '08000-000', NULL, TRUE);
+INSERT INTO tb_endereco (id_usuario, rua, numero, bairro, cidade, estado, cep, complemento, is_principal) VALUES (19, 'Rua I', '567', 'Centro', 'Manaus', 'AM', '09000-000', NULL, TRUE);
+INSERT INTO tb_endereco (id_usuario, rua, numero, bairro, cidade, estado, cep, complemento, is_principal) VALUES (20, 'Rua J', '890', 'Bairro', 'Recife', 'PE', '10000-000', NULL, TRUE);
+
+-- Endereços secundários
+INSERT INTO tb_endereco (id_usuario, rua, numero, bairro, cidade, estado, cep, complemento, is_principal) VALUES (11, 'Rua X', '987', 'Outro Bairro', 'São Paulo', 'SP', '01234-567', 'Fundos', FALSE);
+INSERT INTO tb_endereco (id_usuario, rua, numero, bairro, cidade, estado, cep, complemento, is_principal) VALUES (12, 'Rua Y', '654', 'Zona Sul', 'Rio de Janeiro', 'RJ', '23456-789', NULL, FALSE);
+INSERT INTO tb_endereco (id_usuario, rua, numero, bairro, cidade, estado, cep, complemento, is_principal) VALUES (13, 'Rua Z', '321', 'Região Leste', 'Belo Horizonte', 'MG', '34567-890', 'Bloco A', FALSE);
+INSERT INTO tb_endereco (id_usuario, rua, numero, bairro, cidade, estado, cep, complemento, is_principal) VALUES (14, 'Rua W', '159', 'Novo Bairro', 'Curitiba', 'PR', '45678-901', NULL, FALSE);
+INSERT INTO tb_endereco (id_usuario, rua, numero, bairro, cidade, estado, cep, complemento, is_principal) VALUES (15, 'Rua V', '753', 'Litoral', 'Porto Alegre', 'RS', '56789-012', 'Casa 10', FALSE);
+INSERT INTO tb_endereco (id_usuario, rua, numero, bairro, cidade, estado, cep, complemento, is_principal) VALUES (16, 'Rua U', '086', 'Asa Sul', 'Brasília', 'DF', '67890-123', NULL, FALSE);
+INSERT INTO tb_endereco (id_usuario, rua, numero, bairro, cidade, estado, cep, complemento, is_principal) VALUES (17, 'Rua T', '420', 'Barra', 'Salvador', 'BA', '78901-234', 'Ap 501', FALSE);
+INSERT INTO tb_endereco (id_usuario, rua, numero, bairro, cidade, estado, cep, complemento, is_principal) VALUES (18, 'Rua S', '137', 'Praia', 'Fortaleza', 'CE', '89012-345', NULL, FALSE);
+INSERT INTO tb_endereco (id_usuario, rua, numero, bairro, cidade, estado, cep, complemento, is_principal) VALUES (19, 'Rua R', '963', 'Centro-Sul', 'Manaus', 'AM', '90123-456', 'Casa 5', FALSE);
+INSERT INTO tb_endereco (id_usuario, rua, numero, bairro, cidade, estado, cep, complemento, is_principal) VALUES (20, 'Rua Q', '258', 'Zona Norte', 'Recife', 'PE', '01234-567', NULL, FALSE);
 
 -- Inserções na tabela de Produtos
 INSERT INTO tb_produto (nome, preco, descricao) VALUES ('Caneta Azul', 2.50, 'Caneta esferográfica azul');
@@ -142,7 +231,6 @@ INSERT INTO tb_estoque (id_produto, quantidade, localizacao) VALUES (18, 120, 'P
 INSERT INTO tb_estoque (id_produto, quantidade, localizacao) VALUES (19, 40, 'Prateleira S9');
 INSERT INTO tb_estoque (id_produto, quantidade, localizacao) VALUES (20, 80, 'Prateleira T10');
 
-
 -- Inserções na tabela de Categorias
 INSERT INTO tb_categoria (nome) VALUES ('Material Escolar');
 INSERT INTO tb_categoria (nome) VALUES ('Papelaria');
@@ -164,7 +252,6 @@ INSERT INTO tb_categoria (nome) VALUES ('Informática');
 INSERT INTO tb_categoria (nome) VALUES ('Saúde');
 INSERT INTO tb_categoria (nome) VALUES ('Música');
 INSERT INTO tb_categoria (nome) VALUES ('Filmes e Séries');
-
 
 -- Inserções na tabela de Produtos e Categorias
 INSERT INTO tb_produto_categoria (id_produto, id_categoria) VALUES (1, 1);
@@ -189,16 +276,6 @@ INSERT INTO tb_produto_categoria (id_produto, id_categoria) VALUES (19, 4);
 INSERT INTO tb_produto_categoria (id_produto, id_categoria) VALUES (20, 3);
 
 -- Inserções na tabela de Lista de Desejos
-INSERT INTO tb_lista_desejos (id_usuario) VALUES (1);
-INSERT INTO tb_lista_desejos (id_usuario) VALUES (2);
-INSERT INTO tb_lista_desejos (id_usuario) VALUES (3);
-INSERT INTO tb_lista_desejos (id_usuario) VALUES (4);
-INSERT INTO tb_lista_desejos (id_usuario) VALUES (5);
-INSERT INTO tb_lista_desejos (id_usuario) VALUES (6);
-INSERT INTO tb_lista_desejos (id_usuario) VALUES (7);
-INSERT INTO tb_lista_desejos (id_usuario) VALUES (8);
-INSERT INTO tb_lista_desejos (id_usuario) VALUES (9);
-INSERT INTO tb_lista_desejos (id_usuario) VALUES (10);
 INSERT INTO tb_lista_desejos (id_usuario) VALUES (11);
 INSERT INTO tb_lista_desejos (id_usuario) VALUES (12);
 INSERT INTO tb_lista_desejos (id_usuario) VALUES (13);
@@ -221,28 +298,8 @@ INSERT INTO tb_lista_desejos_produto (id_lista_desejos, id_produto) VALUES (7, 1
 INSERT INTO tb_lista_desejos_produto (id_lista_desejos, id_produto) VALUES (8, 9);
 INSERT INTO tb_lista_desejos_produto (id_lista_desejos, id_produto) VALUES (9, 2);
 INSERT INTO tb_lista_desejos_produto (id_lista_desejos, id_produto) VALUES (10, 11);
-INSERT INTO tb_lista_desejos_produto (id_lista_desejos, id_produto) VALUES (11, 5);
-INSERT INTO tb_lista_desejos_produto (id_lista_desejos, id_produto) VALUES (12, 14);
-INSERT INTO tb_lista_desejos_produto (id_lista_desejos, id_produto) VALUES (13, 19);
-INSERT INTO tb_lista_desejos_produto (id_lista_desejos, id_produto) VALUES (14, 7);
-INSERT INTO tb_lista_desejos_produto (id_lista_desejos, id_produto) VALUES (15, 16);
-INSERT INTO tb_lista_desejos_produto (id_lista_desejos, id_produto) VALUES (16, 10);
-INSERT INTO tb_lista_desejos_produto (id_lista_desejos, id_produto) VALUES (17, 4);
-INSERT INTO tb_lista_desejos_produto (id_lista_desejos, id_produto) VALUES (18, 13);
-INSERT INTO tb_lista_desejos_produto (id_lista_desejos, id_produto) VALUES (19, 17);
-INSERT INTO tb_lista_desejos_produto (id_lista_desejos, id_produto) VALUES (20, 20);
 
 -- Inserções na tabela de Carrinho de Compras
-INSERT INTO tb_carrinho (id_usuario) VALUES (1);
-INSERT INTO tb_carrinho (id_usuario) VALUES (2);
-INSERT INTO tb_carrinho (id_usuario) VALUES (3);
-INSERT INTO tb_carrinho (id_usuario) VALUES (4);
-INSERT INTO tb_carrinho (id_usuario) VALUES (5);
-INSERT INTO tb_carrinho (id_usuario) VALUES (6);
-INSERT INTO tb_carrinho (id_usuario) VALUES (7);
-INSERT INTO tb_carrinho (id_usuario) VALUES (8);
-INSERT INTO tb_carrinho (id_usuario) VALUES (9);
-INSERT INTO tb_carrinho (id_usuario) VALUES (10);
 INSERT INTO tb_carrinho (id_usuario) VALUES (11);
 INSERT INTO tb_carrinho (id_usuario) VALUES (12);
 INSERT INTO tb_carrinho (id_usuario) VALUES (13);
@@ -254,28 +311,19 @@ INSERT INTO tb_carrinho (id_usuario) VALUES (18);
 INSERT INTO tb_carrinho (id_usuario) VALUES (19);
 INSERT INTO tb_carrinho (id_usuario) VALUES (20);
 
--- Inserções na tabela de Carrinho de Compras e Produtos
-INSERT INTO tb_carrinho_produto (id_carrinho, id_produto, quantidade) VALUES (1, 1, 2);
-INSERT INTO tb_carrinho_produto (id_carrinho, id_produto, quantidade) VALUES (2, 2, 3);
-INSERT INTO tb_carrinho_produto (id_carrinho, id_produto, quantidade) VALUES (3, 3, 1);
-INSERT INTO tb_carrinho_produto (id_carrinho, id_produto, quantidade) VALUES (4, 4, 5);
-INSERT INTO tb_carrinho_produto (id_carrinho, id_produto, quantidade) VALUES (5, 5, 4);
-INSERT INTO tb_carrinho_produto (id_carrinho, id_produto, quantidade) VALUES (6, 6, 2);
-INSERT INTO tb_carrinho_produto (id_carrinho, id_produto, quantidade) VALUES (7, 7, 6);
-INSERT INTO tb_carrinho_produto (id_carrinho, id_produto, quantidade) VALUES (8, 8, 7);
-INSERT INTO tb_carrinho_produto (id_carrinho, id_produto, quantidade) VALUES (9, 9, 3);
-INSERT INTO tb_carrinho_produto (id_carrinho, id_produto, quantidade) VALUES (10, 10, 1);
-INSERT INTO tb_carrinho_produto (id_carrinho, id_produto, quantidade) VALUES (11, 11, 1);
-INSERT INTO tb_carrinho_produto (id_carrinho, id_produto, quantidade) VALUES (12, 12, 2);
-INSERT INTO tb_carrinho_produto (id_carrinho, id_produto, quantidade) VALUES (13, 13, 3);
-INSERT INTO tb_carrinho_produto (id_carrinho, id_produto, quantidade) VALUES (14, 14, 1);
-INSERT INTO tb_carrinho_produto (id_carrinho, id_produto, quantidade) VALUES (15, 15, 2);
-INSERT INTO tb_carrinho_produto (id_carrinho, id_produto, quantidade) VALUES (16, 16, 3);
-INSERT INTO tb_carrinho_produto (id_carrinho, id_produto, quantidade) VALUES (17, 17, 1);
-INSERT INTO tb_carrinho_produto (id_carrinho, id_produto, quantidade) VALUES (18, 18, 4);
-INSERT INTO tb_carrinho_produto (id_carrinho, id_produto, quantidade) VALUES (19, 19, 2);
-INSERT INTO tb_carrinho_produto (id_carrinho, id_produto, quantidade) VALUES (20, 20, 1);
+SELECT * FROM tb_carrinho;
 
+-- Inserções na tabela de Carrinho de Compras e Produtos
+INSERT INTO tb_carrinho_produto (id_carrinho, id_produto, quantidade) VALUES (11, 1, 2);
+INSERT INTO tb_carrinho_produto (id_carrinho, id_produto, quantidade) VALUES (12, 2, 3);
+INSERT INTO tb_carrinho_produto (id_carrinho, id_produto, quantidade) VALUES (13, 3, 1);
+INSERT INTO tb_carrinho_produto (id_carrinho, id_produto, quantidade) VALUES (14, 4, 5);
+INSERT INTO tb_carrinho_produto (id_carrinho, id_produto, quantidade) VALUES (15, 5, 4);
+INSERT INTO tb_carrinho_produto (id_carrinho, id_produto, quantidade) VALUES (16, 6, 2);
+INSERT INTO tb_carrinho_produto (id_carrinho, id_produto, quantidade) VALUES (17, 7, 6);
+INSERT INTO tb_carrinho_produto (id_carrinho, id_produto, quantidade) VALUES (18, 8, 7);
+INSERT INTO tb_carrinho_produto (id_carrinho, id_produto, quantidade) VALUES (19, 9, 3);
+INSERT INTO tb_carrinho_produto (id_carrinho, id_produto, quantidade) VALUES (20, 10, 1);
 
 -- Inserindo dados na tabela tb_cupom
 INSERT INTO tb_cupom (nome, desconto, data_inicio, data_fim) VALUES ('Cupom1', 5.00, '2024-08-01 00:00:00', '2024-08-31 23:59:59');
@@ -289,28 +337,27 @@ INSERT INTO tb_cupom (nome, desconto, data_inicio, data_fim) VALUES ('Cupom8', 4
 INSERT INTO tb_cupom (nome, desconto, data_inicio, data_fim) VALUES ('Cupom9', 45.00, '2024-08-01 00:00:00', '2024-08-31 23:59:59');
 INSERT INTO tb_cupom (nome, desconto, data_inicio, data_fim) VALUES ('Cupom10', 50.00, '2024-08-01 00:00:00', '2024-08-31 23:59:59');
 
-
 -- Inserindo dados na tabela tb_compra
-INSERT INTO tb_compra (data_realizada, id_usuario, id_endereco) VALUES ('2024-08-01 10:00:00', 1, 1);
-INSERT INTO tb_compra (data_realizada, id_usuario, id_endereco) VALUES ('2024-08-02 11:30:00', 2, 2);
-INSERT INTO tb_compra (data_realizada, id_usuario, id_endereco) VALUES ('2024-08-03 14:15:00', 3, 3);
-INSERT INTO tb_compra (data_realizada, id_usuario, id_endereco) VALUES ('2024-08-04 16:20:00', 4, 4);
-INSERT INTO tb_compra (data_realizada, id_usuario, id_endereco) VALUES ('2024-08-05 18:00:00', 5, 5);
-INSERT INTO tb_compra (data_realizada, id_usuario, id_endereco) VALUES ('2024-08-06 09:00:00', 1, 1);
-INSERT INTO tb_compra (data_realizada, id_usuario, id_endereco) VALUES ('2024-08-07 12:00:00', 2, 2);
-INSERT INTO tb_compra (data_realizada, id_usuario, id_endereco) VALUES ('2024-08-08 15:00:00', 3, 3);
-INSERT INTO tb_compra (data_realizada, id_usuario, id_endereco) VALUES ('2024-08-09 17:00:00', 4, 4);
-INSERT INTO tb_compra (data_realizada, id_usuario, id_endereco) VALUES ('2024-08-10 19:30:00', 5, 5);
-INSERT INTO tb_compra (data_realizada, id_usuario, id_endereco) VALUES ('2024-08-11 20:00:00', 6, 6);
-INSERT INTO tb_compra (data_realizada, id_usuario, id_endereco) VALUES ('2024-08-12 08:30:00', 7, 7);
-INSERT INTO tb_compra (data_realizada, id_usuario, id_endereco) VALUES ('2024-08-13 13:45:00', 8, 8);
-INSERT INTO tb_compra (data_realizada, id_usuario, id_endereco) VALUES ('2024-08-14 17:10:00', 9, 9);
-INSERT INTO tb_compra (data_realizada, id_usuario, id_endereco) VALUES ('2024-08-15 10:30:00', 10, 10);
-INSERT INTO tb_compra (data_realizada, id_usuario, id_endereco) VALUES ('2024-08-16 14:00:00', 1, 1);
-INSERT INTO tb_compra (data_realizada, id_usuario, id_endereco) VALUES ('2024-08-17 11:15:00', 2, 2);
-INSERT INTO tb_compra (data_realizada, id_usuario, id_endereco) VALUES ('2024-08-18 16:45:00', 3, 3);
-INSERT INTO tb_compra (data_realizada, id_usuario, id_endereco) VALUES ('2024-08-19 09:30:00', 4, 4);
-INSERT INTO tb_compra (data_realizada, id_usuario, id_endereco) VALUES ('2024-08-20 12:45:00', 5, 5);
+INSERT INTO tb_compra (data_realizada, id_usuario, id_endereco) VALUES ('2024-08-01 10:00:00', 11, 1);
+INSERT INTO tb_compra (data_realizada, id_usuario, id_endereco) VALUES ('2024-08-02 11:30:00', 12, 2);
+INSERT INTO tb_compra (data_realizada, id_usuario, id_endereco) VALUES ('2024-08-03 14:15:00', 13, 3);
+INSERT INTO tb_compra (data_realizada, id_usuario, id_endereco) VALUES ('2024-08-04 16:20:00', 14, 4);
+INSERT INTO tb_compra (data_realizada, id_usuario, id_endereco) VALUES ('2024-08-05 18:00:00', 15, 5);
+INSERT INTO tb_compra (data_realizada, id_usuario, id_endereco) VALUES ('2024-08-06 09:00:00', 11, 1);
+INSERT INTO tb_compra (data_realizada, id_usuario, id_endereco) VALUES ('2024-08-07 12:00:00', 12, 2);
+INSERT INTO tb_compra (data_realizada, id_usuario, id_endereco) VALUES ('2024-08-08 15:00:00', 13, 3);
+INSERT INTO tb_compra (data_realizada, id_usuario, id_endereco) VALUES ('2024-08-09 17:00:00', 14, 4);
+INSERT INTO tb_compra (data_realizada, id_usuario, id_endereco) VALUES ('2024-08-10 19:30:00', 15, 5);
+INSERT INTO tb_compra (data_realizada, id_usuario, id_endereco) VALUES ('2024-08-11 20:00:00', 16, 6);
+INSERT INTO tb_compra (data_realizada, id_usuario, id_endereco) VALUES ('2024-08-12 08:30:00', 17, 7);
+INSERT INTO tb_compra (data_realizada, id_usuario, id_endereco) VALUES ('2024-08-13 13:45:00', 18, 8);
+INSERT INTO tb_compra (data_realizada, id_usuario, id_endereco) VALUES ('2024-08-14 17:10:00', 19, 9);
+INSERT INTO tb_compra (data_realizada, id_usuario, id_endereco) VALUES ('2024-08-15 10:30:00', 20, 10);
+INSERT INTO tb_compra (data_realizada, id_usuario, id_endereco) VALUES ('2024-08-16 14:00:00', 11, 1);
+INSERT INTO tb_compra (data_realizada, id_usuario, id_endereco) VALUES ('2024-08-17 11:15:00', 12, 2);
+INSERT INTO tb_compra (data_realizada, id_usuario, id_endereco) VALUES ('2024-08-18 16:45:00', 13, 3);
+INSERT INTO tb_compra (data_realizada, id_usuario, id_endereco) VALUES ('2024-08-19 09:30:00', 14, 4);
+INSERT INTO tb_compra (data_realizada, id_usuario, id_endereco) VALUES ('2024-08-20 12:45:00', 15, 5);
 
 -- Inserindo dados na tabela tb_compra_produto
 -- Compra 1

@@ -2,5 +2,6 @@
 <project version="4">
   <component name="SqlDialectMappings">
     <file url="file://$PROJECT_DIR$/banco-de-dados/livraria-papelaria/mysql/db_papelaria_livraria.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/banco-de-dados/livraria-papelaria/mysql/db_papelaria_livraria_seed.sql" dialect="MySQL" />
   </component>
 </project>
