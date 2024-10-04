@@ -116,7 +116,7 @@ CREATE TABLE IF NOT EXISTS tb_chamado
     id_funcionario   BIGINT UNSIGNED                                         NOT NULL,   -- FK para a tabela de funcionários
     titulo           VARCHAR(50)                                            NOT NULL,
     descricao        TEXT                                                    NOT NULL,
-    estado           ENUM ('ABERTO', 'EM_ANDAMENTO', 'RESOLVIDO', 'FECHADO') NOT NULL DEFAULT 'ABERTO',
+    estado           ENUM ('ABERTO', 'EM_ANDAMENTO', 'RESOLVIDO', 'CANCELADO') NOT NULL DEFAULT 'ABERTO',
     data_criacao     DATETIME                                               NOT NULL,
     data_finalizacao DATETIME                                               NULL,
 
@@ -152,25 +152,25 @@ CREATE TABLE IF NOT EXISTS tb_forma_pagamento
 -- Tabela para armazenar detalhes específicos do PIX
 CREATE TABLE IF NOT EXISTS tb_pix
 (
-    id_forma_pgto BIGINT UNSIGNED NOT NULL,
+    id_forma_pagamento BIGINT UNSIGNED NOT NULL,
     chave         VARCHAR(100)    NOT NULL,
 
-    PRIMARY KEY (id_forma_pgto),
-    FOREIGN KEY (id_forma_pgto) REFERENCES tb_forma_pagamento (id)
+    PRIMARY KEY (id_forma_pagamento),
+    FOREIGN KEY (id_forma_pagamento) REFERENCES tb_forma_pagamento (id)
 );
 
 -- Tabela para armazenar detalhes específicos do Cartão de Crédito
 CREATE TABLE IF NOT EXISTS tb_cartao
 (
-    id_forma_pgto    BIGINT UNSIGNED            NOT NULL,
+    id_forma_pagamento    BIGINT UNSIGNED            NOT NULL,
     numero           VARCHAR(20)                NOT NULL,
     validade         DATE                       NOT NULL,
     codigo_seguranca VARCHAR(10)                NOT NULL,
     nome_dono        VARCHAR(100)               NOT NULL,
     tipo             ENUM ('DEBITO', 'CREDITO') NOT NULL,
 
-    PRIMARY KEY (id_forma_pgto),
-    FOREIGN KEY (id_forma_pgto) REFERENCES tb_forma_pagamento (id)
+    PRIMARY KEY (id_forma_pagamento),
+    FOREIGN KEY (id_forma_pagamento) REFERENCES tb_forma_pagamento (id)
 );
 
 -- Tabela para armazenar endereços dos usuários
@@ -328,8 +328,7 @@ CREATE TABLE IF NOT EXISTS tb_avaliacao
 -- Tabela de rastreamento de compras, com relação 1:1 com tb_compras
 CREATE TABLE IF NOT EXISTS tb_entrega
 (
-    id                BIGINT UNSIGNED AUTO_INCREMENT,
-    id_compra         BIGINT UNSIGNED NOT NULL,
+    id_compra_produto         BIGINT UNSIGNED NOT NULL,
     id_transportadora BIGINT UNSIGNED NOT NULL,
     codigo_rastreio   VARCHAR(100)    NULL,
     data_postado      DATETIME        NULL,
@@ -338,17 +337,20 @@ CREATE TABLE IF NOT EXISTS tb_entrega
     data_devolucao_transito DATETIME        NULL,
     data_devolucao_recebido DATETIME        NULL,
     estado    ENUM (
-        'ENVIADO',
+        'AGUARDANDO_PAGAMENTO_COMPRA',
+        'EM_PREPARO',
+        'POSTADO',
         'EM_TRANSITO',
         'ENTREGUE',
-        'NAO_ENTREGUE'
+        'NAO_ENTREGUE',
+        'D_AGUARDANDO_TRANSPORTADORA',
+        'D_EM_TRANSITO',
+        'DEVOLVIDO'
         )                             NULL,
     finalizada BOOLEAN DEFAULT FALSE,
 
-    PRIMARY KEY (id),
-    UNIQUE KEY uk_id_compra (id_compra), -- Garante que cada compra tenha apenas uma entrega
-
-    FOREIGN KEY (id_compra) REFERENCES tb_compra (id),
+    PRIMARY KEY (id_compra_produto),
+    FOREIGN KEY (id_compra_produto) REFERENCES tb_compra_produto (id),
     FOREIGN KEY (id_transportadora) REFERENCES tb_transportadora (id)
 );
 
