@@ -3,71 +3,41 @@ CREATE DATABASE IF NOT EXISTS db_papelaria_livraria;
 USE db_papelaria_livraria;
 
 -- Tabela de Papéis (Roles)
-CREATE TABLE IF NOT EXISTS tb_funcao
+CREATE TABLE IF NOT EXISTS tb_acesso
 (
     id         BIGINT UNSIGNED AUTO_INCREMENT,
     nome       VARCHAR(100) NOT NULL, -- Ex: 'ADMINISTRADOR', 'GERENTE', 'SUPORTE'
-    descricao  TEXT         NULL,     -- Descrição opcional do papel
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    pode_banir_usuario BOOLEAN DEFAULT FALSE,
+    pode_conversar_com_usuario BOOLEAN DEFAULT FALSE,
+    pode_visualizar_categorias BOOLEAN DEFAULT FALSE,
+    pode_criar_categorias BOOLEAN DEFAULT FALSE,
+    pode_editar_categorias BOOLEAN DEFAULT FALSE,
+    pode_remover_categorias BOOLEAN DEFAULT FALSE,
+    pode_visualizar_produtos BOOLEAN DEFAULT FALSE,
+    pode_criar_produtos BOOLEAN DEFAULT FALSE,
+    pode_editar_produtos BOOLEAN DEFAULT FALSE,
+    pode_remover_produtos BOOLEAN DEFAULT FALSE,
+    pode_visualizar_estoques BOOLEAN DEFAULT FALSE,
+    pode_criar_estoques BOOLEAN DEFAULT FALSE,
+    pode_editar_estoques BOOLEAN DEFAULT FALSE,
+    pode_remover_estoques BOOLEAN DEFAULT FALSE,
+    pode_visualizar_promocoes BOOLEAN DEFAULT FALSE,
+    pode_criar_promocoes BOOLEAN DEFAULT FALSE,
+    pode_editar_promocoes BOOLEAN DEFAULT FALSE,
+    pode_remover_promocoes BOOLEAN DEFAULT FALSE,
+    pode_criar_transportadora BOOLEAN DEFAULT FALSE,
+    pode_editar_transportadora BOOLEAN DEFAULT FALSE,
+    pode_remover_transportadora BOOLEAN DEFAULT FALSE,
+    pode_visualizar_avaliacoes BOOLEAN DEFAULT FALSE,
+    pode_remover_avaliacoes BOOLEAN DEFAULT FALSE,
+    pode_visualizar_cupons BOOLEAN DEFAULT FALSE,
+    pode_criar_cupons BOOLEAN DEFAULT FALSE,
+    pode_editar_cupons BOOLEAN DEFAULT FALSE,
+    pode_remover_cupons BOOLEAN DEFAULT FALSE,
+
 
     UNIQUE (nome),                    -- Cada papel tem um nome único
     PRIMARY KEY (id)
-);
-
--- Tabela de Permissões (Permissions)
-CREATE TABLE IF NOT EXISTS tb_permissao
-(
-    id         BIGINT UNSIGNED AUTO_INCREMENT,
-
-    -- O campo nome agora é um ENUM com todas as permissões
-    nome       ENUM (
-        'BANIR_USUARIO',
-        'CONVERSAR_COM_USUARIO',
-        'VISUALIZAR_CATEGORIAS',
-        'CRIAR_CATEGORIAS',
-        'EDITAR_CATEGORIAS',
-        'REMOVER_CATEGORIAS',
-        'VISUALIZAR_PRODUTOS',
-        'CRIAR_PRODUTOS',
-        'EDITAR_PRODUTOS',
-        'REMOVER_PRODUTOS',
-        'VISUALIZAR_ESTOQUES',
-        'CRIAR_ESTOQUES',
-        'EDITAR_ESTOQUES',
-        'REMOVER_ESTOQUES',
-        'VISUALIZAR_PROMOCOES',
-        'CRIAR_PROMOCOES',
-        'EDITAR_PROMOCOES',
-        'REMOVER_PROMOCOES',
-        'CRIAR_TRANSPORTADORA',
-        'EDITAR_TRANSPORTADORA',
-        'REMOVER_TRANSPORTADORA',
-        'VISUALIZAR_AVALIACOES',
-        'REMOVER_AVALIACOES',
-        'VISUALIZAR_CUPONS',
-        'CRIAR_CUPONS',
-        'EDITAR_CUPONS',
-        'REMOVER_CUPONS'
-        )           NOT NULL, -- Lista de permissões
-
-    descricao  TEXT NULL,     -- Descrição opcional da permissão
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-
-    PRIMARY KEY (id)
-);
-
--- Tabela de Associação entre Papéis e Permissões
-CREATE TABLE IF NOT EXISTS tb_permissao_funcao
-(
-    id_role      BIGINT UNSIGNED NOT NULL, -- Referência para a tabela de roles
-    id_permissao BIGINT UNSIGNED NOT NULL, -- Referência para a tabela de permissões
-    created_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-
-    PRIMARY KEY (id_role, id_permissao),   -- Chave composta para garantir unicidade
-    FOREIGN KEY (id_role) REFERENCES tb_funcao (id) ON DELETE CASCADE,
-    FOREIGN KEY (id_permissao) REFERENCES tb_permissao (id) ON DELETE CASCADE
 );
 
 -- Tabela base para armazenar os campos comuns entre Funcionários e Usuários
@@ -78,15 +48,12 @@ CREATE TABLE IF NOT EXISTS tb_pessoa
     data_nascimento DATE         NULL,     -- Data de nascimento comum
     cpf             VARCHAR(20)  NOT NULL, -- CPF único para ambas as tabelas
     email           VARCHAR(100) NOT NULL, -- E-mail comum
-    senha_hash      VARCHAR(255) NOT NULL, -- Senha comum
-    salt            VARCHAR(255) NOT NULL, -- Salt para segurança
+    senha           VARCHAR(255) NOT NULL, -- Senha comum
     telefone        VARCHAR(20)  NULL,     -- Telefone comum
-    created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    email_recuperacao VARCHAR(100) NULL,  -- E-mail de recuperação comum
 
     UNIQUE (cpf),                          -- CPF deve ser único
     UNIQUE (email),                        -- E-mail deve ser único
-    UNIQUE (salt),                         -- Salt também deve ser único para garantir segurança
 
     PRIMARY KEY (id)
 );
@@ -95,15 +62,12 @@ CREATE TABLE IF NOT EXISTS tb_pessoa
 CREATE TABLE IF NOT EXISTS tb_funcionario
 (
     id_pessoa         BIGINT UNSIGNED NOT NULL,                              -- FK para tb_pessoa
-    email_recuperacao VARCHAR(100)    NULL,                                  -- E-mail de recuperação, específico de funcionários
-    id_nivel_acesso   BIGINT UNSIGNED NOT NULL,                              -- Nível de acesso para funcionários
+    id_acesso         BIGINT UNSIGNED NOT NULL,                              -- Nível de acesso para funcionários
 
-    created_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
     PRIMARY KEY (id_pessoa),                                                 -- Usa a PK da tabela pessoa como PK
-    FOREIGN KEY (id_pessoa) REFERENCES tb_pessoa (id) ON DELETE CASCADE,     -- FK para a tabela pessoa
-    FOREIGN KEY (id_nivel_acesso) REFERENCES tb_funcao (id) ON DELETE RESTRICT -- Nível de acesso referenciado na tb_role
+    FOREIGN KEY (id_pessoa) REFERENCES tb_pessoa (id),     -- FK para a tabela pessoa
+    FOREIGN KEY (id_acesso) REFERENCES tb_acesso (id) -- Nível de acesso referenciado na tb_role
 );
 
 -- Tabela para armazenar os dados específicos de Usuários, referenciando tb_pessoa
@@ -112,18 +76,16 @@ CREATE TABLE IF NOT EXISTS tb_usuario
     id_pessoa            BIGINT UNSIGNED NOT NULL,                      -- FK para tb_pessoa
     saldo                DECIMAL(10, 2)           DEFAULT 0,            -- Saldo associado ao usuário
     estado               ENUM (
+        'AGUARDANDO_VERIFICACAO',
         'ATIVO',
         'SUSPENSO',
-        'BANIDO',
-        'AGUARDANDO_VERIFICACAO'
+        'BANIDO'
         )                                NOT NULL DEFAULT 'ATIVO',      -- Estado do usuário
     data_final_suspensao DATETIME        NULL,                          -- Data de término de suspensão, se houver
 
-    created_at           TIMESTAMP                DEFAULT CURRENT_TIMESTAMP,
-    updated_at           TIMESTAMP                DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
     PRIMARY KEY (id_pessoa),                                            -- Usa a PK da tabela pessoa como PK
-    FOREIGN KEY (id_pessoa) REFERENCES tb_pessoa (id) ON DELETE CASCADE -- FK para a tabela pessoa
+    FOREIGN KEY (id_pessoa) REFERENCES tb_pessoa (id) -- FK para a tabela pessoa
 );
 
 
@@ -146,70 +108,39 @@ CREATE TABLE IF NOT EXISTS tb_transportadora
     PRIMARY KEY (id)
 );
 
--- Tabela de Associação entre Usuários e Papéis
-CREATE TABLE IF NOT EXISTS tb_permissao_usuario
-(
-    id_usuario BIGINT UNSIGNED NOT NULL, -- Referência para a tabela de usuários
-    id_role    BIGINT UNSIGNED NOT NULL, -- Referência para a tabela de roles
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-
-    PRIMARY KEY (id_usuario, id_role),   -- Chave composta para garantir unicidade
-    FOREIGN KEY (id_usuario) REFERENCES tb_usuario (id_pessoa) ON DELETE CASCADE,
-    FOREIGN KEY (id_role) REFERENCES tb_funcao (id) ON DELETE CASCADE
-);
-
 -- Atualizando a tabela de funcionários (sem necessidade de duplicação de dados)
 CREATE TABLE IF NOT EXISTS tb_chamado
 (
     id               BIGINT UNSIGNED AUTO_INCREMENT,
     id_usuario       BIGINT UNSIGNED                                         NOT NULL,   -- FK para a tabela de usuários
     id_funcionario   BIGINT UNSIGNED                                         NOT NULL,   -- FK para a tabela de funcionários
-    status           ENUM ('ABERTO', 'EM_ANDAMENTO', 'RESOLVIDO', 'FECHADO') NOT NULL DEFAULT 'ABERTO',
-    data_criacao     TIMESTAMP                                                        DEFAULT CURRENT_TIMESTAMP,
-    data_finalizacao TIMESTAMP                                               NULL,
+    titulo           VARCHAR(50)                                            NOT NULL,
+    descricao        TEXT                                                    NOT NULL,
+    estado           ENUM ('ABERTO', 'EM_ANDAMENTO', 'RESOLVIDO', 'FECHADO') NOT NULL DEFAULT 'ABERTO',
+    data_criacao     DATETIME                                               NOT NULL,
+    data_finalizacao DATETIME                                               NULL,
 
     PRIMARY KEY (id),
-    FOREIGN KEY (id_usuario) REFERENCES tb_usuario (id_pessoa) ON DELETE CASCADE,        -- Relaciona o usuário
-    FOREIGN KEY (id_funcionario) REFERENCES tb_funcionario (id_pessoa) ON DELETE CASCADE -- Relaciona o funcionário
+    FOREIGN KEY (id_usuario) REFERENCES tb_usuario (id_pessoa),        -- Relaciona o usuário
+    FOREIGN KEY (id_funcionario) REFERENCES tb_funcionario (id_pessoa) -- Relaciona o funcionário
 );
+
 -- Tabela para registrar mensagens em chamados
-CREATE TABLE IF NOT EXISTS tb_mensagens_chamado
+CREATE TABLE IF NOT EXISTS tb_mensagem
 (
     id             BIGINT UNSIGNED AUTO_INCREMENT,
-    id_chamado     BIGINT UNSIGNED NOT NULL,                                      -- Relaciona à tabela de chamado
-    id_usuario     BIGINT UNSIGNED NOT NULL,                                      -- Usuário que está enviando a mensagem
-    id_funcionario BIGINT UNSIGNED NOT NULL,                                      -- Funcionário que está enviando a mensagem
-    mensagem       TEXT            NOT NULL,                                      -- A mensagem trocada
-    data_envio     TIMESTAMP DEFAULT CURRENT_TIMESTAMP,                           -- Data e hora em que a mensagem foi enviada
+    id_chamado     BIGINT UNSIGNED NOT NULL,                                      -- FK para a tabela de chamado
+    id_remetente   BIGINT UNSIGNED NOT NULL,                                      -- FK para a tabela de pessoa
+    texto       TEXT            NOT NULL,                                      -- A mensagem trocada
+    data_envio     DATETIME NOT NULL,                           -- Data e hora em que a mensagem foi enviada
+    
     PRIMARY KEY (id),
-
-    -- Chaves estrangeiras
-    FOREIGN KEY (id_chamado) REFERENCES tb_chamado (id) ON DELETE CASCADE,        -- Relaciona à tabela de chamado
-    FOREIGN KEY (id_usuario) REFERENCES tb_usuario (id_pessoa) ON DELETE CASCADE,        -- Usuário relacionado à mensagem
-    FOREIGN KEY (id_funcionario) REFERENCES tb_funcionario (id_pessoa) ON DELETE CASCADE -- Funcionário relacionado à mensagem
-);
-
--- Tabela para armazenar log de acessos
-CREATE TABLE IF NOT EXISTS tb_log_acesso
-(
-    id              BIGINT UNSIGNED AUTO_INCREMENT,
-    tipo_usuario    ENUM (
-        'administrador',
-        'superadministrador',
-        'usuario'
-        )                           NOT NULL,
-    usuario_id      BIGINT UNSIGNED NOT NULL,
-    data_hora_login TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    ip_address      VARCHAR(45)     NULL,
-    user_agent      VARCHAR(255)    NULL,
-
-    PRIMARY KEY (id),
-
-    FOREIGN KEY (usuario_id) REFERENCES tb_usuario (id_pessoa) ON DELETE CASCADE
+    FOREIGN KEY (id_chamado) REFERENCES tb_chamado (id),        -- Relaciona à tabela de chamado
+    FOREIGN KEY (id_remetente) REFERENCES tb_pessoa (id)        -- Relaciona à tabela de pessoa
 );
 
 -- Tabela para armazenar formas de pagamento
-CREATE TABLE IF NOT EXISTS tb_forma_de_pagamento
+CREATE TABLE IF NOT EXISTS tb_forma_pagamento
 (
     id         BIGINT UNSIGNED AUTO_INCREMENT,
     id_usuario BIGINT UNSIGNED NOT NULL,
@@ -225,7 +156,7 @@ CREATE TABLE IF NOT EXISTS tb_pix
     chave         VARCHAR(100)    NOT NULL,
 
     PRIMARY KEY (id_forma_pgto),
-    FOREIGN KEY (id_forma_pgto) REFERENCES tb_forma_de_pagamento (id)
+    FOREIGN KEY (id_forma_pgto) REFERENCES tb_forma_pagamento (id)
 );
 
 -- Tabela para armazenar detalhes específicos do Cartão de Crédito
@@ -239,7 +170,7 @@ CREATE TABLE IF NOT EXISTS tb_cartao
     tipo             ENUM ('DEBITO', 'CREDITO') NOT NULL,
 
     PRIMARY KEY (id_forma_pgto),
-    FOREIGN KEY (id_forma_pgto) REFERENCES tb_forma_de_pagamento (id)
+    FOREIGN KEY (id_forma_pgto) REFERENCES tb_forma_pagamento (id)
 );
 
 -- Tabela para armazenar endereços dos usuários
@@ -269,34 +200,6 @@ CREATE TABLE IF NOT EXISTS tb_produto
     preco      DECIMAL(10, 2) NOT NULL,
     descricao  TEXT           NULL,
     is_ativo   BOOLEAN   DEFAULT TRUE,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-
-    PRIMARY KEY (id)
-);
-
--- Tabela para registrar o histórico de preços dos produtos
-CREATE TABLE IF NOT EXISTS log_produto_preco_historico
-(
-    id             BIGINT UNSIGNED AUTO_INCREMENT,
-    id_produto     BIGINT UNSIGNED NOT NULL,
-    preco_anterior DECIMAL(10, 2)  NOT NULL,
-    preco_novo     DECIMAL(10, 2)  NOT NULL,
-    data_alteracao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-
-    PRIMARY KEY (id),
-    FOREIGN KEY (id_produto) REFERENCES tb_produto (id)
-);
-
--- Tabela para armazenar os produtos excluídos
-CREATE TABLE log_produto_inativos
-(
-    id              BIGINT UNSIGNED AUTO_INCREMENT,
-    id_produto      BIGINT UNSIGNED NOT NULL,
-    nome            VARCHAR(255)    NOT NULL,
-    preco           DECIMAL(10, 2)  NOT NULL,
-    data_inativacao DATETIME        NOT NULL,
-    data_reativacao DATETIME        NULL,
 
     PRIMARY KEY (id)
 );
@@ -308,8 +211,6 @@ CREATE TABLE IF NOT EXISTS tb_estoque
     id_produto  BIGINT UNSIGNED    NOT NULL,
     quantidade  MEDIUMINT UNSIGNED NOT NULL,
     localizacao VARCHAR(70)        NULL,
-    created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
     PRIMARY KEY (id),
     FOREIGN KEY (id_produto) REFERENCES tb_produto (id)
@@ -335,23 +236,22 @@ CREATE TABLE IF NOT EXISTS tb_produto_categoria
 );
 
 -- Tabela para armazenar as Avaliações dos Produtos
-CREATE TABLE IF NOT EXISTS tb_lista_desejo
+CREATE TABLE IF NOT EXISTS tb_lista_desejos
 (
-    id         BIGINT UNSIGNED AUTO_INCREMENT,
     id_usuario BIGINT UNSIGNED NOT NULL,
 
-    PRIMARY KEY (id),
+    PRIMARY KEY (id_usuario),
     FOREIGN KEY (id_usuario) REFERENCES tb_usuario (id_pessoa)
 );
 
 -- Tabela de associação N:N entre Listas de Desejos e Produtos
-CREATE TABLE IF NOT EXISTS tb_lista_desejo_produto
+CREATE TABLE IF NOT EXISTS tb_lista_desejos_produto
 (
     id_produto       BIGINT UNSIGNED NOT NULL,
-    id_lista_desejo BIGINT UNSIGNED NOT NULL,
+    id_lista_desejos BIGINT UNSIGNED NOT NULL,
 
     FOREIGN KEY (id_produto) REFERENCES tb_produto (id),
-    FOREIGN KEY (id_lista_desejo) REFERENCES tb_lista_desejo (id)
+    FOREIGN KEY (id_lista_desejos) REFERENCES tb_lista_desejos (id_usuario)
 );
 
 -- Tabela para armazenar os Carrinhos de Compras de cada Usuário
@@ -382,9 +282,6 @@ CREATE TABLE IF NOT EXISTS tb_compra
     id_usuario     BIGINT UNSIGNED NOT NULL,
     id_endereco    BIGINT UNSIGNED NOT NULL,
     data_realizada DATETIME        NOT NULL,
-    preco_total    DECIMAL(10, 2) DEFAULT 0,
-    created_at     TIMESTAMP      DEFAULT CURRENT_TIMESTAMP,
-    updated_at     TIMESTAMP      DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
     PRIMARY KEY (id),
 
@@ -414,7 +311,7 @@ CREATE TABLE IF NOT EXISTS tb_avaliacao
     id                BIGINT UNSIGNED AUTO_INCREMENT,
     id_compra_produto BIGINT UNSIGNED                NOT NULL,
 
-    avaliacao         ENUM (
+    nota         ENUM (
         '⭐',
         '⭐⭐',
         '⭐⭐⭐',
@@ -423,8 +320,6 @@ CREATE TABLE IF NOT EXISTS tb_avaliacao
         ) CHARACTER SET utf8mb4
                           COLLATE utf8mb4_unicode_ci NULL, -- Avaliação com emojis de estrelas (opcional)
     comentario        TEXT                           NULL, -- Comentário (opcional),
-    created_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
     PRIMARY KEY (id),
     FOREIGN KEY (id_compra_produto) REFERENCES tb_compra_produto (id)
@@ -437,16 +332,18 @@ CREATE TABLE IF NOT EXISTS tb_entrega
     id_compra         BIGINT UNSIGNED NOT NULL,
     id_transportadora BIGINT UNSIGNED NOT NULL,
     codigo_rastreio   VARCHAR(100)    NULL,
-    data_envio        DATETIME        NULL,
-    data_recebimento  DATETIME        NULL,
-    status_entrega    ENUM (
+    data_postado      DATETIME        NULL,
+    data_transito     DATETIME        NULL,
+    data_recebido     DATETIME        NULL,
+    data_devolucao_transito DATETIME        NULL,
+    data_devolucao_recebido DATETIME        NULL,
+    estado    ENUM (
         'ENVIADO',
         'EM_TRANSITO',
         'ENTREGUE',
         'NAO_ENTREGUE'
         )                             NULL,
-    created_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    finalizada BOOLEAN DEFAULT FALSE,
 
     PRIMARY KEY (id),
     UNIQUE KEY uk_id_compra (id_compra), -- Garante que cada compra tenha apenas uma entrega
@@ -460,7 +357,6 @@ CREATE TABLE IF NOT EXISTS tb_promocao
 (
     id          BIGINT UNSIGNED AUTO_INCREMENT,
     nome        VARCHAR(100)   NULL,
-    desconto    DECIMAL(10, 2) NOT NULL, -- Desconto da promoção
     data_inicio DATETIME       NOT NULL,
     data_fim    DATETIME       NOT NULL,
 
@@ -472,6 +368,7 @@ CREATE TABLE IF NOT EXISTS tb_promocao_produto
 (
     id_produto  BIGINT UNSIGNED NOT NULL,
     id_promocao BIGINT UNSIGNED NOT NULL,
+    desconto    DECIMAL(10, 2) NOT NULL, -- Desconto da promoção
 
     PRIMARY KEY (id_produto, id_promocao), -- Garante que um produto participe de uma promoção apenas uma vez
 
