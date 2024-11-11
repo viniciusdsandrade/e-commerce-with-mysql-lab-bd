@@ -1,0 +1,9 @@
+{% extends 'components/base.html' %}
+{% block title %} Categorias {% endblock %}
+{% block content %}
+<div class="d-flex flex-wrap justify-content-space-between gap-2">
+    {% for categoria in categorias %}
+        <a class="btn btn-primary" href="#" role="button">{{ categoria }}</a>
+    {% endfor %}
+</div>
+{% endblock %}
