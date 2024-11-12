@@ -3,6 +3,13 @@ from django.shortcuts import render
 def index(request):
     return render(request, 'index.html')
 
+
+
+def pesquisa(request):
+    return render(request, 'pesquisa.html')
+
+
+
 def categorias(request):
     context = {
         'categorias': [ # Aqui tem que fazer uma query no banco de dados

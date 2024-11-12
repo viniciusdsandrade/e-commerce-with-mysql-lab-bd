@@ -1,9 +1,17 @@
 {% extends 'components/base.html' %}
 {% block title %} Categorias {% endblock %}
 {% block content %}
-<div class="d-flex flex-wrap justify-content-space-between gap-2">
+    <h3>Livraria</h3>
+    <div class="d-flex flex-wrap justify-content-space-between gap-2">
     {% for categoria in categorias %}
         <a class="btn btn-primary" href="#" role="button">{{ categoria }}</a>
     {% endfor %}
-</div>
+    </div>
+
+    <h3 class="mt-5">Papelaria</h3>
+    <div class="d-flex flex-wrap justify-content-space-between gap-2">
+    {% for categoria in categorias %}
+        <a class="btn btn-primary" href="#" role="button">{{ categoria }}</a>
+    {% endfor %}
+    </div>
 {% endblock %}

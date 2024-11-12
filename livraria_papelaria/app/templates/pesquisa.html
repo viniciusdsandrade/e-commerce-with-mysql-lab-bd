@@ -1,0 +1,52 @@
+{% extends 'components/base.html' %}
+{% block title %} Categorias {% endblock %}
+{% block content %}
+
+<button class="btn btn-primary d-sm-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasResponsive" aria-controls="offcanvasResponsive">Toggle offcanvas</button>
+
+<div id="offcanvasResponsive" class="offcanvas-sm offcanvas-start d-flex flex-column flex-shrink-0 p-3 bg-body-tertiary" style="width: 225px;">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="offcanvasResponsiveLabel">Filtrar</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#offcanvasResponsive" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+      <form class="d-flex flex-column gap-4">
+        <div>
+          <h6>Preço</h6>
+          <div><input name="Preco" type="radio"><span class="ms-2">Menor ao maior</span></div>
+          <div><input name="Preco" type="radio"><span class="ms-2">Maior ao menor</span></div>
+          <div class="input-group mt-3">
+            <span class="input-group-text">R$</span>
+            <input type="number" placeholder="Mínimo" class="form-control" aria-label="Amount (to the nearest dollar)">
+            <span class="input-group-text">,00</span>
+          </div>
+
+          <div class="input-group">
+            <span class="input-group-text">R$</span>
+            <input type="number" placeholder="Máximo" class="form-control" aria-label="Amount (to the nearest dollar)">
+            <span class="input-group-text">,00</span>
+          </div>
+
+        </div>
+
+        <div>
+          <h6>Categorias</h6>
+          <div><input name="Categorias" type="checkbox"><span class="ms-2">Categoria 1</span></div>
+          <div><input name="Categorias" type="checkbox"><span class="ms-2">Categoria 2</span></div>
+          <div><input name="Categorias" type="checkbox"><span class="ms-2">Categoria 3</span></div>
+        </div>
+
+        <div>
+          <h6>Promoções</h6>
+          <div><input name="Promocoes" type="radio"><span class="ms-2">Mínimo 10% OFF</span></div>
+          <div><input name="Promocoes" type="radio"><span class="ms-2">Mínimo 30% OFF</span></div>
+          <div><input name="Promocoes" type="radio"><span class="ms-2">Mínimo 50% OFF</span></div>
+          <div><input name="Promocoes" type="radio"><span class="ms-2">Qualquer</span></div>
+        </div>
+
+        <div><input class="w-100 btn btn-primary" type="submit" value="Filtrar"></div>
+
+      </form>
+    </div>
+</div>
+{% endblock %}
