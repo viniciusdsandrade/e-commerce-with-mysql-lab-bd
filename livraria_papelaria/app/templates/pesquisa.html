@@ -4,49 +4,71 @@
 
 <button class="btn btn-primary d-sm-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasResponsive" aria-controls="offcanvasResponsive">Toggle offcanvas</button>
 
-<div id="offcanvasResponsive" class="offcanvas-sm offcanvas-start d-flex flex-column flex-shrink-0 p-3 bg-body-tertiary" style="width: 225px;">
-    <div class="offcanvas-header">
-      <h5 class="offcanvas-title" id="offcanvasResponsiveLabel">Filtrar</h5>
-      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#offcanvasResponsive" aria-label="Close"></button>
-    </div>
-    <div class="offcanvas-body">
-      <form class="d-flex flex-column gap-4">
-        <div>
-          <h6>Preço</h6>
-          <div><input name="Preco" type="radio"><span class="ms-2">Menor ao maior</span></div>
-          <div><input name="Preco" type="radio"><span class="ms-2">Maior ao menor</span></div>
-          <div class="input-group mt-3">
-            <span class="input-group-text">R$</span>
-            <input type="number" placeholder="Mínimo" class="form-control" aria-label="Amount (to the nearest dollar)">
-            <span class="input-group-text">,00</span>
+<div class="row">
+  <aside id="offcanvasResponsive" class="col-md-auto offcanvas-md offcanvas-start d-flex flex-column flex-shrink-0 p-3 bg-body-tertiary" style="width: 225px;">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasResponsiveLabel">Filtrar</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#offcanvasResponsive" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body">
+        <form class="d-flex flex-column gap-4">
+          <div>
+            <h6>Preço</h6>
+            <div><input name="Preco" type="radio"><span class="ms-2">Menor ao maior</span></div>
+            <div><input name="Preco" type="radio"><span class="ms-2">Maior ao menor</span></div>
+            <div class="input-group mt-3">
+              <span class="input-group-text">R$</span>
+              <input type="number" placeholder="Mínimo" class="form-control" aria-label="Amount (to the nearest dollar)">
+              <span class="input-group-text">,00</span>
+            </div>
+
+            <div class="input-group">
+              <span class="input-group-text">R$</span>
+              <input type="number" placeholder="Máximo" class="form-control" aria-label="Amount (to the nearest dollar)">
+              <span class="input-group-text">,00</span>
+            </div>
+
           </div>
 
-          <div class="input-group">
-            <span class="input-group-text">R$</span>
-            <input type="number" placeholder="Máximo" class="form-control" aria-label="Amount (to the nearest dollar)">
-            <span class="input-group-text">,00</span>
+          <div>
+            <h6>Categorias</h6>
+            <div><input name="Categorias" type="checkbox"><span class="ms-2">Categoria 1</span></div>
+            <div><input name="Categorias" type="checkbox"><span class="ms-2">Categoria 2</span></div>
+            <div><input name="Categorias" type="checkbox"><span class="ms-2">Categoria 3</span></div>
           </div>
 
-        </div>
+          <div>
+            <h6>Promoções</h6>
+            <div><input name="Promocoes" type="radio"><span class="ms-2">Mínimo 10% OFF</span></div>
+            <div><input name="Promocoes" type="radio"><span class="ms-2">Mínimo 30% OFF</span></div>
+            <div><input name="Promocoes" type="radio"><span class="ms-2">Mínimo 50% OFF</span></div>
+            <div><input name="Promocoes" type="radio"><span class="ms-2">Qualquer</span></div>
+          </div>
 
-        <div>
-          <h6>Categorias</h6>
-          <div><input name="Categorias" type="checkbox"><span class="ms-2">Categoria 1</span></div>
-          <div><input name="Categorias" type="checkbox"><span class="ms-2">Categoria 2</span></div>
-          <div><input name="Categorias" type="checkbox"><span class="ms-2">Categoria 3</span></div>
-        </div>
+          <div><input class="w-100 btn btn-primary" type="submit" value="Filtrar"></div>
 
-        <div>
-          <h6>Promoções</h6>
-          <div><input name="Promocoes" type="radio"><span class="ms-2">Mínimo 10% OFF</span></div>
-          <div><input name="Promocoes" type="radio"><span class="ms-2">Mínimo 30% OFF</span></div>
-          <div><input name="Promocoes" type="radio"><span class="ms-2">Mínimo 50% OFF</span></div>
-          <div><input name="Promocoes" type="radio"><span class="ms-2">Qualquer</span></div>
-        </div>
+        </form>
+    </aside>
+  </div>
 
-        <div><input class="w-100 btn btn-primary" type="submit" value="Filtrar"></div>
-
-      </form>
+  <div class="col">
+    <div class="container">
+      <div class="row row-cols-2">
+        {% for i in "012345571827128957198759817598275798217918579" %}
+          <div class="col">
+            <div class="card">
+              <h3 class="bg-body-secondary text-center p-3 mb-0">Oferta do dia</h3>
+              {% load static %}
+              <img class="" src="{% static 'img/teste.png' %}" alt="Card image cap">
+              <div class="card-body">
+                <h5 class="card-title">Nome produto</h5>
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                <a href="#" class="btn btn-primary">Go somewhere</a>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
     </div>
+  </div>
 </div>
 {% endblock %}
