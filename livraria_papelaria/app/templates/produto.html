@@ -1,0 +1,36 @@
+{% extends 'components/base.html' %}
+{% block title %} Nome produto {% endblock %}
+{% block content %}
+  <div class="row align-items-center gx-md-5 gy-5 gy-md-0">
+    <div class="col-md-4 d-flex flex-column gap-3">
+    {% load static %}
+      <img src="{% static 'img/teste.png' %}" class="img-fluid" alt="Imagem do produto">
+      <button class="btn btn-primary">Comprar agora</button>
+      <button class="btn btn-secondary">Adicionar ao carrinho</button>
+      <button class="btn btn-secondary">Adicionar à lista de desejos</button>
+    </div>
+    <div class="col-md-8">
+      <h1>Nome produto</h1>
+      <p class="card-text"><small>⭐⭐⭐⭐⭐</small></p>
+      <p class="card-text mt-3 mb-0 text-decoration-line-through">R$39,99</p>
+      <p class="card-text"><span class="fw-bold lead me-2">R$19,99</span>50% OFF</p>
+      <p>{% lorem 1 %}</p>
+    </div>
+  </div>
+  <h5 class="mt-5">Avaliações</h5>
+  <hr>
+  <div class="row g-md-4">
+    <div class="col-md-6">
+      <p>⭐⭐⭐⭐⭐<small class="ps-2">14 out 2024</small></p>
+      <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Minima saepe error magnam qui corrupti quas.</p>
+      <p>⭐⭐⭐⭐⭐<small class="ps-2">14 out 2024</small></p>
+      <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Minima saepe error magnam qui corrupti quas.</p>
+    </div>
+    <div class="col-md-6">
+      <p>⭐⭐⭐⭐⭐<small class="ps-2">14 out 2024</small></p>
+      <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Minima saepe error magnam qui corrupti quas.</p>
+      <p>⭐⭐⭐⭐⭐<small class="ps-2">14 out 2024</small></p>
+      <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Minima saepe error magnam qui corrupti quas.</p>
+    </div>
+  </div>
+{% endblock %}
