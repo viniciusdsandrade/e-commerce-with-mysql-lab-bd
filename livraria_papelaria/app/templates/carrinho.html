@@ -1,0 +1,47 @@
+{% extends 'components/base.html' %}
+{% block title %} Carrinho {% endblock %}
+{% block content %}
+    <h3>Carrinho</h3>
+    <div class="row">
+        <div class="col-md-7">
+            {% for i in "01234" %}
+            <div href="{% url 'produto' %}" class="card mb-3 w-100 text-decoration-none">
+                <div class="row g-0 align-items-center">
+                    <div class="col-md-6 p-3 ps-md-2">
+                    {% load static %}
+                        <img src="{% static 'img/teste.png' %}" class="img-fluid rounded-start" alt="...">
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card-body">
+                            <h5 class="card-title mb-2">Produto {{ i }}</h5>
+                            <p class="card-text"><small>⭐⭐⭐⭐⭐</small></p>
+                            <p class="card-text mt-3 mb-0 text-decoration-line-through">R$39,99</p>
+                            <p class="card-text"><span class="fw-bold lead me-1">R$19,99</span> 50% OFF</p>
+                            <input type="number" id="number" placeholder="Quantidade" class="form-control" aria-label="Amount (to the nearest dollar)">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="col-md-5 order-first order-md-last mb-3 mb-md-0">
+            <div class="card">
+                <div class="card-header text-center fw-bold">
+                    Resumo
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Special title treatment</h5>
+                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                    <div class="row justify-content-between g-2"> 
+                        <div class="col">
+                            <a href="#" class="w-100 btn btn-primary">Comprar</a>
+                        </div>
+                        <div class="col">
+                            <a href="#" class="w-100 btn btn-secondary">Adicionar cupom</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

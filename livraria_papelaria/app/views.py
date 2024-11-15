@@ -14,3 +14,7 @@ def categorias(request):
 
 def produto(request):
     return render(request, 'produto.html')
+
+
+def carrinho(request):
+    return render(request, 'carrinho.html')
