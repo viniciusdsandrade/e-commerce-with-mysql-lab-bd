@@ -10,4 +10,6 @@ urlpatterns = [
     path('usuario/carrinho/', views.carrinho, name='carrinho'),
     path('usuario/lista_de_desejos/', views.lista_de_desejos, name='lista_de_desejos'),
     path('usuario/cupons/', views.cupons, name='cupons'),
+    path('usuario/enderecos/', views.enderecos, name='enderecos'),
+    path('usuario/enderecos/editar', views.enderecos_editar, name='enderecos_editar'),
 ]

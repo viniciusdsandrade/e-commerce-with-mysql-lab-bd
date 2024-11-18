@@ -1,0 +1,10 @@
+{% extends 'components/base.html' %}
+{% block title %} Editar Endereço {% endblock %}
+{% block content %}
+    {% include 'components/content_title.html' with title='Editar Endereço' %}
+    <form method="post">
+        {% csrf_token %}
+        {{ formulario.as_p }}
+        <button type="submit">Submit</button>
+    </form>
+{% endblock %}

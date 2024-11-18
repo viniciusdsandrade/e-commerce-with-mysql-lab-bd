@@ -1,0 +1,30 @@
+{% extends 'components/base.html' %}
+{% block title %} Endereços {% endblock %}
+{% block content %}
+    {% include 'components/content_title.html' with title='Endereços' %}
+    <div class="row row-cols-1 row-cols-md-2 g-5 mb-5">
+        {% for i in "123456" %} 
+            <div class="col">
+                <div class="card p-3">
+                    <div class="fw-bold text-center">Nome Endereço {{ i }}</div>
+                    <div class="d-flex flex-wrap justify-content-center gap-3">    
+                        <a href="{% url 'enderecos_editar' %}">Editar</a>
+                        <a href="#">Remover</a>
+                    </div>
+                    <table class="table table-sm">
+                        <tbody>
+                            {% for campo in campos %}
+                                {% if campo.name != 'is_principal' and campo.name != 'id' %}                
+                                    <tr>
+                                        <td class="align-middle text-capitalize fw-bold pe-3">{{ campo.name }}</td>
+                                        <td class="align-middle text-break text-end">valor</td>
+                                    </tr>
+                                {% endif %}
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
