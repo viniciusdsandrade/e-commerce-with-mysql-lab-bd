@@ -178,6 +178,7 @@ CREATE TABLE IF NOT EXISTS tb_endereco
 (
     id           BIGINT UNSIGNED AUTO_INCREMENT,
     id_usuario   BIGINT UNSIGNED NOT NULL,
+    nome         VARCHAR(30)     NULL,
     rua          VARCHAR(100)    NULL,
     numero       VARCHAR(8)      NULL,
     bairro       VARCHAR(100)    NULL,
