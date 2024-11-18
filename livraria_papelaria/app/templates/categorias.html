@@ -1,14 +1,15 @@
 {% extends 'components/base.html' %}
 {% block title %} Categorias {% endblock %}
 {% block content %}
-    <h3>Livraria</h3>
+    {% include 'components/content_title.html' with title='Categorias' %}
+    <h5>Livraria</h5>
     <div class="d-flex flex-wrap justify-content-space-between gap-2">
     {% for i in "0123456789" %}
         <a class="btn btn-primary" href="#" role="button">Categoria {{i}}</a>
     {% endfor %}
     </div>
 
-    <h3 class="mt-5">Papelaria</h3>
+    <h5 class="mt-5">Papelaria</h5>
     <div class="d-flex flex-wrap justify-content-space-between gap-2">
     {% for i in "0123456789" %}
         <a class="btn btn-primary" href="#" role="button">Categoria {{i}}</a>

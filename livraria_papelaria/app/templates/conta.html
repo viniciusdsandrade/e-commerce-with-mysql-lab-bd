@@ -1,0 +1,14 @@
+{% extends 'components/base.html' %}
+{% block title %} Conta {% endblock %}
+{% block content %}
+    <div class="d-flex flex-column gap-2">
+        <h1>Nome Usuário</h1>
+        <hr>
+        <a class="btn btn-primary" href="{% url 'carrinho' %}" role="button">Carrinho</a>
+        <a class="btn btn-primary" href="{% url 'lista_de_desejos' %}" role="button">Lista de desejos</a>
+        <a class="btn btn-primary" href="{% url 'cupons' %}" role="button">Cupons</a>
+        <a class="btn btn-primary" href="#" role="button">Endereços</a>
+        <a class="btn btn-primary" href="#" role="button">Formas de pagamento</a>
+        <a class="btn btn-primary" href="#" role="button">Histórico de compras</a>
+    </div>
+{% endblock %}
