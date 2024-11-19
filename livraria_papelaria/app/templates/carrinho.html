@@ -10,7 +10,7 @@
                     <div class="col-lg-6 p-3 ps-md-2">
                         <a href="{% url 'produto' %}">
                             {% load static %}
-                            <img src="{% static 'img/teste.png' %}" class="img-fluid rounded-start" alt="...">
+                            <img src="{% static 'img/teste.png' %}" class="img-fluid" alt="...">
                         </a>
                     </div>
                     <div class="col-lg-6">
@@ -61,7 +61,7 @@
                     </div>
 
                     <div class="d-flex gap-2 justify-content-between mt-3">
-                        <a href="#" class="w-100 btn btn-primary">Comprar tudo</a>
+                        <a href="{% url 'compra' %}" class="w-100 btn btn-primary">Comprar tudo</a>
                         <div class="dropdown w-100">
                             <button class="btn btn-secondary dropdown-toggle w-100" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Adicionar cupom

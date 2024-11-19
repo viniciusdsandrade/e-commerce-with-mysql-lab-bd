@@ -1,0 +1,45 @@
+{% extends 'components/base.html' %}
+{% block title %} Histórico de Compras {% endblock %}
+{% block content %}
+
+    {% include 'components/content_title.html' with title='Histórico de Compras' %}
+    
+    <div class="row row-cols-1 row-cols-lg-2">
+        {% for i in "12345" %}
+        <div class="col">
+            <div class="card mb-3 w-100 text-decoration-none">
+                <div class="card-header">
+                    <div class="card-text"><span class="fw-bold">Compra Nº </span>{{ i }}</div>
+                    <div class="card-text"><span class="fw-bold">Total: </span>R$19,99</div>
+                    <div class="card-text" data-bs-toggle="popover" data-bs-title="a" data-bs-content="Conteúdo do endereço" aria-describedby="popover71635">
+                        <span class="fw-bold">Enviar para: </span>Nome Endereço
+                    </div>
+                </div>
+                {% for i in "123" %}
+                    <div class="row g-0 align-items-center">
+                        <div class="col-md-5 p-3 ps-md-2">
+                            <a href="{% url 'produto' %}">
+                                {% load static %}
+                                <img src="{% static 'img/teste.png' %}" class="img-fluid" alt="...">
+                            </a>
+                        </div>
+                        <div class="col-md-7">
+                            <div class="card-body">
+                                <a href="{% url 'produto' %}" class="card-title text-decoration-none">
+                                    <h5 class="mb-2">Produto {{ i }}</h5>
+                                </a>
+                                <p><span class="fw-bold">Status: </span>Estado do item</p>
+                                <p><span class="fw-bold">Transportadora: </span>Nome Transportadora</p>
+                                <a href="#">Avaliar produto</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% if not forloop.last %}
+                        <hr>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% endblock %}

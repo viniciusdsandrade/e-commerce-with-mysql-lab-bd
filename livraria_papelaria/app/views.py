@@ -3,8 +3,8 @@ from .models import Endereco
 from django.db.models import ForeignKey
 from .forms import EnderecoForm
 
-def index(request):
-    return render(request, 'index.html')
+def home(request):
+    return render(request, 'home.html')
 
 
 def pesquisa(request):
@@ -37,6 +37,10 @@ def cupons(request):
 
 def compra(request):
     return render(request, 'compra.html')
+
+
+def historico_compras(request):
+    return render(request, 'historico_compras.html')
 
 
 def enderecos(request):
