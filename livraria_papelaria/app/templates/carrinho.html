@@ -62,7 +62,16 @@
 
                     <div class="d-flex gap-2 justify-content-between mt-3">
                         <a href="#" class="w-100 btn btn-primary">Comprar tudo</a>
-                        <a href="#" class="w-100 btn btn-secondary">Adicionar cupom</a>
+                        <div class="dropdown w-100">
+                            <button class="btn btn-secondary dropdown-toggle w-100" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Adicionar cupom
+                            </button>
+                            <ul class="dropdown-menu">
+                                {% for i in "12345" %}
+                                    <li><a class="dropdown-item" href="#">Cupom {{ i }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>

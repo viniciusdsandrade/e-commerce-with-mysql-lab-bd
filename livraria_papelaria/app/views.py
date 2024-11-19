@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Endereco
 from django.db.models import ForeignKey
 from .forms import EnderecoForm
@@ -35,6 +35,10 @@ def cupons(request):
     return render(request, 'cupons.html')
 
 
+def compra(request):
+    return render(request, 'compra.html')
+
+
 def enderecos(request):
     campos = [
         campo for campo in Endereco._meta.fields
@@ -43,12 +47,23 @@ def enderecos(request):
     return render(request, 'enderecos.html', {'campos': campos})
 
 
+def enderecos_criar(request):
+    if request.method == 'POST':
+        # formulario = EnderecoForm(request.POST)
+        # if formulario.is_valid():
+        #     formulario.save()
+        return redirect('enderecos')
+    
+    formulario = EnderecoForm()
+    return render(request, 'enderecos_criar.html', {'formulario': formulario})
+
+
 def enderecos_editar(request):
     if request.method == 'POST':
-        formulario = EnderecoForm(request.POST)
-        if formulario.is_valid():
-            formulario.save()
-    else:
-        formulario = EnderecoForm()
-
+        # formulario = EnderecoForm(request.POST)
+        # if formulario.is_valid():
+        #     formulario.save()
+        return redirect('enderecos')
+    
+    formulario = EnderecoForm()
     return render(request, 'enderecos_editar.html', {'formulario': formulario})
