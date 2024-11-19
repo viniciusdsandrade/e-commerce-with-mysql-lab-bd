@@ -35,8 +35,9 @@ def cupons(request):
     return render(request, 'cupons.html')
 
 
-def compra(request):
-    return render(request, 'compra.html')
+def compra_endereco(request):
+    formulario = EnderecoForm()
+    return render(request, 'compra_endereco.html', {'formulario': formulario})
 
 
 def historico_compras(request):
