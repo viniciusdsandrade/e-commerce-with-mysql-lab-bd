@@ -9,7 +9,7 @@
         <div class="col">
             <div class="card mb-3 w-100 text-decoration-none">
                 <div class="card-header">
-                    <div class="card-text"><span class="fw-bold">Compra Nº </span>{{ i }}</div>
+                    <div class="card-text"><span class="fw-bold">Nº compra: </span>{{ i }}</div>
                     <div class="card-text"><span class="fw-bold">Total: </span>R$19,99</div>
                     <div class="card-text" data-bs-toggle="popover" data-bs-title="a" data-bs-content="Conteúdo do endereço" aria-describedby="popover71635">
                         <span class="fw-bold">Enviar para: </span>Nome Endereço
@@ -30,7 +30,50 @@
                                 </a>
                                 <p><span class="fw-bold">Status: </span>Estado do item</p>
                                 <p><span class="fw-bold">Transportadora: </span>Nome Transportadora</p>
-                                <a href="#">Avaliar produto</a>
+
+                                {% if forloop.counter|divisibleby:'2' %}
+                                
+                                    <!-- Button trigger modal -->
+                                    <button type="button" class="w-100 btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                                        Avaliar produto
+                                    </button>
+
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                            <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5" id="staticBackdropLabel">Avaliação</h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="input-group mb-3">
+                                                    <label class="input-group-text" for="inputGroupSelect01">Nota</label>
+                                                    <select class="form-select" id="inputGroupSelect01">
+                                                        <option selected>Escolha...</option>
+                                                        <option value="1">⭐</option>
+                                                        <option value="2">⭐⭐</option>
+                                                        <option value="3">⭐⭐⭐</option>
+                                                        <option value="4">⭐⭐⭐⭐</option>
+                                                        <option value="5">⭐⭐⭐⭐⭐</option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-floating">
+                                                    <textarea class="form-control" style="height: 100px;" placeholder="Comente sua avaliação" id="floatingTextarea"></textarea>
+                                                    <label for="floatingTextarea">Descrição</label>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                                <button type="button" class="btn btn-primary">Avaliar</button>
+                                            </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                {% else %}
+                                    <div class="card px-3 py-2 text-center">Já avaliado</div>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
