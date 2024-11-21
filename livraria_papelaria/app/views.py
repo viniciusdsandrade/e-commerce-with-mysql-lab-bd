@@ -44,6 +44,12 @@ def compra_transportadora(request):
     return render(request, 'compra_transportadora.html')
 
 
+def compra_pagamento(request):
+    formulario_pix = PixForm()
+    formulario_cartao = CartaoForm()
+    return render(request, 'compra_pagamento.html', {'formulario_pix': formulario_pix, 'formulario_cartao': formulario_cartao})
+
+
 def historico_compras(request):
     return render(request, 'historico_compras.html')
 
