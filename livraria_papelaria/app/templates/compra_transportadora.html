@@ -1,0 +1,36 @@
+{% extends 'components/base.html' %}
+{% block title %} Compra {% endblock %}
+{% block content %}
+    {% include 'components/content_title.html' with title='Compra' %}
+    <h5>Transportadora</h5>
+    <form>
+        <div class="row row-cols-1 row-cols-lg-2">
+            {% for i in '0123456789' %}
+                <div class="col">
+                    <div class="card mb-3 w-100 text-decoration-none">
+                        <div class="row g-0 align-items-center">
+                            <div class="col-md-5 p-3 ps-md-2">
+                            {% load static %}
+                                <img src="{% static 'img/teste.png' %}" class="img-fluid" alt="...">
+                            </div>
+                            <div class="col-md-7">
+                                <div class="card-body">
+                                    <h5 class="card-title mb-2">Produto {{ i }}</h5>
+                                    <p>Quantidade: n</p>
+                                    
+                                    <select class="form-select form-select-lg mb-3" aria-label="Large select example">
+                                        <option selected>Escolha</option>
+                                        {% for i in "12345" %}
+                                            <option value="{{ i }}">Transportadora {{ i }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <a href="{% url 'compra_endereco' %}" type="submit" class="btn btn-primary w-100">Continuar</a>
+    </form>
+{% endblock %}

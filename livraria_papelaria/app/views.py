@@ -40,6 +40,10 @@ def compra_endereco(request):
     return render(request, 'compra_endereco.html', {'formulario': formulario})
 
 
+def compra_transportadora(request):
+    return render(request, 'compra_transportadora.html')
+
+
 def historico_compras(request):
     return render(request, 'historico_compras.html')
 
