@@ -1,0 +1,55 @@
+{% extends 'components/base.html' %}
+{% block title %} Formas de Pagamento {% endblock %}
+{% block content %}
+    {% include 'components/content_title.html' with title='Formas de Pagamento' %}
+    <div class="row g-3">
+
+        <div class="col">
+            {% for i in "12345" %} 
+                <div class="card my-3 p-3">
+                    <div class="fw-bold text-center">Pix {{ i }}</div>
+                    <div class="d-flex flex-wrap justify-content-center gap-3">
+                        <a href="#">Remover</a>
+                    </div>
+                    <table class="table table-sm">
+                        <tbody>
+                            {% for campo in campos_pix %}
+                                {% if campo.name != 'id' %}                
+                                    <tr>
+                                        <td class="align-middle text-capitalize fw-bold pe-3">{{ campo.name }}</td>
+                                        <td class="align-middle text-break text-end">valor</td>
+                                    </tr>
+                                {% endif %}
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="col">
+            {% for i in "12345" %} 
+                <div class="card my-3 p-3">
+                    <div class="fw-bold text-center">Cartão {{ i }}</div>
+                    <div class="d-flex flex-wrap justify-content-center gap-3">
+                        <a href="#">Remover</a>
+                    </div>
+                    <table class="table table-sm">
+                        <tbody>
+                            {% for campo in campos_cartao %}
+                                {% if campo.name != 'id' %}                
+                                    <tr>
+                                        <td class="align-middle text-capitalize fw-bold pe-3">{{ campo.name }}</td>
+                                        <td class="align-middle text-break text-end">valor</td>
+                                    </tr>
+                                {% endif %}
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% endfor %}
+        </div>
+        
+    </div>
+    <a href="{% url 'formas_pagamento_criar' %}" class="btn btn-primary w-100 mt-4">Criar nova forma de pagamento</a>
+{% endblock %}

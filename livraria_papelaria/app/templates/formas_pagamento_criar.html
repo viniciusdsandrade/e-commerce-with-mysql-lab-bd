@@ -1,0 +1,28 @@
+{% extends 'components/base.html' %}
+{% block title %} Criar Forma de Pagamento {% endblock %}
+{% block content %}
+    {% include 'components/content_title.html' with title='Criar Forma de Pagamento' %}
+    <form class="d-flex flex-column gap-3" method="post">
+        {% csrf_token %}
+        <div class="input-group">
+            <div class="input-group-text">
+                <input class="form-check-input mt-0" name="forma_pagamento" type="radio" value="" aria-label="Radio button for following text input">
+            </div>
+            <label class="input-group-text" for="inputGroupSelect01">Pix</label>
+            <div class="p-3 border">
+                {{ formulario_pix.as_p }}
+            </div>
+        </div>
+
+        <div class="input-group">
+            <div class="input-group-text">
+                <input class="form-check-input mt-0" name="forma_pagamento" type="radio" value="" aria-label="Radio button for following text input">
+            </div>
+            <label class="input-group-text" for="inputGroupSelect01">Cartão</label>
+            <div class="p-3 border">
+                {{ formulario_cartao.as_p }}
+            </div>
+        </div>
+        <button class="btn btn-primary" type="submit">Criar</button>
+    </form>
+{% endblock %}

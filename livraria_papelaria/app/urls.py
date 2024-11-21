@@ -16,4 +16,6 @@ urlpatterns = [
     path('usuario/enderecos/', views.enderecos, name='enderecos'),
     path('usuario/enderecos/criar', views.enderecos_criar, name='enderecos_criar'),
     path('usuario/enderecos/editar', views.enderecos_editar, name='enderecos_editar'),
+    path('usuario/formas_pagamento/', views.formas_pagamento, name='formas_pagamento'),
+    path('usuario/formas_pagamento_criar/', views.formas_pagamento_criar, name='formas_pagamento_criar'),
 ]

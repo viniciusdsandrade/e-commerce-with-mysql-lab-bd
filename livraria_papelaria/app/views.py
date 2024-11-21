@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
-from .models import Endereco
+from .models import Endereco, Pix, Cartao
 from django.db.models import ForeignKey
-from .forms import EnderecoForm
+from .forms import EnderecoForm, PixForm, CartaoForm
 
 def home(request):
     return render(request, 'home.html')
@@ -54,6 +54,32 @@ def enderecos(request):
         if not isinstance(campo, ForeignKey)
     ]
     return render(request, 'enderecos.html', {'campos': campos})
+
+
+def formas_pagamento(request):
+    campos_pix = [
+        campo for campo in Pix._meta.fields
+        if not isinstance(campo, ForeignKey)
+    ]
+
+    campos_cartao = [
+        campo for campo in Cartao._meta.fields
+        if not isinstance(campo, ForeignKey)
+    ]
+
+    return render(request, 'formas_pagamento.html', {'campos_pix': campos_pix, 'campos_cartao': campos_cartao})
+
+
+def formas_pagamento_criar(request):
+    if request.method == 'POST':
+        # formulario = EnderecoForm(request.POST)
+        # if formulario.is_valid():
+        #     formulario.save()
+        return redirect('formas_pagamento')
+    
+    formulario_cartao = CartaoForm()
+    formulario_pix = PixForm()
+    return render(request, 'formas_pagamento_criar.html', {'formulario_cartao': formulario_cartao, 'formulario_pix': formulario_pix})
 
 
 def enderecos_criar(request):
