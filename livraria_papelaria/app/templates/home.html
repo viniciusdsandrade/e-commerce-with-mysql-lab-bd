@@ -5,18 +5,32 @@
   <h1 class="display-4 fst-italic text-center">Livraria e Papelaria</h1>
 </div>
 
-<div class="row g-3">
-  <div class="col-sm-4">
-    <div class="card">
-      <h3 class="bg-body-secondary text-center p-3 mb-0">Oferta do dia</h3>
-      {% load static %}
-      <img class="" src="{% static 'img/teste.png' %}" alt="Card image cap">
-      <div class="card-body">
-        <h5 class="card-title">Nome produto</h5>
-        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-        <a href="#" class="btn btn-primary">Go somewhere</a>
-      </div>
-    </div>
-  </div>
+<div class="row row-cols-1 row-cols-lg-2">
+    {% for i in "1234" %}
+        <div class="col">
+            <div class="card mb-3 w-100 text-decoration-none">
+                <div class="row g-0 align-items-center">
+                    <div class="col-md-5 p-3 ps-md-2">
+                    {% load static %}
+                        <img src="{% static 'img/teste.png' %}" class="img-fluid" alt="...">
+                    </div>
+                    <div class="col-md-7">
+                        <div class="card-body">
+                            <h5 class="card-title mb-2">Produto {{ i }}</h5>
+                            <p class="card-text"><small>⭐⭐⭐⭐⭐</small></p>
+                            <p class="card-text mt-3 mb-0 text-decoration-line-through">R$39,99</p>
+                            <p class="card-text"><span class="fw-bold lead me-1">R$19,99</span> 50% OFF</p>
+                        
+                            <div class="d-flex gap-3 flex-wrap mt-3">
+                                <a href="{% url 'produto' %}">Ver produto</a>
+                                <a href="#">Salvar na lista de desejos</a>
+                                <a href="#">Adicionar ao carrinho</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
 </div>
 {% endblock %}

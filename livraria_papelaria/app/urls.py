@@ -19,4 +19,7 @@ urlpatterns = [
     path('usuario/enderecos/editar', views.enderecos_editar, name='enderecos_editar'),
     path('usuario/formas_pagamento/', views.formas_pagamento, name='formas_pagamento'),
     path('usuario/formas_pagamento_criar/', views.formas_pagamento_criar, name='formas_pagamento_criar'),
+    path('entrar/', views.entrar, name='entrar'),
+    path('cadastrar/', views.cadastrar, name='cadastrar'),
+    path('sair/', views.sair, name='sair'),
 ]

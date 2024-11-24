@@ -1,0 +1,18 @@
+{% extends 'components/base.html' %}
+{% block title %} Entrar {% endblock %}
+{% block content %}
+    {% include 'components/content_title.html' with title='Entrar' %}
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="username" class="form-label">Nome de usuário</label>
+            <input type="text" class="form-control" name="username">
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Senha</label>
+            <input type="password" class="form-control" name="password">
+        </div>
+        <button type="submit" class="btn btn-primary">Entrar</button>
+        <a href="{% url 'cadastrar' %}" class="btn btn-secondary">Cadastrar-se</a>
+    </form>
+{% endblock %}
