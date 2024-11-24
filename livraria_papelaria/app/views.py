@@ -3,58 +3,73 @@ from .models import Endereco, Pix, Cartao
 from django.db.models import ForeignKey
 from .forms import EnderecoForm, PixForm, CartaoForm
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
 from django.contrib.auth.models import User
 
+def usuario_comum(user):
+    return not user.is_staff
+
+
+@user_passes_test(usuario_comum)
 def home(request):
     return render(request, 'home.html')
 
 
+@user_passes_test(usuario_comum)
 def pesquisa(request):
     return render(request, 'pesquisa.html')
 
 
+@user_passes_test(usuario_comum)
 def categorias(request):
     return render(request, 'categorias.html')
 
 
+@user_passes_test(usuario_comum)
 def produto(request):
     return render(request, 'produto.html')
 
 
 @login_required
+@user_passes_test(usuario_comum)
 def conta(request):
     return render(request, 'conta.html')
 
 
 @login_required
+@user_passes_test(usuario_comum)
 def lista_de_desejos(request):
     return render(request, 'lista_de_desejos.html')
 
 
 @login_required
+@user_passes_test(usuario_comum)
 def carrinho(request):
     return render(request, 'carrinho.html')
 
 
 @login_required
+@user_passes_test(usuario_comum)
 def cupons(request):
     return render(request, 'cupons.html')
 
 
 @login_required
+@user_passes_test(usuario_comum)
 def compra_endereco(request):
     formulario = EnderecoForm()
     return render(request, 'compra_endereco.html', {'formulario': formulario})
 
 
 @login_required
+@user_passes_test(usuario_comum)
 def compra_transportadora(request):
     return render(request, 'compra_transportadora.html')
 
 
 @login_required
+@user_passes_test(usuario_comum)
 def compra_pagamento(request):
     formulario_pix = PixForm()
     formulario_cartao = CartaoForm()
@@ -62,11 +77,13 @@ def compra_pagamento(request):
 
 
 @login_required
+@user_passes_test(usuario_comum)
 def historico_compras(request):
     return render(request, 'historico_compras.html')
 
 
 @login_required
+@user_passes_test(usuario_comum)
 def enderecos(request):
     campos = [
         campo for campo in Endereco._meta.fields
@@ -76,6 +93,7 @@ def enderecos(request):
 
 
 @login_required
+@user_passes_test(usuario_comum)
 def formas_pagamento(request):
     campos_pix = [
         campo for campo in Pix._meta.fields
@@ -91,6 +109,7 @@ def formas_pagamento(request):
 
 
 @login_required
+@user_passes_test(usuario_comum)
 def formas_pagamento_criar(request):
     if request.method == 'POST':
         # formulario = EnderecoForm(request.POST)
@@ -104,6 +123,7 @@ def formas_pagamento_criar(request):
 
 
 @login_required
+@user_passes_test(usuario_comum)
 def enderecos_criar(request):
     if request.method == 'POST':
         # formulario = EnderecoForm(request.POST)
@@ -116,6 +136,7 @@ def enderecos_criar(request):
 
 
 @login_required
+@user_passes_test(usuario_comum)
 def enderecos_editar(request):
     if request.method == 'POST':
         # formulario = EnderecoForm(request.POST)
@@ -133,13 +154,17 @@ def entrar(request):
         password = request.POST['password']
         user = authenticate(request, username=username, password=password)
 
-        if user is not None:
-            login(request, user)
-            messages.success(request, ('Login realizado com sucesso.'))
-            return redirect('home')
+        if user is None:
+            messages.success(request, ('Houve um erro ao realizar o login.'))
+            return redirect('entrar')
         
-        messages.success(request, ('Houve um erro ao realizar o login.'))
-        return redirect('entrar')
+        if user.is_staff:
+            messages.success(request, ('Este usuário é um administrador e só tem acesso ao painel de administração.'))
+            return redirect('entrar')
+        
+        login(request, user)
+        messages.success(request, ('Login realizado com sucesso.'))
+        return redirect('home')
     
     return render(request, 'entrar.html')
 
@@ -166,6 +191,7 @@ def cadastrar(request):
     return render(request, 'cadastrar.html')
 
 
+@user_passes_test(usuario_comum)
 def sair(request):
     logout(request)
     messages.success(request, ('Você saiu da sua conta.'))
