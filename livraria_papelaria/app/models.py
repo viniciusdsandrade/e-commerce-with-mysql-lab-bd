@@ -35,6 +35,9 @@ class Acesso(models.Model):
     def __str__(self):
         return self.nome
 
+    class Meta:
+        verbose_name = verbose_name_plural = 'Acesso'
+
 
 # Tabela base para armazenar os campos comuns entre Funcionários e Usuários
 class Pessoa(models.Model):
@@ -49,6 +52,9 @@ class Pessoa(models.Model):
     def __str__(self):
         return self.nome
 
+    class Meta:
+        verbose_name = verbose_name_plural = 'Pessoa'
+
 
 # Tabela para armazenar os dados específicos de Funcionários
 class Funcionario(Pessoa):
@@ -56,6 +62,9 @@ class Funcionario(Pessoa):
 
     def __str__(self):
         return f"{self.nome} - {self.acesso.nome}"
+
+    class Meta:
+        verbose_name = verbose_name_plural = 'Funcionario'
 
 
 # Tabela para armazenar os dados específicos de Usuários
@@ -77,6 +86,9 @@ class Usuario(Pessoa):
     def __str__(self):
         return self.nome
 
+    class Meta:
+        verbose_name = verbose_name_plural = 'Usuario'
+
 
 # Tabela para armazenar as Transportadoras
 class Transportadora(models.Model):
@@ -90,6 +102,9 @@ class Transportadora(models.Model):
 
     def __str__(self):
         return self.nome
+
+    class Meta:
+        verbose_name = verbose_name_plural = 'Transportadora'
 
 
 # Tabela de Chamados
@@ -115,6 +130,9 @@ class Chamado(models.Model):
     def __str__(self):
         return self.titulo
 
+    class Meta:
+        verbose_name = verbose_name_plural = 'Chamado'
+
 
 # Tabela para registrar mensagens em chamados
 class Mensagem(models.Model):
@@ -126,16 +144,25 @@ class Mensagem(models.Model):
     def __str__(self):
         return f"Mensagem de {self.remetente.nome} em {self.data_envio}"
 
+    class Meta:
+        verbose_name = verbose_name_plural = 'Mensagem'
+
 
 # Tabela para armazenar formas de pagamento
 class FormaPagamento(models.Model):
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = verbose_name_plural = 'FormaPagamento'
 
 
 # Tabela para armazenar detalhes específicos do PIX
 class Pix(models.Model):
     forma_pagamento = models.OneToOneField(FormaPagamento, on_delete=models.CASCADE, primary_key=True)
     chave = models.CharField(max_length=100)
+
+    class Meta:
+        verbose_name = verbose_name_plural = 'Pix'
 
 
 # Tabela para armazenar detalhes específicos do Cartão de Crédito
@@ -154,6 +181,9 @@ class Cartao(models.Model):
         choices=TipoChoices.choices,
     )
 
+    class Meta:
+        verbose_name = verbose_name_plural = 'Cartao'
+
 
 # Tabela para armazenar endereços dos usuários
 class Endereco(models.Model):
@@ -170,6 +200,9 @@ class Endereco(models.Model):
     def __str__(self):
         return f"{self.rua}, {self.numero} - {self.cidade}"
 
+    class Meta:
+        verbose_name = verbose_name_plural = 'Endereco'
+
 
 # Tabela para armazenar os Produtos
 class Produto(models.Model):
@@ -182,12 +215,18 @@ class Produto(models.Model):
     def __str__(self):
         return self.nome
 
+    class Meta:
+        verbose_name = verbose_name_plural = 'Produto'
+
 
 # Tabela para armazenar o Estoque dos Produtos
 class Estoque(models.Model):
     produto = models.ForeignKey(Produto, on_delete=models.CASCADE)
     quantidade = models.PositiveIntegerField()
     localizacao = models.CharField(max_length=70, null=True, blank=True)
+
+    class Meta:
+        verbose_name = verbose_name_plural = 'Endereco'
 
 
 # Tabela para armazenar as Categorias
@@ -197,17 +236,25 @@ class Categoria(models.Model):
     def __str__(self):
         return self.nome
 
+    class Meta:
+        verbose_name = verbose_name_plural = 'Categoria'
+
 
 # Tabela de associação N:N entre Produtos e Categorias
 class ProdutoCategoria(models.Model):
     produto = models.ForeignKey(Produto, on_delete=models.CASCADE)
     categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE)
 
+    class Meta:
+        verbose_name = verbose_name_plural = 'ProdutoCategoria'
 
 # Tabela para armazenar as Listas de Desejos
 class ListaDesejos(models.Model):
     usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE, primary_key=True)
     produtos = models.ManyToManyField(Produto)
+
+    class Meta:
+        verbose_name = verbose_name_plural = 'ListaDesejos'
 
 
 # Tabela para armazenar os Carrinhos de Compras de cada Usuário
@@ -215,12 +262,17 @@ class Carrinho(models.Model):
     usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE, primary_key=True)
     produtos = models.ManyToManyField(Produto, through='CarrinhoProduto')
 
+    class Meta:
+        verbose_name = verbose_name_plural = 'Carrinho'
 
 # Tabela de associação N:N entre Carrinhos e Produtos
 class CarrinhoProduto(models.Model):
     carrinho = models.ForeignKey(Carrinho, on_delete=models.CASCADE)
     produto = models.ForeignKey(Produto, on_delete=models.CASCADE)
     quantidade = models.PositiveIntegerField()
+
+    class Meta:
+        verbose_name = verbose_name_plural = 'CarrinhoProduto'
 
 
 # Tabela para armazenar as Compras
@@ -233,6 +285,9 @@ class Compra(models.Model):
     def __str__(self):
         return f"Compra #{self.id} - {self.usuario.nome}"
 
+    class Meta:
+        verbose_name = verbose_name_plural = 'Compra'
+
 
 # Tabela para armazenar os produtos comprados em cada compra
 class CompraProduto(models.Model):
@@ -242,6 +297,7 @@ class CompraProduto(models.Model):
 
     class Meta:
         unique_together = ('compra', 'produto')
+        verbose_name = verbose_name_plural = 'CompraProduto'
 
 
 # Tabela para armazenar as avaliações dos produtos comprados
@@ -261,6 +317,9 @@ class Avaliacao(models.Model):
         blank=True
     )
     comentario = models.TextField(null=True, blank=True)
+
+    class Meta:
+        verbose_name = verbose_name_plural = 'Avaliacao'
 
 
 # Tabela de rastreamento de compras, com relação 1:1 com tb_compra_produto
@@ -292,6 +351,9 @@ class Entrega(models.Model):
     )
     finalizada = models.BooleanField(default=False)
 
+    class Meta:
+        verbose_name = verbose_name_plural = 'Entrega'
+
 
 # Tabela de Promoções
 class Promocao(models.Model):
@@ -303,6 +365,9 @@ class Promocao(models.Model):
     def __str__(self):
         return self.nome
 
+    class Meta:
+        verbose_name = verbose_name_plural = 'Promocao'
+
 
 # Tabela de associação N:N entre Promoções e Produtos
 class PromocaoProduto(models.Model):
@@ -312,6 +377,7 @@ class PromocaoProduto(models.Model):
 
     class Meta:
         unique_together = ('produto', 'promocao')
+        verbose_name = verbose_name_plural = 'PromocaoProduto'
 
 
 # Tabela de Cupons
@@ -324,8 +390,14 @@ class Cupom(models.Model):
     def __str__(self):
         return self.nome
 
+    class Meta:
+        verbose_name = verbose_name_plural = 'Cupom'
+
 
 # Tabela de associação N:N entre Cupons e Compras
 class CupomCompra(models.Model):
     compra = models.ForeignKey(Compra, on_delete=models.CASCADE)
     cupom = models.ForeignKey(Cupom, on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = verbose_name_plural = 'CupomCompra'
