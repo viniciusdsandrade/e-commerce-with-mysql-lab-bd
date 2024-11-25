@@ -2,7 +2,7 @@
 {% block title %} Conta {% endblock %}
 {% block content %}
     <div class="d-flex flex-column gap-2">
-        <h1>Nome Usuário</h1>
+        <h1>{{ user }}</h1>
         <hr>
         <a class="btn btn-primary" href="{% url 'carrinho' %}" role="button">Carrinho</a>
         <a class="btn btn-primary" href="{% url 'lista_de_desejos' %}" role="button">Lista de desejos</a>
