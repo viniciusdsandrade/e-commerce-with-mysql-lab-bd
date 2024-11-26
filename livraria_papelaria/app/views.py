@@ -85,11 +85,14 @@ def historico_compras(request):
 @login_required
 @user_passes_test(usuario_comum)
 def enderecos(request):
+    enderecos = request.user.endereco_set.all()
+
     campos = [
         campo for campo in Endereco._meta.fields
         if not isinstance(campo, ForeignKey)
     ]
-    return render(request, 'enderecos.html', {'campos': campos})
+    
+    return render(request, 'enderecos.html', {'enderecos': enderecos, 'campos': campos})
 
 
 @login_required

@@ -167,6 +167,8 @@ class Cartao(models.Model):
 # Tabela para armazenar endereços dos usuários
 class Endereco(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    nome = models.CharField(max_length=20, null=True, blank=True)
     rua = models.CharField(max_length=100, null=True, blank=True)
     numero = models.CharField(max_length=8, null=True, blank=True)
     bairro = models.CharField(max_length=100, null=True, blank=True)
@@ -205,7 +207,7 @@ class Estoque(models.Model):
     localizacao = models.CharField(max_length=70, null=True, blank=True)
 
     class Meta:
-        verbose_name = verbose_name_plural = 'Endereco'
+        verbose_name = verbose_name_plural = 'Estoque'
 
 
 # Tabela para armazenar as Categorias
@@ -229,7 +231,7 @@ class ProdutoCategoria(models.Model):
 
 # Tabela para armazenar as Listas de Desejos
 class ListaDesejos(models.Model):
-    usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE, primary_key=True)
+    usuario = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     produtos = models.ManyToManyField(Produto)
 
     class Meta:
@@ -238,7 +240,7 @@ class ListaDesejos(models.Model):
 
 # Tabela para armazenar os Carrinhos de Compras de cada Usuário
 class Carrinho(models.Model):
-    usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE, primary_key=True)
+    usuario = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     produtos = models.ManyToManyField(Produto, through='CarrinhoProduto')
 
     class Meta:

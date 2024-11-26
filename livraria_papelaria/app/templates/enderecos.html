@@ -3,10 +3,10 @@
 {% block content %}
     {% include 'components/content_title.html' with title='Endereços' %}
     <div class="row row-cols-1 row-cols-md-2 g-3">
-        {% for i in "123456" %} 
+        {% for endereco in enderecos %} 
             <div class="col">
                 <div class="card p-3">
-                    <div class="fw-bold text-center">Nome Endereço {{ i }}</div>
+                    <div class="fw-bold text-center">{{ endereco.nome  }}</div>
                     <div class="d-flex flex-wrap justify-content-center gap-3">    
                         <a href="{% url 'enderecos_editar' %}">Editar</a>
                         <a href="#">Remover</a>
@@ -17,7 +17,7 @@
                                 {% if campo.name != 'is_principal' and campo.name != 'id' %}                
                                     <tr>
                                         <td class="align-middle text-capitalize fw-bold pe-3">{{ campo.name }}</td>
-                                        <td class="align-middle text-break text-end">valor</td>
+                                        <td class="align-middle text-break text-end">{{ endereco.complemento|default:'-' }}</td>
                                     </tr>
                                 {% endif %}
                             {% endfor %}
