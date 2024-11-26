@@ -1,5 +1,5 @@
-from django.shortcuts import render, redirect
-from .models import Endereco, Pix, Cartao
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import Endereco, Pix, Cartao, Categoria
 from django.db.models import ForeignKey
 from .forms import EnderecoForm, PixForm, CartaoForm
 from django.contrib.auth import authenticate, login, logout
@@ -23,7 +23,9 @@ def pesquisa(request):
 
 @user_passes_test(usuario_comum)
 def categorias(request):
-    return render(request, 'categorias.html')
+    papelaria = Categoria.objects.all().filter(tipo="PAPELARIA")
+    livraria = Categoria.objects.all().filter(tipo="LIVRARIA")
+    return render(request, 'categorias.html', {"papelaria": papelaria, "livraria": livraria})
 
 
 @user_passes_test(usuario_comum)
@@ -85,14 +87,8 @@ def historico_compras(request):
 @login_required
 @user_passes_test(usuario_comum)
 def enderecos(request):
-    enderecos = request.user.endereco_set.all()
-
-    campos = [
-        campo for campo in Endereco._meta.fields
-        if not isinstance(campo, ForeignKey)
-    ]
-    
-    return render(request, 'enderecos.html', {'enderecos': enderecos, 'campos': campos})
+    enderecos = request.user.endereco_set.all().order_by('-is_principal')
+    return render(request, 'enderecos.html', {'enderecos': enderecos})
 
 
 @login_required
@@ -129,10 +125,12 @@ def formas_pagamento_criar(request):
 @user_passes_test(usuario_comum)
 def enderecos_criar(request):
     if request.method == 'POST':
-        # formulario = EnderecoForm(request.POST)
-        # if formulario.is_valid():
-        #     formulario.save()
-        return redirect('enderecos')
+        formulario = EnderecoForm(request.POST)
+        if formulario.is_valid():
+            endereco = formulario.save(commit=False)
+            endereco.usuario = request.user
+            endereco.save()
+            return redirect('enderecos')
     
     formulario = EnderecoForm()
     return render(request, 'enderecos_criar.html', {'formulario': formulario})
@@ -140,15 +138,25 @@ def enderecos_criar(request):
 
 @login_required
 @user_passes_test(usuario_comum)
-def enderecos_editar(request):
+def enderecos_editar(request, id_endereco):
+    endereco = get_object_or_404(Endereco, id=id_endereco)
+
     if request.method == 'POST':
-        # formulario = EnderecoForm(request.POST)
-        # if formulario.is_valid():
-        #     formulario.save()
-        return redirect('enderecos')
-    
-    formulario = EnderecoForm()
+        form = EnderecoForm(request.POST, instance=endereco)  # Passa a instância existente
+        if form.is_valid():
+            form.save()  # Salva as alterações
+            return redirect('enderecos')  # Redireciona após salvar
+
+    formulario = EnderecoForm(instance=endereco)
     return render(request, 'enderecos_editar.html', {'formulario': formulario})
+
+
+@login_required
+@user_passes_test(usuario_comum)
+def enderecos_remover(request, id_endereco):
+    endereco = get_object_or_404(Endereco, id=id_endereco)
+    endereco.delete()
+    return redirect('enderecos')
 
 
 def entrar(request):

@@ -4,15 +4,15 @@
     {% include 'components/content_title.html' with title='Categorias' %}
     <h5>Livraria</h5>
     <div class="d-flex flex-wrap justify-content-space-between gap-2">
-    {% for i in "0123456789" %}
-        <a class="btn btn-primary" href="#" role="button">Categoria {{i}}</a>
+    {% for categoria in livraria %}
+        <a class="btn btn-primary" href="#" role="button">{{ categoria.nome }}</a>
     {% endfor %}
     </div>
 
     <h5 class="mt-5">Papelaria</h5>
     <div class="d-flex flex-wrap justify-content-space-between gap-2">
-    {% for i in "0123456789" %}
-        <a class="btn btn-primary" href="#" role="button">Categoria {{i}}</a>
+    {% for categoria in papelaria %}
+        <a class="btn btn-primary" href="#" role="button">{{ categoria.nome }}</a>
     {% endfor %}
     </div>
 {% endblock %}

@@ -3,28 +3,53 @@
 {% block content %}
     {% include 'components/content_title.html' with title='Endereços' %}
     <div class="row row-cols-1 row-cols-md-2 g-3">
-        {% for endereco in enderecos %} 
+        {% for endereco in enderecos %}
             <div class="col">
                 <div class="card p-3">
-                    <div class="fw-bold text-center">{{ endereco.nome  }}</div>
-                    <div class="d-flex flex-wrap justify-content-center gap-3">    
-                        <a href="{% url 'enderecos_editar' %}">Editar</a>
-                        <a href="#">Remover</a>
+                    {% if endereco.is_principal %}
+                        <span class="badge text-bg-primary">Endereço principal</span>
+                    {% endif %}
+                    <span class="fw-bold text-center">{{ endereco.nome }}</span>
+                    <div class="d-flex flex-wrap justify-content-center gap-3">
+                        <a href="{% url 'enderecos_editar' id_endereco=endereco.id %}">Editar</a>
+                        <a href="{% url 'enderecos_remover' id_endereco=endereco.id %}">Remover</a>
                     </div>
                     <table class="table table-sm">
                         <tbody>
-                            {% for campo in campos %}
-                                {% if campo.name != 'is_principal' and campo.name != 'id' %}                
-                                    <tr>
-                                        <td class="align-middle text-capitalize fw-bold pe-3">{{ campo.name }}</td>
-                                        <td class="align-middle text-break text-end">{{ endereco.complemento|default:'-' }}</td>
-                                    </tr>
-                                {% endif %}
-                            {% endfor %}
+                            <tr>
+                                <td class="align-middle text-capitalize fw-bold pe-3">Rua</td>
+                                <td class="align-middle text-break text-end">{{ endereco.rua }}</td>
+                            </tr>
+                            <tr>
+                                <td class="align-middle text-capitalize fw-bold pe-3">Número</td>
+                                <td class="align-middle text-break text-end">{{ endereco.numero }}</td>
+                            </tr>
+                            <tr>
+                                <td class="align-middle text-capitalize fw-bold pe-3">Complemento</td>
+                                <td class="align-middle text-break text-end">{{ endereco.complemento|default:'-' }}</td>
+                            </tr>
+                            <tr>
+                                <td class="align-middle text-capitalize fw-bold pe-3">Bairro</td>
+                                <td class="align-middle text-break text-end">{{ endereco.bairro }}</td>
+                            </tr>
+                            <tr>
+                                <td class="align-middle text-capitalize fw-bold pe-3">Cidade</td>
+                                <td class="align-middle text-break text-end">{{ endereco.cidade }}</td>
+                            </tr>
+                            <tr>
+                                <td class="align-middle text-capitalize fw-bold pe-3">Estado</td>
+                                <td class="align-middle text-break text-end">{{ endereco.estado }}</td>
+                            </tr>
+                            <tr>
+                                <td class="align-middle text-capitalize fw-bold pe-3">CEP</td>
+                                <td class="align-middle text-break text-end">{{ endereco.cep }}</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
+        {% empty %}
+            <p>Você não possui endereços cadastrados.</p>
         {% endfor %}
     </div>
     <a href="{% url 'enderecos_criar' %}" class="btn btn-primary w-100 mt-4">Criar novo endereço</a>

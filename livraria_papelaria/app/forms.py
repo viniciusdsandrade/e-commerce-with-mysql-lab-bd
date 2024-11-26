@@ -4,7 +4,7 @@ from .models import Endereco, Pix, Cartao
 class EnderecoForm(forms.ModelForm):
     class Meta:
         model = Endereco
-        fields = ['rua', 'numero', 'complemento', 'bairro', 'cidade', 'estado', 'cep']
+        fields = ['nome', 'rua', 'numero', 'complemento', 'bairro', 'cidade', 'estado', 'cep', 'is_principal']
 
 
 class PixForm(forms.ModelForm):
