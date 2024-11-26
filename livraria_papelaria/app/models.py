@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 
 # Tabela de Papéis (Roles)
@@ -67,28 +68,6 @@ class Funcionario(Pessoa):
         verbose_name = verbose_name_plural = 'Funcionario'
 
 
-# Tabela para armazenar os dados específicos de Usuários
-class Usuario(Pessoa):
-    class EstadoChoices(models.TextChoices):
-        AGUARDANDO_VERIFICACAO = 'AGUARDANDO_VERIFICACAO', 'Aguardando Verificação'
-        ATIVO = 'ATIVO', 'Ativo'
-        SUSPENSO = 'SUSPENSO', 'Suspenso'
-        BANIDO = 'BANIDO', 'Banido'
-
-    saldo = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    estado = models.CharField(
-        max_length=25,
-        choices=EstadoChoices.choices,
-        default=EstadoChoices.ATIVO
-    )
-    data_final_suspensao = models.DateTimeField(null=True, blank=True)
-
-    def __str__(self):
-        return self.nome
-
-    class Meta:
-        verbose_name = verbose_name_plural = 'Usuario'
-
 
 # Tabela para armazenar as Transportadoras
 class Transportadora(models.Model):
@@ -115,7 +94,7 @@ class Chamado(models.Model):
         RESOLVIDO = 'RESOLVIDO', 'Resolvido'
         CANCELADO = 'CANCELADO', 'Cancelado'
 
-    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     funcionario = models.ForeignKey(Funcionario, on_delete=models.CASCADE)
     titulo = models.CharField(max_length=50)
     descricao = models.TextField()
@@ -150,7 +129,7 @@ class Mensagem(models.Model):
 
 # Tabela para armazenar formas de pagamento
 class FormaPagamento(models.Model):
-    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = verbose_name_plural = 'FormaPagamento'
@@ -187,7 +166,7 @@ class Cartao(models.Model):
 
 # Tabela para armazenar endereços dos usuários
 class Endereco(models.Model):
-    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     rua = models.CharField(max_length=100, null=True, blank=True)
     numero = models.CharField(max_length=8, null=True, blank=True)
     bairro = models.CharField(max_length=100, null=True, blank=True)
@@ -277,7 +256,7 @@ class CarrinhoProduto(models.Model):
 
 # Tabela para armazenar as Compras
 class Compra(models.Model):
-    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     endereco = models.ForeignKey(Endereco, on_delete=models.CASCADE)
     data_realizada = models.DateTimeField(auto_now_add=True)
     cupons = models.ManyToManyField('Cupom', through='CupomCompra')
