@@ -1,93 +1,6 @@
 from django.db import models
+from django.contrib.auth.models import User
 
-
-# Tabela de Papéis (Roles)
-class Acesso(models.Model):
-    nome = models.CharField(max_length=100, unique=True)  # Each role has a unique name
-    pode_banir_usuario = models.BooleanField(default=False)
-    pode_conversar_com_usuario = models.BooleanField(default=False)
-    pode_visualizar_categorias = models.BooleanField(default=False)
-    pode_criar_categorias = models.BooleanField(default=False)
-    pode_editar_categorias = models.BooleanField(default=False)
-    pode_remover_categorias = models.BooleanField(default=False)
-    pode_visualizar_produtos = models.BooleanField(default=False)
-    pode_criar_produtos = models.BooleanField(default=False)
-    pode_editar_produtos = models.BooleanField(default=False)
-    pode_remover_produtos = models.BooleanField(default=False)
-    pode_visualizar_estoques = models.BooleanField(default=False)
-    pode_criar_estoques = models.BooleanField(default=False)
-    pode_editar_estoques = models.BooleanField(default=False)
-    pode_remover_estoques = models.BooleanField(default=False)
-    pode_visualizar_promocoes = models.BooleanField(default=False)
-    pode_criar_promocoes = models.BooleanField(default=False)
-    pode_editar_promocoes = models.BooleanField(default=False)
-    pode_remover_promocoes = models.BooleanField(default=False)
-    pode_criar_transportadora = models.BooleanField(default=False)
-    pode_editar_transportadora = models.BooleanField(default=False)
-    pode_remover_transportadora = models.BooleanField(default=False)
-    pode_visualizar_avaliacoes = models.BooleanField(default=False)
-    pode_remover_avaliacoes = models.BooleanField(default=False)
-    pode_visualizar_cupons = models.BooleanField(default=False)
-    pode_criar_cupons = models.BooleanField(default=False)
-    pode_editar_cupons = models.BooleanField(default=False)
-    pode_remover_cupons = models.BooleanField(default=False)
-
-    def __str__(self):
-        return self.nome
-
-    class Meta:
-        verbose_name = verbose_name_plural = 'Acesso'
-
-
-# Tabela base para armazenar os campos comuns entre Funcionários e Usuários
-class Pessoa(models.Model):
-    nome = models.CharField(max_length=100)
-    data_nascimento = models.DateField(null=True, blank=True)
-    cpf = models.CharField(max_length=20, unique=True)
-    email = models.EmailField(max_length=100, unique=True)
-    senha = models.CharField(max_length=255)
-    telefone = models.CharField(max_length=20, null=True, blank=True)
-    email_recuperacao = models.EmailField(max_length=100, null=True, blank=True)
-
-    def __str__(self):
-        return self.nome
-
-    class Meta:
-        verbose_name = verbose_name_plural = 'Pessoa'
-
-
-# Tabela para armazenar os dados específicos de Funcionários
-class Funcionario(Pessoa):
-    acesso = models.ForeignKey(Acesso, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return f"{self.nome} - {self.acesso.nome}"
-
-    class Meta:
-        verbose_name = verbose_name_plural = 'Funcionario'
-
-
-# Tabela para armazenar os dados específicos de Usuários
-class Usuario(Pessoa):
-    class EstadoChoices(models.TextChoices):
-        AGUARDANDO_VERIFICACAO = 'AGUARDANDO_VERIFICACAO', 'Aguardando Verificação'
-        ATIVO = 'ATIVO', 'Ativo'
-        SUSPENSO = 'SUSPENSO', 'Suspenso'
-        BANIDO = 'BANIDO', 'Banido'
-
-    saldo = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    estado = models.CharField(
-        max_length=25,
-        choices=EstadoChoices.choices,
-        default=EstadoChoices.ATIVO
-    )
-    data_final_suspensao = models.DateTimeField(null=True, blank=True)
-
-    def __str__(self):
-        return self.nome
-
-    class Meta:
-        verbose_name = verbose_name_plural = 'Usuario'
 
 
 # Tabela para armazenar as Transportadoras
@@ -107,50 +20,10 @@ class Transportadora(models.Model):
         verbose_name = verbose_name_plural = 'Transportadora'
 
 
-# Tabela de Chamados
-class Chamado(models.Model):
-    class EstadoChoices(models.TextChoices):
-        ABERTO = 'ABERTO', 'Aberto'
-        EM_ANDAMENTO = 'EM_ANDAMENTO', 'Em Andamento'
-        RESOLVIDO = 'RESOLVIDO', 'Resolvido'
-        CANCELADO = 'CANCELADO', 'Cancelado'
-
-    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
-    funcionario = models.ForeignKey(Funcionario, on_delete=models.CASCADE)
-    titulo = models.CharField(max_length=50)
-    descricao = models.TextField()
-    estado = models.CharField(
-        max_length=15,
-        choices=EstadoChoices.choices,
-        default=EstadoChoices.ABERTO
-    )
-    data_criacao = models.DateTimeField(auto_now_add=True)
-    data_finalizacao = models.DateTimeField(null=True, blank=True)
-
-    def __str__(self):
-        return self.titulo
-
-    class Meta:
-        verbose_name = verbose_name_plural = 'Chamado'
-
-
-# Tabela para registrar mensagens em chamados
-class Mensagem(models.Model):
-    chamado = models.ForeignKey(Chamado, on_delete=models.CASCADE)
-    remetente = models.ForeignKey(Pessoa, on_delete=models.CASCADE)
-    texto = models.TextField()
-    data_envio = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f"Mensagem de {self.remetente.nome} em {self.data_envio}"
-
-    class Meta:
-        verbose_name = verbose_name_plural = 'Mensagem'
-
 
 # Tabela para armazenar formas de pagamento
 class FormaPagamento(models.Model):
-    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = verbose_name_plural = 'FormaPagamento'
@@ -187,7 +60,7 @@ class Cartao(models.Model):
 
 # Tabela para armazenar endereços dos usuários
 class Endereco(models.Model):
-    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     rua = models.CharField(max_length=100, null=True, blank=True)
     numero = models.CharField(max_length=8, null=True, blank=True)
     bairro = models.CharField(max_length=100, null=True, blank=True)
@@ -250,7 +123,7 @@ class ProdutoCategoria(models.Model):
 
 # Tabela para armazenar as Listas de Desejos
 class ListaDesejos(models.Model):
-    usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE, primary_key=True)
+    usuario = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     produtos = models.ManyToManyField(Produto)
 
     class Meta:
@@ -259,7 +132,7 @@ class ListaDesejos(models.Model):
 
 # Tabela para armazenar os Carrinhos de Compras de cada Usuário
 class Carrinho(models.Model):
-    usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE, primary_key=True)
+    usuario = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     produtos = models.ManyToManyField(Produto, through='CarrinhoProduto')
 
     class Meta:
@@ -277,7 +150,7 @@ class CarrinhoProduto(models.Model):
 
 # Tabela para armazenar as Compras
 class Compra(models.Model):
-    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     endereco = models.ForeignKey(Endereco, on_delete=models.CASCADE)
     data_realizada = models.DateTimeField(auto_now_add=True)
     cupons = models.ManyToManyField('Cupom', through='CupomCompra')
