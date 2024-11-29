@@ -61,6 +61,7 @@ class Cartao(models.Model):
 # Tabela para armazenar endereços dos usuários
 class Endereco(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    nome = models.CharField(max_length=20, null=True, blank=False)
     rua = models.CharField(max_length=100, null=True, blank=True)
     numero = models.CharField(max_length=8, null=True, blank=True)
     bairro = models.CharField(max_length=100, null=True, blank=True)
