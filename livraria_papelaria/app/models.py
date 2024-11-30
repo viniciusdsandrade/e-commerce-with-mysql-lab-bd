@@ -62,12 +62,12 @@ class Cartao(models.Model):
 class Endereco(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     nome = models.CharField(max_length=20, null=True, blank=False)
-    rua = models.CharField(max_length=100, null=True, blank=True)
-    numero = models.CharField(max_length=8, null=True, blank=True)
-    bairro = models.CharField(max_length=100, null=True, blank=True)
-    cidade = models.CharField(max_length=100, null=True, blank=True)
-    estado = models.CharField(max_length=100, null=True, blank=True)
-    cep = models.CharField(max_length=20, null=True, blank=True)
+    rua = models.CharField(max_length=100, null=True, blank=False)
+    numero = models.CharField(max_length=8, null=True, blank=False)
+    bairro = models.CharField(max_length=100, null=True, blank=False)
+    cidade = models.CharField(max_length=100, null=True, blank=False)
+    estado = models.CharField(max_length=100, null=True, blank=False)
+    cep = models.CharField(max_length=20, null=True, blank=False)
     complemento = models.CharField(max_length=50, null=True, blank=True)
     is_principal = models.BooleanField(default=False)
 
@@ -105,7 +105,17 @@ class Estoque(models.Model):
 
 # Tabela para armazenar as Categorias
 class Categoria(models.Model):
+    class TipoChoices(models.TextChoices):
+        LIVRARIA = 'LIVRARIA', 'Livraria'
+        PAPELARIA = 'PAPELARIA', 'Papelaria'
+
     nome = models.CharField(max_length=50)
+
+    tipo = models.CharField(
+        max_length=15,
+        choices=TipoChoices.choices,
+        null=True,
+    )
 
     def __str__(self):
         return self.nome
