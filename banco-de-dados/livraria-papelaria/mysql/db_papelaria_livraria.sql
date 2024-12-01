@@ -5,55 +5,55 @@ USE db_papelaria_livraria;
 -- Tabela de Papéis (Roles)
 CREATE TABLE IF NOT EXISTS tb_acesso
 (
-    id         BIGINT UNSIGNED AUTO_INCREMENT,
-    nome       VARCHAR(100) NOT NULL, -- Ex: 'ADMINISTRADOR', 'GERENTE', 'SUPORTE'
-    pode_banir_usuario BOOLEAN DEFAULT FALSE,
-    pode_conversar_com_usuario BOOLEAN DEFAULT FALSE,
-    pode_visualizar_categorias BOOLEAN DEFAULT FALSE,
-    pode_criar_categorias BOOLEAN DEFAULT FALSE,
-    pode_editar_categorias BOOLEAN DEFAULT FALSE,
-    pode_remover_categorias BOOLEAN DEFAULT FALSE,
-    pode_visualizar_produtos BOOLEAN DEFAULT FALSE,
-    pode_criar_produtos BOOLEAN DEFAULT FALSE,
-    pode_editar_produtos BOOLEAN DEFAULT FALSE,
-    pode_remover_produtos BOOLEAN DEFAULT FALSE,
-    pode_visualizar_estoques BOOLEAN DEFAULT FALSE,
-    pode_criar_estoques BOOLEAN DEFAULT FALSE,
-    pode_editar_estoques BOOLEAN DEFAULT FALSE,
-    pode_remover_estoques BOOLEAN DEFAULT FALSE,
-    pode_visualizar_promocoes BOOLEAN DEFAULT FALSE,
-    pode_criar_promocoes BOOLEAN DEFAULT FALSE,
-    pode_editar_promocoes BOOLEAN DEFAULT FALSE,
-    pode_remover_promocoes BOOLEAN DEFAULT FALSE,
-    pode_criar_transportadora BOOLEAN DEFAULT FALSE,
-    pode_editar_transportadora BOOLEAN DEFAULT FALSE,
+    id                          BIGINT UNSIGNED AUTO_INCREMENT,
+    nome                        VARCHAR(100) NOT NULL, -- Ex: 'ADMINISTRADOR', 'GERENTE', 'SUPORTE'
+    pode_banir_usuario          BOOLEAN DEFAULT FALSE,
+    pode_conversar_com_usuario  BOOLEAN DEFAULT FALSE,
+    pode_visualizar_categorias  BOOLEAN DEFAULT FALSE,
+    pode_criar_categorias       BOOLEAN DEFAULT FALSE,
+    pode_editar_categorias      BOOLEAN DEFAULT FALSE,
+    pode_remover_categorias     BOOLEAN DEFAULT FALSE,
+    pode_visualizar_produtos    BOOLEAN DEFAULT FALSE,
+    pode_criar_produtos         BOOLEAN DEFAULT FALSE,
+    pode_editar_produtos        BOOLEAN DEFAULT FALSE,
+    pode_remover_produtos       BOOLEAN DEFAULT FALSE,
+    pode_visualizar_estoques    BOOLEAN DEFAULT FALSE,
+    pode_criar_estoques         BOOLEAN DEFAULT FALSE,
+    pode_editar_estoques        BOOLEAN DEFAULT FALSE,
+    pode_remover_estoques       BOOLEAN DEFAULT FALSE,
+    pode_visualizar_promocoes   BOOLEAN DEFAULT FALSE,
+    pode_criar_promocoes        BOOLEAN DEFAULT FALSE,
+    pode_editar_promocoes       BOOLEAN DEFAULT FALSE,
+    pode_remover_promocoes      BOOLEAN DEFAULT FALSE,
+    pode_criar_transportadora   BOOLEAN DEFAULT FALSE,
+    pode_editar_transportadora  BOOLEAN DEFAULT FALSE,
     pode_remover_transportadora BOOLEAN DEFAULT FALSE,
-    pode_visualizar_avaliacoes BOOLEAN DEFAULT FALSE,
-    pode_remover_avaliacoes BOOLEAN DEFAULT FALSE,
-    pode_visualizar_cupons BOOLEAN DEFAULT FALSE,
-    pode_criar_cupons BOOLEAN DEFAULT FALSE,
-    pode_editar_cupons BOOLEAN DEFAULT FALSE,
-    pode_remover_cupons BOOLEAN DEFAULT FALSE,
+    pode_visualizar_avaliacoes  BOOLEAN DEFAULT FALSE,
+    pode_remover_avaliacoes     BOOLEAN DEFAULT FALSE,
+    pode_visualizar_cupons      BOOLEAN DEFAULT FALSE,
+    pode_criar_cupons           BOOLEAN DEFAULT FALSE,
+    pode_editar_cupons          BOOLEAN DEFAULT FALSE,
+    pode_remover_cupons         BOOLEAN DEFAULT FALSE,
 
 
-    UNIQUE (nome),                    -- Cada papel tem um nome único
+    UNIQUE (nome),                                     -- Cada papel tem um nome único
     PRIMARY KEY (id)
 );
 
 -- Tabela base para armazenar os campos comuns entre Funcionários e Usuários
 CREATE TABLE IF NOT EXISTS tb_pessoa
 (
-    id              BIGINT UNSIGNED AUTO_INCREMENT,
-    nome            VARCHAR(100) NOT NULL, -- Nome da pessoa
-    data_nascimento DATE         NULL,     -- Data de nascimento comum
-    cpf             VARCHAR(20)  NOT NULL, -- CPF único para ambas as tabelas
-    email           VARCHAR(100) NOT NULL, -- E-mail comum
-    senha           VARCHAR(255) NOT NULL, -- Senha comum
-    telefone        VARCHAR(20)  NULL,     -- Telefone comum
-    email_recuperacao VARCHAR(100) NULL,  -- E-mail de recuperação comum
+    id                BIGINT UNSIGNED AUTO_INCREMENT,
+    nome              VARCHAR(100) NOT NULL, -- Nome da pessoa
+    data_nascimento   DATE         NULL,     -- Data de nascimento comum
+    cpf               VARCHAR(20)  NOT NULL, -- CPF único para ambas as tabelas
+    email             VARCHAR(100) NOT NULL, -- E-mail comum
+    senha             VARCHAR(255) NOT NULL, -- Senha comum
+    telefone          VARCHAR(20)  NULL,     -- Telefone comum
+    email_recuperacao VARCHAR(100) NULL,     -- E-mail de recuperação comum
 
-    UNIQUE (cpf),                          -- CPF deve ser único
-    UNIQUE (email),                        -- E-mail deve ser único
+    UNIQUE (cpf),                            -- CPF deve ser único
+    UNIQUE (email),                          -- E-mail deve ser único
 
     PRIMARY KEY (id)
 );
@@ -61,31 +61,31 @@ CREATE TABLE IF NOT EXISTS tb_pessoa
 -- Tabela para armazenar os dados específicos de Funcionários, referenciando tb_pessoa
 CREATE TABLE IF NOT EXISTS tb_funcionario
 (
-    id_pessoa         BIGINT UNSIGNED NOT NULL,                              -- FK para tb_pessoa
-    id_acesso         BIGINT UNSIGNED NOT NULL,                              -- Nível de acesso para funcionários
+    id_pessoa BIGINT UNSIGNED NOT NULL,                -- FK para tb_pessoa
+    id_acesso BIGINT UNSIGNED NOT NULL,                -- Nível de acesso para funcionários
 
 
-    PRIMARY KEY (id_pessoa),                                                 -- Usa a PK da tabela pessoa como PK
-    FOREIGN KEY (id_pessoa) REFERENCES tb_pessoa (id),     -- FK para a tabela pessoa
-    FOREIGN KEY (id_acesso) REFERENCES tb_acesso (id) -- Nível de acesso referenciado na tb_role
+    PRIMARY KEY (id_pessoa),                           -- Usa a PK da tabela pessoa como PK
+    FOREIGN KEY (id_pessoa) REFERENCES tb_pessoa (id), -- FK para a tabela pessoa
+    FOREIGN KEY (id_acesso) REFERENCES tb_acesso (id)  -- Nível de acesso referenciado na tb_role
 );
 
 -- Tabela para armazenar os dados específicos de Usuários, referenciando tb_pessoa
 CREATE TABLE IF NOT EXISTS tb_usuario
 (
-    id_pessoa            BIGINT UNSIGNED NOT NULL,                      -- FK para tb_pessoa
-    saldo                DECIMAL(10, 2)           DEFAULT 0,            -- Saldo associado ao usuário
+    id_pessoa            BIGINT UNSIGNED NOT NULL,                 -- FK para tb_pessoa
+    saldo                DECIMAL(10, 2)           DEFAULT 0,       -- Saldo associado ao usuário
     estado               ENUM (
         'AGUARDANDO_VERIFICACAO',
         'ATIVO',
         'SUSPENSO',
         'BANIDO'
-        )                                NOT NULL DEFAULT 'ATIVO',      -- Estado do usuário
-    data_final_suspensao DATETIME        NULL,                          -- Data de término de suspensão, se houver
+        )                                NOT NULL DEFAULT 'ATIVO', -- Estado do usuário
+    data_final_suspensao DATETIME        NULL,                     -- Data de término de suspensão, se houver
 
 
-    PRIMARY KEY (id_pessoa),                                            -- Usa a PK da tabela pessoa como PK
-    FOREIGN KEY (id_pessoa) REFERENCES tb_pessoa (id) -- FK para a tabela pessoa
+    PRIMARY KEY (id_pessoa),                                       -- Usa a PK da tabela pessoa como PK
+    FOREIGN KEY (id_pessoa) REFERENCES tb_pessoa (id)              -- FK para a tabela pessoa
 );
 
 
@@ -112,31 +112,31 @@ CREATE TABLE IF NOT EXISTS tb_transportadora
 CREATE TABLE IF NOT EXISTS tb_chamado
 (
     id               BIGINT UNSIGNED AUTO_INCREMENT,
-    id_usuario       BIGINT UNSIGNED                                         NOT NULL,   -- FK para a tabela de usuários
-    id_funcionario   BIGINT UNSIGNED                                         NOT NULL,   -- FK para a tabela de funcionários
-    titulo           VARCHAR(50)                                            NOT NULL,
-    descricao        TEXT                                                    NOT NULL,
+    id_usuario       BIGINT UNSIGNED                                           NOT NULL, -- FK para a tabela de usuários
+    id_funcionario   BIGINT UNSIGNED                                           NOT NULL, -- FK para a tabela de funcionários
+    titulo           VARCHAR(50)                                               NOT NULL,
+    descricao        TEXT                                                      NOT NULL,
     estado           ENUM ('ABERTO', 'EM_ANDAMENTO', 'RESOLVIDO', 'CANCELADO') NOT NULL DEFAULT 'ABERTO',
-    data_criacao     DATETIME                                               NOT NULL,
-    data_finalizacao DATETIME                                               NULL,
+    data_criacao     DATETIME                                                  NOT NULL,
+    data_finalizacao DATETIME                                                  NULL,
 
     PRIMARY KEY (id),
-    FOREIGN KEY (id_usuario) REFERENCES tb_usuario (id_pessoa),        -- Relaciona o usuário
-    FOREIGN KEY (id_funcionario) REFERENCES tb_funcionario (id_pessoa) -- Relaciona o funcionário
+    FOREIGN KEY (id_usuario) REFERENCES tb_usuario (id_pessoa),                          -- Relaciona o usuário
+    FOREIGN KEY (id_funcionario) REFERENCES tb_funcionario (id_pessoa)                   -- Relaciona o funcionário
 );
 
 -- Tabela para registrar mensagens em chamados
 CREATE TABLE IF NOT EXISTS tb_mensagem
 (
-    id             BIGINT UNSIGNED AUTO_INCREMENT,
-    id_chamado     BIGINT UNSIGNED NOT NULL,                                      -- FK para a tabela de chamado
-    id_remetente   BIGINT UNSIGNED NOT NULL,                                      -- FK para a tabela de pessoa
-    texto       TEXT            NOT NULL,                                      -- A mensagem trocada
-    data_envio     DATETIME NOT NULL,                           -- Data e hora em que a mensagem foi enviada
-    
+    id           BIGINT UNSIGNED AUTO_INCREMENT,
+    id_chamado   BIGINT UNSIGNED NOT NULL,               -- FK para a tabela de chamado
+    id_remetente BIGINT UNSIGNED NOT NULL,               -- FK para a tabela de pessoa
+    texto        TEXT            NOT NULL,               -- A mensagem trocada
+    data_envio   DATETIME        NOT NULL,               -- Data e hora em que a mensagem foi enviada
+
     PRIMARY KEY (id),
-    FOREIGN KEY (id_chamado) REFERENCES tb_chamado (id),        -- Relaciona à tabela de chamado
-    FOREIGN KEY (id_remetente) REFERENCES tb_pessoa (id)        -- Relaciona à tabela de pessoa
+    FOREIGN KEY (id_chamado) REFERENCES tb_chamado (id), -- Relaciona à tabela de chamado
+    FOREIGN KEY (id_remetente) REFERENCES tb_pessoa (id) -- Relaciona à tabela de pessoa
 );
 
 -- Tabela para armazenar formas de pagamento
@@ -153,7 +153,7 @@ CREATE TABLE IF NOT EXISTS tb_forma_pagamento
 CREATE TABLE IF NOT EXISTS tb_pix
 (
     id_forma_pagamento BIGINT UNSIGNED NOT NULL,
-    chave         VARCHAR(100)    NOT NULL,
+    chave              VARCHAR(100)    NOT NULL,
 
     PRIMARY KEY (id_forma_pagamento),
     FOREIGN KEY (id_forma_pagamento) REFERENCES tb_forma_pagamento (id)
@@ -162,12 +162,12 @@ CREATE TABLE IF NOT EXISTS tb_pix
 -- Tabela para armazenar detalhes específicos do Cartão de Crédito
 CREATE TABLE IF NOT EXISTS tb_cartao
 (
-    id_forma_pagamento    BIGINT UNSIGNED            NOT NULL,
-    numero           VARCHAR(20)                NOT NULL,
-    validade         DATE                       NOT NULL,
-    codigo_seguranca VARCHAR(10)                NOT NULL,
-    nome_dono        VARCHAR(100)               NOT NULL,
-    tipo             ENUM ('DEBITO', 'CREDITO') NOT NULL,
+    id_forma_pagamento BIGINT UNSIGNED            NOT NULL,
+    numero             VARCHAR(20)                NOT NULL,
+    validade           DATE                       NOT NULL,
+    codigo_seguranca   VARCHAR(10)                NOT NULL,
+    nome_dono          VARCHAR(100)               NOT NULL,
+    tipo               ENUM ('DEBITO', 'CREDITO') NOT NULL,
 
     PRIMARY KEY (id_forma_pagamento),
     FOREIGN KEY (id_forma_pagamento) REFERENCES tb_forma_pagamento (id)
@@ -196,11 +196,11 @@ CREATE TABLE IF NOT EXISTS tb_endereco
 -- Tabela para armazenar os Produtos
 CREATE TABLE IF NOT EXISTS tb_produto
 (
-    id         BIGINT UNSIGNED AUTO_INCREMENT,
-    nome       VARCHAR(50)    NOT NULL,
-    preco      DECIMAL(10, 2) NOT NULL,
-    descricao  TEXT           NULL,
-    is_ativo   BOOLEAN   DEFAULT TRUE,
+    id        BIGINT UNSIGNED AUTO_INCREMENT,
+    nome      VARCHAR(50)    NOT NULL,
+    preco     DECIMAL(10, 2) NOT NULL,
+    descricao TEXT           NULL,
+    is_ativo  BOOLEAN DEFAULT TRUE,
 
     PRIMARY KEY (id)
 );
@@ -312,7 +312,7 @@ CREATE TABLE IF NOT EXISTS tb_avaliacao
     id                BIGINT UNSIGNED AUTO_INCREMENT,
     id_compra_produto BIGINT UNSIGNED                NOT NULL,
 
-    nota         ENUM (
+    nota              ENUM (
         '⭐',
         '⭐⭐',
         '⭐⭐⭐',
@@ -329,15 +329,15 @@ CREATE TABLE IF NOT EXISTS tb_avaliacao
 -- Tabela de rastreamento de compras, com relação 1:1 com tb_compras
 CREATE TABLE IF NOT EXISTS tb_entrega
 (
-    id_compra_produto         BIGINT UNSIGNED NOT NULL,
-    id_transportadora BIGINT UNSIGNED NOT NULL,
-    codigo_rastreio   VARCHAR(100)    NULL,
-    data_postado      DATETIME        NULL,
-    data_transito     DATETIME        NULL,
-    data_recebido     DATETIME        NULL,
+    id_compra_produto       BIGINT UNSIGNED NOT NULL,
+    id_transportadora       BIGINT UNSIGNED NOT NULL,
+    codigo_rastreio         VARCHAR(100)    NULL,
+    data_postado            DATETIME        NULL,
+    data_transito           DATETIME        NULL,
+    data_recebido           DATETIME        NULL,
     data_devolucao_transito DATETIME        NULL,
     data_devolucao_recebido DATETIME        NULL,
-    estado    ENUM (
+    estado                  ENUM (
         'AGUARDANDO_PAGAMENTO_COMPRA',
         'EM_PREPARO',
         'POSTADO',
@@ -347,8 +347,8 @@ CREATE TABLE IF NOT EXISTS tb_entrega
         'D_AGUARDANDO_TRANSPORTADORA',
         'D_EM_TRANSITO',
         'DEVOLVIDO'
-        )                             NULL,
-    finalizada BOOLEAN DEFAULT FALSE,
+        )                                   NULL,
+    finalizada              BOOLEAN DEFAULT FALSE,
 
     PRIMARY KEY (id_compra_produto),
     FOREIGN KEY (id_compra_produto) REFERENCES tb_compra_produto (id),
@@ -359,9 +359,9 @@ CREATE TABLE IF NOT EXISTS tb_entrega
 CREATE TABLE IF NOT EXISTS tb_promocao
 (
     id          BIGINT UNSIGNED AUTO_INCREMENT,
-    nome        VARCHAR(100)   NULL,
-    data_inicio DATETIME       NOT NULL,
-    data_fim    DATETIME       NOT NULL,
+    nome        VARCHAR(100) NULL,
+    data_inicio DATETIME     NOT NULL,
+    data_fim    DATETIME     NOT NULL,
 
     PRIMARY KEY (id)
 );
@@ -371,7 +371,7 @@ CREATE TABLE IF NOT EXISTS tb_promocao_produto
 (
     id_produto  BIGINT UNSIGNED NOT NULL,
     id_promocao BIGINT UNSIGNED NOT NULL,
-    desconto    DECIMAL(10, 2) NOT NULL, -- Desconto da promoção
+    desconto    DECIMAL(10, 2)  NOT NULL,  -- Desconto da promoção
 
     PRIMARY KEY (id_produto, id_promocao), -- Garante que um produto participe de uma promoção apenas uma vez
 
