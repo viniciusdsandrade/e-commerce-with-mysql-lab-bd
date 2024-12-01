@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Endereco, Pix, Cartao, Categoria, ListaDesejos, Produto
+from .models import Endereco, Pix, Cartao, ListaDesejos, Produto
 from .forms import EnderecoForm, PixForm, CartaoForm
+from .context_processors import produtos_processor
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
@@ -13,8 +14,7 @@ def usuario_comum(user):
 
 @user_passes_test(usuario_comum)
 def home(request):
-    produtos = Produto.objects.all()
-    return render(request, 'home.html', {'produtos': produtos})
+    return render(request, 'home.html')
 
 
 @user_passes_test(usuario_comum)
@@ -43,7 +43,7 @@ def conta(request):
 @user_passes_test(usuario_comum)
 def lista_de_desejos(request):
     listadesejos = ListaDesejos.objects.get(usuario=request.user)
-    produtos = listadesejos.produtos.all()
+    produtos = produtos_processor(request, listadesejos.produtos.all())['produtos']
     return render(request, 'lista_de_desejos.html', {'produtos': produtos})
 
 
@@ -131,10 +131,10 @@ def formas_pagamento(request):
 @user_passes_test(usuario_comum)
 def formas_pagamento_criar(request, tipo_pagamento):
     if request.method == 'POST':
-        if tipo_pagamento == 'pix':
-            formulario = PixForm(request.POST)
-        elif tipo_pagamento == 'cartao':
+        if tipo_pagamento == 'cartao':
             formulario = CartaoForm(request.POST)
+        elif tipo_pagamento == 'pix':
+            formulario = PixForm(request.POST)
         else:
             return redirect('formas_pagamento')
 
@@ -142,8 +142,10 @@ def formas_pagamento_criar(request, tipo_pagamento):
             pagamento = formulario.save(commit=False)
             pagamento.usuario = request.user
             pagamento.save()
-
-        return redirect('formas_pagamento')
+            return redirect('formas_pagamento')
+        else:
+            messages.warning(request, ('Houve um erro ao salvar o pagamento.'))
+            return redirect('formas_pagamento_criar', tipo_pagamento=tipo_pagamento)
 
     if tipo_pagamento == 'pix':
         formulario = PixForm()

@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.validators import RegexValidator
 
 
 
@@ -99,7 +100,7 @@ class Estoque(models.Model):
     localizacao = models.CharField(max_length=70, null=True, blank=True)
 
     class Meta:
-        verbose_name = verbose_name_plural = 'Endereco'
+        verbose_name = verbose_name_plural = 'Estoque'
 
 
 # Tabela para armazenar as Categorias
@@ -166,7 +167,7 @@ class Compra(models.Model):
     cupons = models.ManyToManyField('Cupom', through='CupomCompra')
 
     def __str__(self):
-        return f"Compra #{self.id} - {self.usuario.nome}"
+        return f"Compra #{self.id} - {self.usuario.username}"
 
     class Meta:
         verbose_name = verbose_name_plural = 'Compra'

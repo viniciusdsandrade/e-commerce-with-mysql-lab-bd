@@ -56,7 +56,7 @@
   </div>
 
   <div class="col col-md-8">
-    {% for i in "01234" %}
+    {% for produto in produtos %}
       <div class="card mb-3 w-100 text-decoration-none">
         <div class="row g-0 align-items-center">
           <div class="col-md-5 p-3 ps-md-2">
@@ -65,13 +65,28 @@
           </div>
           <div class="col-md-7">
             <div class="card-body">
-              <h5 class="card-title mb-2">Produto {{ i }}</h5>
-              <p class="card-text"><small>⭐⭐⭐⭐⭐</small></p>
-              <p class="card-text mt-3 mb-0 text-decoration-line-through">R$39,99</p>
-              <p class="card-text"><span class="fw-bold lead me-1">R$19,99</span> 50% OFF</p>
+              <h5 class="card-title mb-2">{{ produto.nome }}</h5>
+              <p class="card-text"><small>{{ produto.nota }}</small></p>
+              
+              {% if produto.tem_promocao %}
+              
+                <p class="card-text mt-3 mb-0 text-decoration-line-through">R${{ produto.preco|floatformat:2 }}</p>
+                <p class="card-text">
+                  <span class="fw-bold lead me-1">R${{ produto.preco_com_desconto|floatformat:2 }}</span>
+                  {{ produto.desconto|floatformat:0 }}% OFF
+                </p>
+
+              {% else %}
+
+                <p class="card-text">
+                  <span class="fw-bold lead me-1">R${{ produto.preco|floatformat:2 }}</span>
+                </p>
+
+              {% endif %}
+
               <div class="d-flex gap-3 flex-wrap mt-3">
                 <a href="{% url 'produto' %}">Ver produto</a>
-                <a href="#">Salvar na lista de desejos</a>
+                <a href="{% url 'lista_de_desejos_adicionar' id_produto=produto.id %}">Salvar na lista de desejos</a>
                 <a href="#">Adicionar ao carrinho</a>
               </div>
             </div>

@@ -4,7 +4,6 @@
     {% include 'components/content_title.html' with title='Lista de Desejos' %}
     
     <div class="row row-cols-1 row-cols-lg-2">
-    {% if produtos %}
     {% for produto in produtos %}
         <div class="col">
             <div class="card mb-3 w-100 text-decoration-none">
@@ -16,9 +15,23 @@
                     <div class="col-md-7">
                         <div class="card-body">
                             <h5 class="card-title mb-2">{{ produto.nome }}</h5>
-                            <p class="card-text"><small>⭐⭐⭐⭐⭐</small></p>
-                            <p class="card-text mt-3 mb-0 text-decoration-line-through">R${{ produto.preco }}</p>
-                            <p class="card-text"><span class="fw-bold lead me-1">R$19,99</span> 50% OFF</p>
+                            <p class="card-text"><small>{{ produto.nota }}</small></p>
+
+                            {% if produto.tem_promocao %}
+              
+                                <p class="card-text mt-3 mb-0 text-decoration-line-through">R${{ produto.preco|floatformat:2 }}</p>
+                                <p class="card-text">
+                                <span class="fw-bold lead me-1">R${{ produto.preco_com_desconto|floatformat:2 }}</span>
+                                {{ produto.desconto|floatformat:0 }}% OFF
+                                </p>
+
+                            {% else %}
+
+                                <p class="card-text">
+                                <span class="fw-bold lead me-1">R${{ produto.preco|floatformat:2 }}</span>
+                                </p>
+
+                            {% endif %}
 
                             <div class="d-flex gap-3 flex-wrap mt-3">
                                 <a href="{% url 'produto' %}">Ver produto</a>
@@ -30,9 +43,8 @@
                 </div>
             </div>
         </div>
+    {% empty %}
+        <p>Você não possui produtos salvos na lista de desejos.</p>
     {% endfor %}
-    {% else %}
-    <p>Nenhum produto aqui</p>
-    {% endif %}
     </div>
 {% endblock %}
