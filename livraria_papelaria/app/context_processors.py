@@ -24,13 +24,17 @@ def produtos_processor(request, produtos=Produto.objects.all()):
 
         produto.nota = 'Sem avaliações'
         notas = []
+        produto.avaliacoes = []
 
         for compraproduto in produto.compraproduto_set.all():
             if hasattr(compraproduto, 'avaliacao'):
                 notas.append(len(compraproduto.avaliacao.nota))
+                produto.avaliacoes.append(compraproduto.avaliacao)
 
         if notas:
             nota_media = round(sum(notas) / len(notas))
             produto.nota = '⭐' * nota_media
+
+        produto.categorias = produto.categoria_set.all()
 
     return {'produtos': produtos}

@@ -36,7 +36,7 @@
                             {% endif %}
                         
                             <div class="d-flex gap-3 flex-wrap mt-3">
-                                <a href="{% url 'produto' %}">Ver produto</a>
+                                <a href="{% url 'produto' id_produto=produto.id %}">Ver produto</a>
                                 <a href="{% url 'lista_de_desejos_adicionar' id_produto=produto.id %}">Salvar na lista de desejos</a>
                                 <a href="#">Adicionar ao carrinho</a>
                             </div>

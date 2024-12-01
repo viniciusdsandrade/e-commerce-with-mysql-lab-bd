@@ -28,9 +28,9 @@ def categorias(request):
 
 
 @user_passes_test(usuario_comum)
-def produto(request):
-    produtos = Produto.objects.all()
-    return render(request, 'produto.html', {'produtos': produtos})
+def produto(request, id_produto):
+    produto = produtos_processor(request, Produto.objects.filter(id=id_produto))['produtos'][0]
+    return render(request, 'produto.html', {'produto': produto})
 
 
 @login_required

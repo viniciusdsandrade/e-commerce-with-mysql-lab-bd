@@ -84,7 +84,6 @@ class Produto(models.Model):
     preco = models.DecimalField(max_digits=10, decimal_places=2)
     descricao = models.TextField(null=True, blank=True)
     is_ativo = models.BooleanField(default=True)
-    categorias = models.ManyToManyField('Categoria', through='ProdutoCategoria')
 
     def __str__(self):
         return self.nome
@@ -110,6 +109,7 @@ class Categoria(models.Model):
         PAPELARIA = 'PAPELARIA', 'Papelaria'
 
     nome = models.CharField(max_length=50)
+    produtos = models.ManyToManyField(Produto)
 
     tipo = models.CharField(
         max_length=15,
@@ -123,14 +123,6 @@ class Categoria(models.Model):
     class Meta:
         verbose_name = verbose_name_plural = 'Categoria'
 
-
-# Tabela de associação N:N entre Produtos e Categorias
-class ProdutoCategoria(models.Model):
-    produto = models.ForeignKey(Produto, on_delete=models.CASCADE)
-    categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE)
-
-    class Meta:
-        verbose_name = verbose_name_plural = 'ProdutoCategoria'
 
 # Tabela para armazenar as Listas de Desejos
 class ListaDesejos(models.Model):

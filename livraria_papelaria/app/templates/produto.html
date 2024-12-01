@@ -1,5 +1,5 @@
 {% extends 'components/base.html' %}
-{% block title %} Nome produto {% endblock %}
+{% block title %} {{ produto.nome }} {% endblock %}
 {% block content %}
   <div class="row align-items-center gx-md-5 gy-5 gy-md-0">
     <div class="col-md-5 d-flex flex-column gap-3">
@@ -7,37 +7,48 @@
       <img src="{% static 'img/teste.png' %}" class="img-fluid" alt="Imagem do produto">
       <a href="{% url 'compra_endereco' %}" class="btn btn-primary">Comprar agora</a>
       <a href="#" class="btn btn-secondary">Adicionar ao carrinho</a>
-      <a href="{% url 'lista_de_desejos_adicionar' id_produto=2 %}" class="btn btn-secondary">Adicionar à lista de desejos</a>
+      <a href="{% url 'lista_de_desejos_adicionar' id_produto=produto.id %}" class="btn btn-secondary">Adicionar à lista de desejos</a>
     </div>
     <div class="col-md-7">
-      <h1>Nome produto</h1>
-      <p class="card-text"><small>⭐⭐⭐⭐⭐</small></p>
-      <p class="card-text mt-3 mb-0 text-decoration-line-through">R$39,99</p>
-      <p class="card-text"><span class="fw-bold lead me-2">R$19,99</span>50% OFF</p>
-      <p>{% lorem 1 %}</p>
+      <h1>{{ produto.nome }}</h1>
+      <p class="card-text"><small>{{ produto.nota }}</small></p>
+
+      {% if produto.tem_promocao %}
+      
+        <p class="card-text mt-3 mb-0 text-decoration-line-through">R${{ produto.preco }}</p>
+        <p class="card-text">
+          <span class="fw-bold lead me-2">R${{ produto.preco_com_desconto }}</span>
+          {{ produto.desconto }}% OFF
+        </p>
+
+      {% else %}
+
+        <p class="card-text">
+          <span class="fw-bold lead me-2">R${{ produto.preco }}</span>
+        </p>
+
+      {% endif %}
+
+      <p>{{ produto.descricao }}</p>
 
       <h5 class="mt-4">Categorias</h5>
       <div class="d-flex flex-wrap gap-2">
-        {% for i in "0123456789" %}
-          <a class="badge rounded-pill text-bg-primary text-decoration-none" href="#">Categoria {{i}}</a>
-       {% endfor %}
+        {% for categoria in produto.categorias %}
+          <a class="badge rounded-pill text-bg-primary text-decoration-none" href="#">{{ categoria.nome }}</a>
+        {% endfor %}
       </div>
     </div>
   </div>
   <h5 class="mt-5">Avaliações</h5>
   <hr>
-  <div class="row g-md-4">
-    <div class="col-md-6">
-      <p>⭐⭐⭐⭐⭐<small class="ps-2">14 out 2024</small></p>
-      <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Minima saepe error magnam qui corrupti quas.</p>
-      <p>⭐⭐⭐⭐⭐<small class="ps-2">14 out 2024</small></p>
-      <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Minima saepe error magnam qui corrupti quas.</p>
-    </div>
-    <div class="col-md-6">
-      <p>⭐⭐⭐⭐⭐<small class="ps-2">14 out 2024</small></p>
-      <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Minima saepe error magnam qui corrupti quas.</p>
-      <p>⭐⭐⭐⭐⭐<small class="ps-2">14 out 2024</small></p>
-      <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Minima saepe error magnam qui corrupti quas.</p>
-    </div>
+  <div class="row row-cols-md-2 g-md-4">
+    {% for avaliacao in produto.avaliacoes %}
+      <div class="col">
+          <p>{{ avaliacao.nota }}</p>
+          <p>{{ avaliacao.comentario|default:'-' }}</p>
+      </div>
+    {% empty %}
+        <p>Esse produto ainda não tem avaliações.</p>
+    {% endfor %}
   </div>
 {% endblock %}
