@@ -4,14 +4,14 @@
     {% include 'components/content_title.html' with title='Categorias' %}
     <h5>Livraria</h5>
     <div class="d-flex flex-wrap justify-content-space-between gap-2">
-    {% for categoria in livraria %}
+    {% for categoria in categorias_livraria %}
         <a class="btn btn-primary" href="#" role="button">{{ categoria.nome }}</a>
     {% endfor %}
     </div>
 
     <h5 class="mt-5">Papelaria</h5>
     <div class="d-flex flex-wrap justify-content-space-between gap-2">
-    {% for categoria in papelaria %}
+    {% for categoria in categorias_papelaria %}
         <a class="btn btn-primary" href="#" role="button">{{ categoria.nome }}</a>
     {% endfor %}
     </div>

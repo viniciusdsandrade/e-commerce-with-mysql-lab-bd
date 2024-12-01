@@ -23,9 +23,7 @@ def pesquisa(request):
 
 @user_passes_test(usuario_comum)
 def categorias(request):
-    papelaria = Categoria.objects.all().filter(tipo="PAPELARIA")
-    livraria = Categoria.objects.all().filter(tipo="LIVRARIA")
-    return render(request, 'categorias.html', {"papelaria": papelaria, "livraria": livraria})
+    return render(request, 'categorias.html')
 
 
 @user_passes_test(usuario_comum)

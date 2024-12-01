@@ -33,12 +33,13 @@
                 Livraria
               </a>
               <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">Action</a></li>
-                <li><a class="dropdown-item" href="#">Another action</a></li>
+              {% for categoria in categorias_livraria %}
+                <li><a class="dropdown-item" href="#">{{ categoria.nome }}</a></li>
+              {% endfor %}
                 <li>
                   <hr class="dropdown-divider">
                 </li>
-                <li><a class="dropdown-item" href="#">Something else here</a></li>
+                <li><a class="dropdown-item" href="{% url 'categorias' %}">Mostrar todas</a></li>
               </ul>
             </li>
 
@@ -47,12 +48,13 @@
                 Papelaria
               </a>
               <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">Action</a></li>
-                <li><a class="dropdown-item" href="#">Another action</a></li>
+                {% for categoria in categorias_papelaria %}
+                  <li><a class="dropdown-item" href="#">{{ categoria.nome }}</a></li>
+                {% endfor %}
                 <li>
                   <hr class="dropdown-divider">
                 </li>
-                <li><a class="dropdown-item" href="#">Something else here</a></li>
+                <li><a class="dropdown-item" href="{% url 'categorias' %}">Mostrar todas</a></li>
               </ul>
             </li>
           </ul>
