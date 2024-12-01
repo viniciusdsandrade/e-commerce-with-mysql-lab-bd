@@ -5,51 +5,70 @@
     <div class="row g-3">
 
         <div class="col">
-            {% for i in "12345" %} 
+            <h4>Pix</h4>
+            {% if pix %}
+            {% for chave in pix %}
                 <div class="card my-3 p-3">
-                    <div class="fw-bold text-center">Pix {{ i }}</div>
+                    <div class="fw-bold text-center">Pix {{ forloop.counter }}</div>
                     <div class="d-flex flex-wrap justify-content-center gap-3">
-                        <a href="#">Remover</a>
+                        <a href="{% url 'formas_pagamento_remover' tipo_pagamento='pix' id_pagamento=chave.id %}">Remover</a>
                     </div>
                     <table class="table table-sm">
                         <tbody>
-                            {% for campo in campos_pix %}
-                                {% if campo.name != 'id' %}                
-                                    <tr>
-                                        <td class="align-middle text-capitalize fw-bold pe-3">{{ campo.name }}</td>
-                                        <td class="align-middle text-break text-end">valor</td>
-                                    </tr>
-                                {% endif %}
-                            {% endfor %}
+                            <tr>
+                                <td class="align-middle text-capitalize fw-bold pe-3">Chave:</td>
+                                <td class="align-middle text-break text-end">{{ chave.chave}}</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
             {% endfor %}
+            {% else %}
+            <p>Nenhum pix cadastrado</p>
+            {% endif %}
+            <p><a href="{% url 'formas_pagamento_criar' tipo_pagamento='pix' %}" class="btn btn-primary w-100 mt-4">Novo PIX</a></p>
         </div>
 
         <div class="col">
-            {% for i in "12345" %} 
+            <h4>Cartões</h4>
+            {% if cartoes %}
+            {% for cartao in cartoes %}
                 <div class="card my-3 p-3">
-                    <div class="fw-bold text-center">Cartão {{ i }}</div>
+                    <div class="fw-bold text-center">Cartão {{ forloop.counter }}</div>
                     <div class="d-flex flex-wrap justify-content-center gap-3">
-                        <a href="#">Remover</a>
+                        <a href="{% url 'formas_pagamento_remover' tipo_pagamento='cartao' id_pagamento=cartao.id %}">Remover</a>
                     </div>
                     <table class="table table-sm">
                         <tbody>
-                            {% for campo in campos_cartao %}
-                                {% if campo.name != 'id' %}                
-                                    <tr>
-                                        <td class="align-middle text-capitalize fw-bold pe-3">{{ campo.name }}</td>
-                                        <td class="align-middle text-break text-end">valor</td>
-                                    </tr>
-                                {% endif %}
-                            {% endfor %}
+                            <tr>
+                                <td class="align-middle text-capitalize fw-bold pe-3">Numero:</td>
+                                <td class="align-middle text-break text-end">{{ cartao.numero }}</td>
+                            </tr>
+                            <tr>
+                                <td class="align-middle text-capitalize fw-bold pe-3">Validade:</td>
+                                <td class="align-middle text-break text-end">{{ cartao.numero }}</td>
+                            </tr>
+                            <tr>
+                                <td class="align-middle text-capitalize fw-bold pe-3">Codigo de segurança:</td>
+                                <td class="align-middle text-break text-end">{{ cartao.codigo_seguranca }}</td>
+                            </tr>
+                            <tr>
+                                <td class="align-middle text-capitalize fw-bold pe-3">Nome do dono</td>
+                                <td class="align-middle text-break text-end">{{ cartao.nome_dono }}</td>
+                            </tr>
+                            <tr>
+                                <td class="align-middle text-capitalize fw-bold pe-3">Tipo:</td>
+                                <td class="align-middle text-break text-end">{{ cartao.tipo }}</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
             {% endfor %}
+            {% else %}
+            <p>Nenhum cartão cadastrado</p>
+            {% endif %}
+            <p><a href="{% url 'formas_pagamento_criar' tipo_pagamento='cartao' %}" class="btn btn-primary w-100 mt-4">Novo Cartão</a></p>
         </div>
         
     </div>
-    <a href="{% url 'formas_pagamento_criar' %}" class="btn btn-primary w-100 mt-4">Criar nova forma de pagamento</a>
 {% endblock %}

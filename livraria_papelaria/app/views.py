@@ -1,11 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Endereco, Pix, Cartao, Categoria
-from django.db.models import ForeignKey
+from .models import Endereco, Pix, Cartao, Categoria, ListaDesejos, Produto
 from .forms import EnderecoForm, PixForm, CartaoForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
 from django.contrib.auth.models import User
+
 
 def usuario_comum(user):
     return not user.is_staff
@@ -13,7 +13,8 @@ def usuario_comum(user):
 
 @user_passes_test(usuario_comum)
 def home(request):
-    return render(request, 'home.html')
+    produtos = Produto.objects.all()
+    return render(request, 'home.html', {'produtos': produtos})
 
 
 @user_passes_test(usuario_comum)
@@ -28,7 +29,8 @@ def categorias(request):
 
 @user_passes_test(usuario_comum)
 def produto(request):
-    return render(request, 'produto.html')
+    produtos = Produto.objects.all()
+    return render(request, 'produto.html', {'produtos': produtos})
 
 
 @login_required
@@ -40,7 +42,35 @@ def conta(request):
 @login_required
 @user_passes_test(usuario_comum)
 def lista_de_desejos(request):
-    return render(request, 'lista_de_desejos.html')
+    listadesejos = ListaDesejos.objects.get(usuario=request.user)
+    produtos = listadesejos.produtos.all()
+    return render(request, 'lista_de_desejos.html', {'produtos': produtos})
+
+
+@login_required
+@user_passes_test(usuario_comum)
+def lista_de_desejos_adicionar(request, id_produto):
+    listadesejos = ListaDesejos(usuario=request.user)
+    listadesejos.save()
+
+    produto = Produto.objects.get(id=id_produto)
+
+    listadesejos.produtos.add(produto)
+    listadesejos.save()
+
+    return redirect('lista_de_desejos')
+
+
+@login_required
+@user_passes_test(usuario_comum)
+def lista_de_desejos_remover(request, id_produto):
+    listadesejos = ListaDesejos(usuario=request.user)
+
+    produto = Produto.objects.get(id=id_produto)
+    listadesejos.produtos.remove(produto)
+    listadesejos.save()
+
+    return redirect('lista_de_desejos')
 
 
 @login_required
@@ -92,31 +122,53 @@ def enderecos(request):
 @login_required
 @user_passes_test(usuario_comum)
 def formas_pagamento(request):
-    campos_pix = [
-        campo for campo in Pix._meta.fields
-        if not isinstance(campo, ForeignKey)
-    ]
-
-    campos_cartao = [
-        campo for campo in Cartao._meta.fields
-        if not isinstance(campo, ForeignKey)
-    ]
-
-    return render(request, 'formas_pagamento.html', {'campos_pix': campos_pix, 'campos_cartao': campos_cartao})
+    pix = Pix.objects.filter(usuario_id=request.user.id)
+    cartoes = Cartao.objects.filter(usuario_id=request.user.id)
+    return render(request, 'formas_pagamento.html', {'pix': pix, 'cartoes': cartoes})
 
 
 @login_required
 @user_passes_test(usuario_comum)
-def formas_pagamento_criar(request):
+def formas_pagamento_criar(request, tipo_pagamento):
     if request.method == 'POST':
-        # formulario = EnderecoForm(request.POST)
-        # if formulario.is_valid():
-        #     formulario.save()
+        if tipo_pagamento == 'pix':
+            formulario = PixForm(request.POST)
+        elif tipo_pagamento == 'cartao':
+            formulario = CartaoForm(request.POST)
+        else:
+            return redirect('formas_pagamento')
+
+        if formulario.is_valid():
+            pagamento = formulario.save(commit=False)
+            pagamento.usuario = request.user
+            pagamento.save()
+
         return redirect('formas_pagamento')
-    
-    formulario_cartao = CartaoForm()
-    formulario_pix = PixForm()
-    return render(request, 'formas_pagamento_criar.html', {'formulario_cartao': formulario_cartao, 'formulario_pix': formulario_pix})
+
+    if tipo_pagamento == 'pix':
+        formulario = PixForm()
+        tipo_pagamento = 'Pix'
+    elif tipo_pagamento == 'cartao':
+        tipo_pagamento = 'Cartão'
+        formulario = CartaoForm()
+    else:
+        return redirect('formas_pagamento')
+
+    return render(request, 'formas_pagamento_criar.html', {'formulario': formulario, 'tipo_pagamento': tipo_pagamento})
+
+
+@login_required
+@user_passes_test(usuario_comum)
+def formas_pagamento_remover(request, tipo_pagamento, id_pagamento):
+    if tipo_pagamento == 'pix':
+        pagamento = get_object_or_404(Pix, id=id_pagamento)
+    elif tipo_pagamento == 'cartao':
+        pagamento = get_object_or_404(Cartao, id=id_pagamento)
+    else:
+        return redirect('formas_pagamento')
+
+    pagamento.delete()
+    return redirect('formas_pagamento')
 
 
 @login_required
@@ -124,12 +176,14 @@ def formas_pagamento_criar(request):
 def enderecos_criar(request):
     if request.method == 'POST':
         formulario = EnderecoForm(request.POST)
+
         if formulario.is_valid():
             endereco = formulario.save(commit=False)
             endereco.usuario = request.user
             endereco.save()
-            return redirect('enderecos')
-    
+
+        return redirect('enderecos')
+
     formulario = EnderecoForm()
     return render(request, 'enderecos_criar.html', {'formulario': formulario})
 
@@ -140,10 +194,10 @@ def enderecos_editar(request, id_endereco):
     endereco = get_object_or_404(Endereco, id=id_endereco)
 
     if request.method == 'POST':
-        form = EnderecoForm(request.POST, instance=endereco)  # Passa a instância existente
+        form = EnderecoForm(request.POST, instance=endereco)
         if form.is_valid():
-            form.save()  # Salva as alterações
-            return redirect('enderecos')  # Redireciona após salvar
+            form.save()
+            return redirect('enderecos')
 
     formulario = EnderecoForm(instance=endereco)
     return render(request, 'enderecos_editar.html', {'formulario': formulario})
@@ -164,17 +218,17 @@ def entrar(request):
         user = authenticate(request, username=username, password=password)
 
         if user is None:
-            messages.success(request, ('Houve um erro ao realizar o login.'))
+            messages.warning(request, ('Houve um erro ao realizar o login.'))
             return redirect('entrar')
-        
+
         if user.is_staff:
-            messages.success(request, ('Este usuário é um administrador e só tem acesso ao painel de administração.'))
+            messages.warning(request, ('Este usuário é um administrador e só tem acesso ao painel de administração.'))
             return redirect('entrar')
-        
+
         login(request, user)
         messages.success(request, ('Login realizado com sucesso.'))
         return redirect('home')
-    
+
     return render(request, 'entrar.html')
 
 
@@ -189,10 +243,11 @@ def cadastrar(request):
             return redirect('cadastrar')
 
         if User.objects.filter(username=username).first():
-            messages.success(request, ('Este nome de usuário já está sendo usado.'))
+            messages.warning(request, ('Este nome de usuário já está sendo usado.'))
             return redirect('cadastrar')
 
         User.objects.create_user(username=username, password=password1)
+        ListaDesejos.objects.create()
 
         messages.success(request, ('Cadastro realizado com sucesso.'))
         return redirect('entrar')

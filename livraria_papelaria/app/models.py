@@ -26,12 +26,12 @@ class FormaPagamento(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
 
     class Meta:
+        abstract = True
         verbose_name = verbose_name_plural = 'FormaPagamento'
 
 
 # Tabela para armazenar detalhes específicos do PIX
-class Pix(models.Model):
-    forma_pagamento = models.OneToOneField(FormaPagamento, on_delete=models.CASCADE, primary_key=True)
+class Pix(FormaPagamento):
     chave = models.CharField(max_length=100)
 
     class Meta:
@@ -39,12 +39,11 @@ class Pix(models.Model):
 
 
 # Tabela para armazenar detalhes específicos do Cartão de Crédito
-class Cartao(models.Model):
+class Cartao(FormaPagamento):
     class TipoChoices(models.TextChoices):
         DEBITO = 'DEBITO', 'Débito'
         CREDITO = 'CREDITO', 'Crédito'
 
-    forma_pagamento = models.OneToOneField(FormaPagamento, on_delete=models.CASCADE, primary_key=True)
     numero = models.CharField(max_length=20)
     validade = models.DateField()
     codigo_seguranca = models.CharField(max_length=10)
