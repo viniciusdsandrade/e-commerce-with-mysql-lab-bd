@@ -34,7 +34,7 @@
       <h5 class="mt-4">Categorias</h5>
       <div class="d-flex flex-wrap gap-2">
         {% for categoria in produto.categorias %}
-          <a class="badge rounded-pill text-bg-primary text-decoration-none" href="#">{{ categoria.nome }}</a>
+          <a class="badge rounded-pill text-bg-primary text-decoration-none" href="{% url 'pesquisa' %}?Categoria={{categoria.id}}">{{ categoria.nome }}</a>
         {% endfor %}
       </div>
     </div>

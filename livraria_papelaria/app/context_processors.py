@@ -12,7 +12,10 @@ def categorias_processor(request):
         'categorias_papelaria': categorias_papelaria
     }
 
-def produtos_processor(request, produtos=Produto.objects.all()):
+def produtos_processor(request, produtos=None):
+    if produtos is None:
+        produtos = Produto.objects.all()
+
     for produto in produtos:
         produto.tem_promocao = False
 
