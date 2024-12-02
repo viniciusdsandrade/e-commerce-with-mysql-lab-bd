@@ -16,7 +16,6 @@
                         <div class="card-body">
                             <h5 class="card-title mb-2">{{ produto.nome }}</h5>
                             <p class="card-text"><small>{{ produto.nota }}</small></p>
-
                             {% if produto.tem_promocao %}
               
                                 <p class="card-text mt-3 mb-0 text-decoration-line-through">R${{ produto.preco_sem_desconto|floatformat:2 }}</p>
@@ -26,17 +25,14 @@
                                 </p>
 
                             {% else %}
-
-                                <p class="card-text">
-                                <span class="fw-bold lead me-1">R${{ produto.preco|floatformat:2 }}</span>
-                                </p>
-
+                            <p class="card-text">
+                            <span class="fw-bold lead me-1">R${{ produto.preco|floatformat:2 }}</span>
+                            </p>
                             {% endif %}
-
                             <div class="d-flex gap-3 flex-wrap mt-3">
                                 <a href="{% url 'produto' id_produto=produto.id %}">Ver produto</a>
                                 <a href="{% url 'lista_de_desejos_remover' id_produto=produto.id %}">Remover da lista de desejos</a>
-                                <a href="#">Adicionar ao carrinho</a>
+                                <a href="{% url 'carrinho_adicionar' id_produto=produto.id %}">Adicionar ao carrinho</a>
                             </div>
                         </div>
                     </div>

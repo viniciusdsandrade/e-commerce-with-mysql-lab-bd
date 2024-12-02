@@ -1,7 +1,6 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from .models import Endereco, Pix, Cartao, ListaDesejos, Produto
+from django.shortcuts import render, redirect
+from .models import ListaDesejos, Produto, Carrinho
 from .forms import EnderecoForm, PixForm, CartaoForm
-from .context_processors import produtos_processor
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
@@ -14,7 +13,8 @@ def usuario_comum(user):
 
 @user_passes_test(usuario_comum)
 def home(request):
-    return render(request, 'home.html')
+    produtos = Produto.objects.all()
+    return render(request, 'home.html', {'produtos': produtos})
 
 
 @user_passes_test(usuario_comum)
@@ -101,46 +101,6 @@ def conta(request):
 
 @login_required
 @user_passes_test(usuario_comum)
-def lista_de_desejos(request):
-    listadesejos = ListaDesejos.objects.get(usuario=request.user)
-    produtos = produtos_processor(request, listadesejos.produtos.all())['produtos']
-    return render(request, 'lista_de_desejos.html', {'produtos': produtos})
-
-
-@login_required
-@user_passes_test(usuario_comum)
-def lista_de_desejos_adicionar(request, id_produto):
-    listadesejos = ListaDesejos(usuario=request.user)
-    listadesejos.save()
-
-    produto = Produto.objects.get(id=id_produto)
-
-    listadesejos.produtos.add(produto)
-    listadesejos.save()
-
-    return redirect('lista_de_desejos')
-
-
-@login_required
-@user_passes_test(usuario_comum)
-def lista_de_desejos_remover(request, id_produto):
-    listadesejos = ListaDesejos(usuario=request.user)
-
-    produto = Produto.objects.get(id=id_produto)
-    listadesejos.produtos.remove(produto)
-    listadesejos.save()
-
-    return redirect('lista_de_desejos')
-
-
-@login_required
-@user_passes_test(usuario_comum)
-def carrinho(request):
-    return render(request, 'carrinho.html')
-
-
-@login_required
-@user_passes_test(usuario_comum)
 def cupons(request):
     return render(request, 'cupons.html')
 
@@ -170,107 +130,6 @@ def compra_pagamento(request):
 @user_passes_test(usuario_comum)
 def historico_compras(request):
     return render(request, 'historico_compras.html')
-
-
-@login_required
-@user_passes_test(usuario_comum)
-def enderecos(request):
-    enderecos = request.user.endereco_set.all().order_by('-is_principal')
-    return render(request, 'enderecos.html', {'enderecos': enderecos})
-
-
-@login_required
-@user_passes_test(usuario_comum)
-def formas_pagamento(request):
-    pix = Pix.objects.filter(usuario_id=request.user.id)
-    cartoes = Cartao.objects.filter(usuario_id=request.user.id)
-    return render(request, 'formas_pagamento.html', {'pix': pix, 'cartoes': cartoes})
-
-
-@login_required
-@user_passes_test(usuario_comum)
-def formas_pagamento_criar(request, tipo_pagamento):
-    if request.method == 'POST':
-        if tipo_pagamento == 'cartao':
-            formulario = CartaoForm(request.POST)
-        elif tipo_pagamento == 'pix':
-            formulario = PixForm(request.POST)
-        else:
-            return redirect('formas_pagamento')
-
-        if formulario.is_valid():
-            pagamento = formulario.save(commit=False)
-            pagamento.usuario = request.user
-            pagamento.save()
-            return redirect('formas_pagamento')
-        else:
-            messages.warning(request, ('Houve um erro ao salvar o pagamento.'))
-            return redirect('formas_pagamento_criar', tipo_pagamento=tipo_pagamento)
-
-    if tipo_pagamento == 'pix':
-        formulario = PixForm()
-        tipo_pagamento = 'Pix'
-    elif tipo_pagamento == 'cartao':
-        tipo_pagamento = 'Cartão'
-        formulario = CartaoForm()
-    else:
-        return redirect('formas_pagamento')
-
-    return render(request, 'formas_pagamento_criar.html', {'formulario': formulario, 'tipo_pagamento': tipo_pagamento})
-
-
-@login_required
-@user_passes_test(usuario_comum)
-def formas_pagamento_remover(request, tipo_pagamento, id_pagamento):
-    if tipo_pagamento == 'pix':
-        pagamento = get_object_or_404(Pix, id=id_pagamento)
-    elif tipo_pagamento == 'cartao':
-        pagamento = get_object_or_404(Cartao, id=id_pagamento)
-    else:
-        return redirect('formas_pagamento')
-
-    pagamento.delete()
-    return redirect('formas_pagamento')
-
-
-@login_required
-@user_passes_test(usuario_comum)
-def enderecos_criar(request):
-    if request.method == 'POST':
-        formulario = EnderecoForm(request.POST)
-
-        if formulario.is_valid():
-            endereco = formulario.save(commit=False)
-            endereco.usuario = request.user
-            endereco.save()
-
-        return redirect('enderecos')
-
-    formulario = EnderecoForm()
-    return render(request, 'enderecos_criar.html', {'formulario': formulario})
-
-
-@login_required
-@user_passes_test(usuario_comum)
-def enderecos_editar(request, id_endereco):
-    endereco = get_object_or_404(Endereco, id=id_endereco)
-
-    if request.method == 'POST':
-        form = EnderecoForm(request.POST, instance=endereco)
-        if form.is_valid():
-            form.save()
-            return redirect('enderecos')
-
-    formulario = EnderecoForm(instance=endereco)
-    return render(request, 'enderecos_editar.html', {'formulario': formulario})
-
-
-@login_required
-@user_passes_test(usuario_comum)
-def enderecos_remover(request, id_endereco):
-    endereco = get_object_or_404(Endereco, id=id_endereco)
-    endereco.delete()
-    return redirect('enderecos')
 
 
 def entrar(request):
@@ -308,8 +167,9 @@ def cadastrar(request):
             messages.warning(request, ('Este nome de usuário já está sendo usado.'))
             return redirect('cadastrar')
 
-        User.objects.create_user(username=username, password=password1)
-        ListaDesejos.objects.create()
+        usuario = User.objects.create_user(username=username, password=password1)
+        ListaDesejos.objects.create(usuario=usuario)
+        Carrinho.objects.create(usuario=usuario)
 
         messages.success(request, ('Cadastro realizado com sucesso.'))
         return redirect('entrar')

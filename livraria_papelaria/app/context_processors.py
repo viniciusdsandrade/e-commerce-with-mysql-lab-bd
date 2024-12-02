@@ -1,5 +1,6 @@
 from .models import Categoria, Produto
 
+
 def categorias_processor(request):
     categorias = Categoria.objects.all()
     categorias_livraria = categorias.filter(tipo='LIVRARIA')[:10]

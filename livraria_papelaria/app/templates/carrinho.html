@@ -1,10 +1,26 @@
 {% extends 'components/base.html' %}
 {% block title %} Carrinho {% endblock %}
 {% block content %}
+<script>
+window.onload = () => {
+    for (const input of document.querySelectorAll("input[type='number']")) {
+        input.onchange = (event) => {
+            const idCompleto = event.target.id;
+            const regex = /p(\d+)c(\d+)/;
+            const match = idCompleto.match(regex);
+            const produtoId = match[1];
+            const carrinhoId = match[2];
+            const produtoQtd = event.target.value;
+            fetch(`_qtd/${produtoId}/${carrinhoId}/${produtoQtd}`)
+        }
+    }
+}
+</script>
     {% include 'components/content_title.html' with title='Carrinho' %}
     <div class="row">
         <div class="col-lg-7">
-            {% for i in "01234" %}
+            {% if produtos %}
+            {% for produto in produtos %}
             <div class="card mb-3 w-100 text-decoration-none">
                 <div class="row g-0 align-items-center">
                     <div class="col-lg-6 p-3 ps-md-2">
@@ -16,22 +32,29 @@
                     <div class="col-lg-6">
                         <div class="card-body">
                             <a href="{% url 'produto' %}" class="card-title text-decoration-none">
-                                <h5 class="mb-2">Produto {{ i }}</h5>
+                                <h5 class="mb-2">{{ produto.nome }}</h5>
                             </a>
-                            <p class="card-text"><small>⭐⭐⭐⭐⭐</small></p>
-                            <p class="card-text mt-3 mb-0 "><span class="text-decoration-line-through">R$39,99</span> 50% OFF</p>
-                            <p class="card-text"><span class="fw-bold lead me-1">R$19,99</span>/ unidade</p>
-                            <input type="number" id="number" placeholder="Quantidade" class="form-control" aria-label="Amount (to the nearest dollar)">
+                            <p class="card-text"><small>{{ produto.nota }}</small></p>
+                            {% if produto.tem_promocao %}
+                            <p class="card-text mt-3 mb-0 "><span class="text-decoration-line-through">R${{ produto.preco|floatformat:2 }}</span> {{ produto.desconto|floatformat:0 }}% OFF</p>
+                            <p class="card-text"><span class="fw-bold lead me-1">R${{ produto.preco_com_desconto|floatformat:2 }}</span>/ unidade</p>
+                            {% else %}
+                            <p class="card-text"><span class="fw-bold lead me-1">R${{ produto.preco|floatformat:2 }}</span>/ unidade</p>
+                            {% endif %}
+                            <input type="number" id="p{{ produto.id }}c{{ id_carrinho}}" min="1" class="form-control" aria-label="Quantidade" value="{{ produto.quantidade }}">
                             <div class="d-flex gap-3 flex-wrap mt-3">
-                                <a href="#">Excluir</a>
-                                <a href="#">Salvar</a>
-                                <a href="{% url 'compra_endereco' %}">Comprar agora</a>
+                                <a href="{% url 'carrinho_remover' id_produto=produto.id %}">Excluir</a>
+                                <a href="{% url 'lista_de_desejos_adicionar' id_produto=produto.id %}">Salvar</a>
+                                <a href="{# url 'comprar_agora_carrinho' id_produto id_carrinho=id_carrinho #}">Comprar agora</a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             {% endfor %}
+            {% else %}
+            <p>Seu carrinho está vazio.</p>
+            {% endif %}
         </div>
         <div class="col-lg-5 order-first order-lg-last mb-3 mb-lg-0">
             <div class="card">
@@ -75,7 +98,8 @@
                     </div>
                 </div>
             </div>
-            <a href="#" class="btn btn-danger w-100 mt-3">Esvaziar carrinho</a>
+            <a href="{% url 'carrinho_esvaziar' %}" class="btn btn-danger w-100 mt-3">Esvaziar carrinho</a>
         </div>
     </div>
 {% endblock %}
+

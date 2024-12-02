@@ -141,6 +141,10 @@ class Carrinho(models.Model):
     class Meta:
         verbose_name = verbose_name_plural = 'Carrinho'
 
+    def __str__(self):
+        return f"{self.__dict__}"
+
+
 # Tabela de associação N:N entre Carrinhos e Produtos
 class CarrinhoProduto(models.Model):
     carrinho = models.ForeignKey(Carrinho, on_delete=models.CASCADE)
@@ -149,6 +153,9 @@ class CarrinhoProduto(models.Model):
 
     class Meta:
         verbose_name = verbose_name_plural = 'CarrinhoProduto'
+
+    def __str__(self):
+        return f"{self.__dict__}"
 
 
 # Tabela para armazenar as Compras
