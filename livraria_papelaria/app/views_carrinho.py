@@ -36,8 +36,10 @@ def carrinho_adicionar(request, id_produto):
     carrinho = Carrinho.objects.get(usuario=request.user)
     produto = Produto.objects.get(id=id_produto)
 
-    carrinho_produto = CarrinhoProduto.objects.create(carrinho=carrinho, produto=produto, quantidade=1)
-    carrinho_produto.save()
+    if not CarrinhoProduto.objects.filter(produto=produto, carrinho=carrinho).exists():
+        carrinhoproduto = CarrinhoProduto.objects.create(carrinho=carrinho, produto=produto, quantidade=1)
+        carrinhoproduto.save()
+
     return redirect('carrinho')
 
 
