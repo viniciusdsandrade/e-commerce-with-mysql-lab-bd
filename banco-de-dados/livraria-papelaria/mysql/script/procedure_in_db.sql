@@ -5,47 +5,14 @@ DROP PROCEDURE IF EXISTS sp_aplicar_cupom;
 DROP PROCEDURE IF EXISTS sp_total_carrinho;
 
 
-DELIMITER $$
-
-CREATE PROCEDURE sp_processar_compra(
-    IN p_usuario_id INT,
-    IN p_endereco_id BIGINT,
-    IN p_produto_id BIGINT,
-    IN p_quantidade INT
-)
-BEGIN
-    DECLARE v_compra_id BIGINT;
-
-    START TRANSACTION;
-
-    -- Verifica se há estoque suficiente
-    IF (SELECT quantidade FROM app_estoque WHERE produto_id = p_produto_id) >= p_quantidade THEN
-
-        -- Insere na tabela app_compra
-        INSERT INTO app_compra (data_realizada, usuario_id, endereco_id)
-        VALUES (NOW(), p_usuario_id, p_endereco_id);
-
-        SET v_compra_id = LAST_INSERT_ID();
-
-        -- Insere na tabela app_compraproduto
-        INSERT INTO app_compraproduto (quantidade, compra_id, produto_id)
-        VALUES (p_quantidade, v_compra_id, p_produto_id);
-
-        -- Atualiza o estoque
-        UPDATE app_estoque
-        SET quantidade = quantidade - p_quantidade
-        WHERE produto_id = p_produto_id;
-
-        COMMIT;
-    ELSE
-        ROLLBACK;
-        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Estoque insuficiente.';
-    END IF;
-END$$
-
-DELIMITER ;
-
-
+-- -----------------------------------------------------
+-- Procedure: sp_aplicar_cupom
+-- Description: Applies a coupon to a purchase, verifying
+-- the validity of the coupon.
+-- Parameters:
+--   p_compra_id BIGINT - ID of the purchase
+--   p_cupom_id BIGINT - ID of the coupon
+-- -----------------------------------------------------
 DELIMITER $$
 
 CREATE PROCEDURE sp_aplicar_cupom(
@@ -57,14 +24,12 @@ BEGIN
 
     SET v_data_atual = NOW();
 
-    -- Verifica se o cupom é válido
+    -- Check if the coupon is valid
     IF EXISTS (SELECT 1
                FROM app_cupom
-               WHERE id = p_cupom_id
-                 AND data_inicio <= v_data_atual
-                 AND data_fim >= v_data_atual) THEN
+               WHERE id = p_cupom_id AND data_inicio <= v_data_atual AND data_fim >= v_data_atual) THEN
 
-        -- Insere na tabela app_cupom_compras
+        -- Insert into app_cupom_compras table
         INSERT INTO app_cupom_compras (cupom_id, compra_id)
         VALUES (p_cupom_id, p_compra_id);
 
@@ -75,7 +40,13 @@ END$$
 
 DELIMITER ;
 
-
+-- -----------------------------------------------------
+-- Procedure: sp_total_carrinho
+-- Description: Calculates the total value of a user's cart.
+-- Parameters:
+--   p_usuario_id INT - ID of the user
+--   p_total DECIMAL(10,2) OUT - Output parameter for total value
+-- -----------------------------------------------------
 DELIMITER $$
 
 CREATE PROCEDURE sp_total_carrinho(
