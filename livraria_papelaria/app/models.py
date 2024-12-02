@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.core.validators import RegexValidator
 
 
 
@@ -163,7 +162,6 @@ class Compra(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     endereco = models.ForeignKey(Endereco, on_delete=models.CASCADE)
     data_realizada = models.DateTimeField(auto_now_add=True)
-    cupons = models.ManyToManyField('Cupom', through='CupomCompra')
 
     def __str__(self):
         return f"Compra #{self.id} - {self.usuario.username}"
@@ -205,6 +203,21 @@ class Avaliacao(models.Model):
         verbose_name = verbose_name_plural = 'Avaliacao'
 
 
+# Tabela de Cupons
+class Cupom(models.Model):
+    nome = models.CharField(max_length=100, null=True, blank=True)
+    desconto = models.DecimalField(max_digits=10, decimal_places=2)
+    data_inicio = models.DateTimeField()
+    data_fim = models.DateTimeField()
+    compras = models.ManyToManyField(Compra)
+
+    def __str__(self):
+        return self.nome
+
+    class Meta:
+        verbose_name = verbose_name_plural = 'Cupom'
+
+
 # Tabela de rastreamento de compras, com relação 1:1 com tb_compra_produto
 class Entrega(models.Model):
     class EstadoChoices(models.TextChoices):
@@ -213,10 +226,6 @@ class Entrega(models.Model):
         POSTADO = 'POSTADO', 'Postado'
         EM_TRANSITO = 'EM_TRANSITO', 'Em Trânsito'
         ENTREGUE = 'ENTREGUE', 'Entregue'
-        NAO_ENTREGUE = 'NAO_ENTREGUE', 'Não Entregue'
-        D_AGUARDANDO_TRANSPORTADORA = 'D_AGUARDANDO_TRANSPORTADORA', 'Devolução Aguardando Transportadora'
-        D_EM_TRANSITO = 'D_EM_TRANSITO', 'Devolução em Trânsito'
-        DEVOLVIDO = 'DEVOLVIDO', 'Devolvido'
 
     compra_produto = models.OneToOneField(CompraProduto, on_delete=models.CASCADE, primary_key=True)
     transportadora = models.ForeignKey(Transportadora, on_delete=models.CASCADE)
@@ -224,15 +233,12 @@ class Entrega(models.Model):
     data_postado = models.DateTimeField(null=True, blank=True)
     data_transito = models.DateTimeField(null=True, blank=True)
     data_recebido = models.DateTimeField(null=True, blank=True)
-    data_devolucao_transito = models.DateTimeField(null=True, blank=True)
-    data_devolucao_recebido = models.DateTimeField(null=True, blank=True)
     estado = models.CharField(
         max_length=30,
         choices=EstadoChoices.choices,
         null=True,
         blank=True
     )
-    finalizada = models.BooleanField(default=False)
 
     class Meta:
         verbose_name = verbose_name_plural = 'Entrega'
@@ -261,26 +267,3 @@ class PromocaoProduto(models.Model):
     class Meta:
         unique_together = ('produto', 'promocao')
         verbose_name = verbose_name_plural = 'PromocaoProduto'
-
-
-# Tabela de Cupons
-class Cupom(models.Model):
-    nome = models.CharField(max_length=100, null=True, blank=True)
-    desconto = models.DecimalField(max_digits=10, decimal_places=2)
-    data_inicio = models.DateTimeField()
-    data_fim = models.DateTimeField()
-
-    def __str__(self):
-        return self.nome
-
-    class Meta:
-        verbose_name = verbose_name_plural = 'Cupom'
-
-
-# Tabela de associação N:N entre Cupons e Compras
-class CupomCompra(models.Model):
-    compra = models.ForeignKey(Compra, on_delete=models.CASCADE)
-    cupom = models.ForeignKey(Cupom, on_delete=models.CASCADE)
-
-    class Meta:
-        verbose_name = verbose_name_plural = 'CupomCompra'
