@@ -4,6 +4,7 @@ from . import views_carrinho
 from . import views_lista_de_desejos
 from . import views_enderecos
 from . import views_formas_pagamento
+#from . import views_comprar
 
 urlpatterns = [
     path('', views.home, name='home'),
@@ -15,12 +16,16 @@ urlpatterns = [
     path('usuario/carrinho/', views_carrinho.carrinho, name='carrinho'),
     path('usuario/carrinho/<int:id_produto>', views_carrinho.carrinho_adicionar, name='carrinho_adicionar'),
     path('usuario/carrinho/remover/<int:id_produto>', views_carrinho.carrinho_remover, name='carrinho_remover'),
+    path('usuario/carrinho/_qtd/<int:id_produto>/<int:id_carrinho>/<int:quantidade>', views_carrinho.quantidade_produto, name='quantidade_produto'),
 
     path('usuario/lista_de_desejos/', views_lista_de_desejos.lista_de_desejos, name='lista_de_desejos'),
     path('usuario/lista_de_desejos/<int:id_produto>', views_lista_de_desejos.lista_de_desejos_adicionar, name='lista_de_desejos_adicionar'),
     path('usuario/lista_de_desejos/remover/<int:id_produto>', views_lista_de_desejos.lista_de_desejos_remover, name='lista_de_desejos_remover'),
 
     path('usuario/cupons/', views.cupons, name='cupons'),
+
+    #path('comprar/<int:id_produto>/', views_comprar.comprar_agora, name='comprar_agora'),
+    #path('comprar/<int:id_produto>/<int:id_carrinho>', views.comprar_agora_carrinho, name='comprar_agora_carrinho'),
 
     path('usuario/compra/endereco', views.compra_endereco, name='compra_endereco'),
     path('usuario/compra/transportadora', views.compra_transportadora, name='compra_transportadora'),

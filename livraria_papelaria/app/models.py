@@ -132,6 +132,7 @@ class ProdutoCategoria(models.Model):
     class Meta:
         verbose_name = verbose_name_plural = 'ProdutoCategoria'
 
+
 # Tabela para armazenar as Listas de Desejos
 class ListaDesejos(models.Model):
     usuario = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
@@ -149,6 +150,10 @@ class Carrinho(models.Model):
     class Meta:
         verbose_name = verbose_name_plural = 'Carrinho'
 
+    def __str__(self):
+        return f"{self.__dict__}"
+
+
 # Tabela de associação N:N entre Carrinhos e Produtos
 class CarrinhoProduto(models.Model):
     carrinho = models.ForeignKey(Carrinho, on_delete=models.CASCADE)
@@ -157,6 +162,9 @@ class CarrinhoProduto(models.Model):
 
     class Meta:
         verbose_name = verbose_name_plural = 'CarrinhoProduto'
+
+    def __str__(self):
+        return f"{self.__dict__}"
 
 
 # Tabela para armazenar as Compras
