@@ -14,38 +14,43 @@
           <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#offcanvasResponsive" aria-label="Close"></button>
         </div>
         <div class="offcanvas-body">
-          <form class="d-flex flex-column gap-4">
+          <form action="{% url 'pesquisa' %}" class="d-flex flex-column gap-4">
             <div>
               <h6>Preço</h6>
-              <div><input name="Preco" type="radio"><span class="ms-2">Menor ao maior</span></div>
-              <div><input name="Preco" type="radio"><span class="ms-2">Maior ao menor</span></div>
+              <div><input {% if filtros.OrdemPreco == 'Asc' %} checked {% endif %} name="OrdemPreco" value="Asc" type="radio"><span class="ms-2">Menor ao maior</span></div>
+              <div><input {% if filtros.OrdemPreco == 'Desc' %} checked {% endif %} name="OrdemPreco" value="Desc" type="radio"><span class="ms-2">Maior ao menor</span></div>
+              <div><input {% if filtros.OrdemPreco == 'Qualquer' %} checked {% endif %} name="OrdemPreco" value="Qualquer" type="radio"><span class="ms-2">Qualquer</span></div>
               <div class="input-group mt-3">
                 <span class="input-group-text">R$</span>
-                <input type="number" placeholder="Mínimo" class="form-control" aria-label="Amount (to the nearest dollar)">
+                <input {% if filtros.Minimo %} value="{{ filtros.Minimo }}" {% endif %} type="number" placeholder="Mínimo" name="Minimo" class="form-control">
                 <span class="input-group-text">,00</span>
               </div>
 
               <div class="input-group">
                 <span class="input-group-text">R$</span>
-                <input type="number" placeholder="Máximo" class="form-control" aria-label="Amount (to the nearest dollar)">
+                <input {% if filtros.Maximo %} value="{{ filtros.Maximo }}" {% endif %} type="number" placeholder="Máximo" name="Maximo" class="form-control">
                 <span class="input-group-text">,00</span>
               </div>
 
             </div>
 
             <div>
-              <h6>Categorias</h6>
-              <div><input name="Categorias" type="checkbox"><span class="ms-2">Categoria 1</span></div>
-              <div><input name="Categorias" type="checkbox"><span class="ms-2">Categoria 2</span></div>
-              <div><input name="Categorias" type="checkbox"><span class="ms-2">Categoria 3</span></div>
+            <h6>Categorias</h6>
+              {% for categoria in categorias %}
+                <div><input {% if categoria.id == filtros.Categoria %} checked {% endif %} name="Categoria" value="{{ categoria.id }}" type="radio"><span class="ms-2">{{ categoria.nome }}</span></div>
+              {% endfor %}
+              <div><input {% if filtros.Categoria == 'Qualquer' %} checked {% endif %} name="Categoria" value="Qualquer" type="radio"><span class="ms-2">Qualquer</span></div>
             </div>
 
             <div>
               <h6>Promoções</h6>
-              <div><input name="Promocoes" type="radio"><span class="ms-2">Mínimo 10% OFF</span></div>
-              <div><input name="Promocoes" type="radio"><span class="ms-2">Mínimo 30% OFF</span></div>
-              <div><input name="Promocoes" type="radio"><span class="ms-2">Mínimo 50% OFF</span></div>
-              <div><input name="Promocoes" type="radio"><span class="ms-2">Qualquer</span></div>
+              <div><input {% if filtros.Promocao == '0.10' %} checked {% endif %} name="Promocao" value="0.10" type="radio"><span class="ms-2">Mínimo 10% OFF</span></div>
+              <div><input {% if filtros.Promocao == '0.30' %} checked {% endif %} name="Promocao" value="0.30" type="radio"><span class="ms-2">Mínimo 30% OFF</span></div>
+              <div><input {% if filtros.Promocao == '0.50' %} checked {% endif %} name="Promocao" value="0.50" type="radio"><span class="ms-2">Mínimo 50% OFF</span></div>
+              <div><input {% if filtros.Promocao == '0.70' %} checked {% endif %} name="Promocao" value="0.70" type="radio"><span class="ms-2">Mínimo 70% OFF</span></div>
+              <div><input {% if filtros.Promocao == '0.90' %} checked {% endif %} name="Promocao" value="0.90" type="radio"><span class="ms-2">Mínimo 90% OFF</span></div>
+              <div><input {% if filtros.Promocao == 'Qualquer desconto' %} checked {% endif %} name="Promocao" value="Qualquer desconto" type="radio"><span class="ms-2">Qualquer desconto</span></div>
+              <div><input {% if filtros.Promocao == 'Desconsiderar' %} checked {% endif %} name="Promocao" value="Desconsiderar" type="radio"><span class="ms-2">Desconsiderar</span></div>
             </div>
 
             <div><input class="w-100 btn btn-primary" type="submit" value="Filtrar"></div>
@@ -70,9 +75,9 @@
               
               {% if produto.tem_promocao %}
               
-                <p class="card-text mt-3 mb-0 text-decoration-line-through">R${{ produto.preco|floatformat:2 }}</p>
+                <p class="card-text mt-3 mb-0 text-decoration-line-through">R${{ produto.preco_sem_desconto|floatformat:2 }}</p>
                 <p class="card-text">
-                  <span class="fw-bold lead me-1">R${{ produto.preco_com_desconto|floatformat:2 }}</span>
+                  <span class="fw-bold lead me-1">R${{ produto.preco|floatformat:2 }}</span>
                   {{ produto.desconto|floatformat:0 }}% OFF
                 </p>
 
@@ -93,6 +98,9 @@
           </div>
         </div>
       </div>
+    {% empty %}
+      <p>Nenhum produto corresponde à sua pesquisa.</p>
+      <p>Verifique os filtros e o termo de busca.</p>
     {% endfor %}
   </div>
 </div>

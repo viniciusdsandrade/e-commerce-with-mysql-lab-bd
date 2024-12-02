@@ -19,7 +19,8 @@ def produtos_processor(request, produtos=Produto.objects.all()):
         if produto.promocaoproduto_set.all():
             produto.tem_promocao = True
             produto.desconto = produto.promocaoproduto_set.all()[0].desconto
-            produto.preco_com_desconto = round(produto.preco * (1 - produto.desconto), 2)
+            produto.preco_sem_desconto = produto.preco
+            produto.preco = round(produto.preco * (1 - produto.desconto), 2)
             produto.desconto = round(produto.desconto * 100)
 
         produto.nota = 'Sem avaliações'

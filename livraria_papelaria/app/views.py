@@ -19,7 +19,59 @@ def home(request):
 
 @user_passes_test(usuario_comum)
 def pesquisa(request):
-    return render(request, 'pesquisa.html')
+    filtros = request.GET.copy()
+
+    def existe(chave):
+        return chave in filtros.keys() and filtros[chave] != ''
+    
+
+    # Filtros padrão
+    if not existe('OrdemPreco'):
+        filtros['OrdemPreco'] = 'Qualquer'
+
+    if not existe('Categoria'):
+        filtros['Categoria'] = 'Qualquer'
+
+    if not existe('Promocao'):
+        filtros['Promocao'] = 'Desconsiderar'
+
+
+
+    produtos = Produto.objects.all()
+
+
+    # Aplicar filtros
+    if filtros['Categoria'] != 'Qualquer':
+        produtos = produtos.filter(categoria=filtros['Categoria'])
+        filtros['Categoria'] = int(filtros['Categoria'])
+
+
+    produtos = produtos_processor(request, produtos)['produtos']
+
+
+    if filtros['Promocao'] != 'Desconsiderar':
+        produtos = [produto for produto in produtos if produto.tem_promocao]
+
+        if filtros['Promocao'] != 'Qualquer desconto':
+            produtos = [
+                produto for produto in produtos
+                if produto.desconto / 100 >= float(filtros['Promocao'])
+            ]
+
+    if existe('Minimo'):
+        produtos = [produto for produto in produtos if produto.preco >= float(filtros['Minimo'])]
+    if existe('Maximo'):
+        produtos = [produto for produto in produtos if produto.preco <= float(filtros['Maximo'])]
+
+    if filtros['OrdemPreco'] != 'Qualquer':
+        if filtros['OrdemPreco'] == 'Asc':
+            reverse = False
+        elif filtros['OrdemPreco'] == 'Desc':
+            reverse = True
+
+        produtos = sorted(produtos, key=lambda produto: produto.preco, reverse=reverse)
+
+    return render(request, 'pesquisa.html', {'produtos': produtos, 'filtros': filtros})
 
 
 @user_passes_test(usuario_comum)

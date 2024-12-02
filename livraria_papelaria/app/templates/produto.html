@@ -15,9 +15,9 @@
 
       {% if produto.tem_promocao %}
       
-        <p class="card-text mt-3 mb-0 text-decoration-line-through">R${{ produto.preco }}</p>
+        <p class="card-text mt-3 mb-0 text-decoration-line-through">R${{ produto.preco_sem_desconto }}</p>
         <p class="card-text">
-          <span class="fw-bold lead me-2">R${{ produto.preco_com_desconto }}</span>
+          <span class="fw-bold lead me-2">R${{ produto.preco }}</span>
           {{ produto.desconto }}% OFF
         </p>
 
