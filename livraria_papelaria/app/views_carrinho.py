@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from .models import Carrinho, Produto, CarrinhoProduto
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.http import HttpResponse
+from .context_processors import produtos_processor
 
 
 def usuario_comum(user):
@@ -26,6 +27,8 @@ def carrinho(request):
             produto.desconto = round(produto.desconto * 100)
 
         produtos.append(produto)
+
+    produtos = produtos_processor(request, produtos)['produtos']
 
     return render(request, 'carrinho.html', {'produtos': produtos, 'id_carrinho': request.user.id})
 
@@ -63,7 +66,8 @@ def carrinho_esvaziar(request):
     return redirect('carrinho')
 
 
-# ISSO È GAMBI MONSTRA!! Não imitar!!!!
+@login_required
+@user_passes_test(usuario_comum)
 def quantidade_produto(request, id_produto, id_carrinho, quantidade):
     carrinho = Carrinho.objects.get(usuario_id=id_carrinho)
     produto = Produto.objects.get(id=id_produto)

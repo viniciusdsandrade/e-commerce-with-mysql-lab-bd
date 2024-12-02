@@ -5,6 +5,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
 from django.contrib.auth.models import User
+from .context_processors import produtos_processor
 
 
 def usuario_comum(user):
@@ -13,8 +14,7 @@ def usuario_comum(user):
 
 @user_passes_test(usuario_comum)
 def home(request):
-    produtos = Produto.objects.all()
-    return render(request, 'home.html', {'produtos': produtos})
+    return render(request, 'home.html')
 
 
 @user_passes_test(usuario_comum)

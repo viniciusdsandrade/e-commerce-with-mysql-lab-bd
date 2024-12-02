@@ -24,22 +24,22 @@ window.onload = () => {
             <div class="card mb-3 w-100 text-decoration-none">
                 <div class="row g-0 align-items-center">
                     <div class="col-lg-6 p-3 ps-md-2">
-                        <a href="{% url 'produto' %}">
+                        <a href="{% url 'produto' id_produto=produto.id %}">
                             {% load static %}
                             <img src="{% static 'img/teste.png' %}" class="img-fluid" alt="...">
                         </a>
                     </div>
                     <div class="col-lg-6">
                         <div class="card-body">
-                            <a href="{% url 'produto' %}" class="card-title text-decoration-none">
+                            <a href="{% url 'produto' id_produto=produto.id %}" class="card-title text-decoration-none">
                                 <h5 class="mb-2">{{ produto.nome }}</h5>
                             </a>
                             <p class="card-text"><small>{{ produto.nota }}</small></p>
                             {% if produto.tem_promocao %}
-                            <p class="card-text mt-3 mb-0 "><span class="text-decoration-line-through">R${{ produto.preco|floatformat:2 }}</span> {{ produto.desconto|floatformat:0 }}% OFF</p>
-                            <p class="card-text"><span class="fw-bold lead me-1">R${{ produto.preco_com_desconto|floatformat:2 }}</span>/ unidade</p>
+                                <p class="card-text mt-3 mb-0 "><span class="text-decoration-line-through">R${{ produto.preco_sem_desconto|floatformat:2 }}</span> {{ produto.desconto|floatformat:0 }}% OFF</p>
+                                <p class="card-text"><span class="fw-bold lead me-1">R${{ produto.preco|floatformat:2 }}</span>/ unidade</p>
                             {% else %}
-                            <p class="card-text"><span class="fw-bold lead me-1">R${{ produto.preco|floatformat:2 }}</span>/ unidade</p>
+                                <p class="card-text"><span class="fw-bold lead me-1">R${{ produto.preco|floatformat:2 }}</span>/ unidade</p>
                             {% endif %}
                             <input type="number" id="p{{ produto.id }}c{{ id_carrinho}}" min="1" class="form-control" aria-label="Quantidade" value="{{ produto.quantidade }}">
                             <div class="d-flex gap-3 flex-wrap mt-3">
