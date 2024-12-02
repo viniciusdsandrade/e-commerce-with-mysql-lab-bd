@@ -26,6 +26,7 @@ def pesquisa(request):
     
 
     # Filtros padrão
+
     if not existe('OrdemPreco'):
         filtros['OrdemPreco'] = 'Qualquer'
 
@@ -35,12 +36,19 @@ def pesquisa(request):
     if not existe('Promocao'):
         filtros['Promocao'] = 'Desconsiderar'
 
+    if not existe('Busca'):
+        filtros['Busca'] = ''
+
 
 
     produtos = Produto.objects.all()
 
 
     # Aplicar filtros
+
+    print(filtros['Busca'])
+    produtos = produtos.filter(nome__icontains=filtros['Busca'])
+
     if filtros['Categoria'] != 'Qualquer':
         produtos = produtos.filter(categoria=filtros['Categoria'])
         filtros['Categoria'] = int(filtros['Categoria'])
@@ -293,7 +301,7 @@ def cadastrar(request):
         password2 = request.POST['password2']
 
         if password1 != password2:
-            messages.success(request, ('As senhas não coincidem.'))
+            messages.warning(request, ('As senhas não coincidem.'))
             return redirect('cadastrar')
 
         if User.objects.filter(username=username).first():

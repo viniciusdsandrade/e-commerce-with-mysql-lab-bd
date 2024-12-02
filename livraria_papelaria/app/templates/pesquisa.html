@@ -53,6 +53,8 @@
               <div><input {% if filtros.Promocao == 'Desconsiderar' %} checked {% endif %} name="Promocao" value="Desconsiderar" type="radio"><span class="ms-2">Desconsiderar</span></div>
             </div>
 
+            <input type="hidden" name="Busca" value="{{ filtros.Busca }}">
+
             <div><input class="w-100 btn btn-primary" type="submit" value="Filtrar"></div>
 
           </form>
