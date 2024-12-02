@@ -52,6 +52,15 @@ def carrinho_remover(request, id_produto):
     return redirect('carrinho')
 
 
+@login_required
+@user_passes_test(usuario_comum)
+def carrinho_esvaziar(request):
+    carrinho = Carrinho.objects.get(usuario=request.user)
+
+    carrinho.produtos.clear()
+    return redirect('carrinho')
+
+
 # ISSO È GAMBI MONSTRA!! Não imitar!!!!
 def quantidade_produto(request, id_produto, id_carrinho, quantidade):
     carrinho = Carrinho.objects.get(usuario_id=id_carrinho)
