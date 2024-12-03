@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import Carrinho, Produto, CarrinhoProduto
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.http import HttpResponse
@@ -14,23 +14,21 @@ def usuario_comum(user):
 def carrinho(request):
     carrinho = Carrinho.objects.get(usuario=request.user)
 
-    produtos = []
-    for produto in carrinho.produtos.all():
+    produtos = [produto for produto in carrinho.produtos.all()]
+
+    for produto in produtos:
         carrinhoproduto = CarrinhoProduto.objects.get(produto=produto, carrinho=carrinho)
         produto.quantidade = carrinhoproduto.quantidade
-        produto.tem_promocao = False
-
-        if produto.promocaoproduto_set.all():
-            produto.tem_promocao = True
-            produto.desconto = produto.promocaoproduto_set.all()[0].desconto
-            produto.preco_com_desconto = round(produto.preco * (1 - produto.desconto), 2)
-            produto.desconto = round(produto.desconto * 100)
-
-        produtos.append(produto)
 
     produtos = produtos_processor(request, produtos)['produtos']
+    quantidade_total = sum([produto.quantidade for produto in produtos])
+    preco_total = sum([produto.preco * produto.quantidade for produto in produtos])
 
-    return render(request, 'carrinho.html', {'produtos': produtos})
+    return render(request, 'carrinho.html', {
+        'produtos': produtos,
+        'quantidade_total': quantidade_total,
+        'preco_total': preco_total
+    })
 
 
 @login_required

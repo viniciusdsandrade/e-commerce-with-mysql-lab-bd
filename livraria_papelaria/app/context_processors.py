@@ -42,4 +42,7 @@ def produtos_processor(request, produtos=None):
 
         produto.categorias = produto.categoria_set.all()
 
+        estoques = produto.estoque_set.all()
+        produto.quantidade_em_estoque = sum(estoque.quantidade for estoque in estoques)
+
     return {'produtos': produtos}

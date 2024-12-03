@@ -19,42 +19,40 @@ window.onload = () => {
     {% include 'components/content_title.html' with title='Carrinho' %}
     <div class="row">
         <div class="col-lg-7">
-            {% if produtos %}
             {% for produto in produtos %}
-            <div class="card mb-3 w-100 text-decoration-none">
-                <div class="row g-0 align-items-center">
-                    <div class="col-lg-6 p-3 ps-md-2">
-                        <a href="{% url 'produto' id_produto=produto.id %}">
-                            {% load static %}
-                            <img src="{% static 'img/teste.png' %}" class="img-fluid" alt="...">
-                        </a>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="card-body">
-                            <a href="{% url 'produto' id_produto=produto.id %}" class="card-title text-decoration-none">
-                                <h5 class="mb-2">{{ produto.nome }}</h5>
+                <div class="card mb-3 w-100 text-decoration-none">
+                    <div class="row g-0 align-items-center">
+                        <div class="col-lg-6 p-3 ps-md-2">
+                            <a href="{% url 'produto' id_produto=produto.id %}">
+                                {% load static %}
+                                <img src="{% static 'img/teste.png' %}" class="img-fluid" alt="...">
                             </a>
-                            <p class="card-text"><small>{{ produto.nota }}</small></p>
-                            {% if produto.tem_promocao %}
-                                <p class="card-text mt-3 mb-0 "><span class="text-decoration-line-through">R${{ produto.preco_sem_desconto|floatformat:2 }}</span> {{ produto.desconto|floatformat:0 }}% OFF</p>
-                                <p class="card-text"><span class="fw-bold lead me-1">R${{ produto.preco|floatformat:2 }}</span>/ unidade</p>
-                            {% else %}
-                                <p class="card-text"><span class="fw-bold lead me-1">R${{ produto.preco|floatformat:2 }}</span>/ unidade</p>
-                            {% endif %}
-                            <input type="number" id="p{{ produto.id }}c{{ user.id }}" min="1" class="form-control" aria-label="Quantidade" value="{{ produto.quantidade }}">
-                            <div class="d-flex gap-3 flex-wrap mt-3">
-                                <a href="{% url 'comprar_produto' id_produto=produto.id %}">Comprar agora</a>
-                                <a href="{% url 'lista_de_desejos_adicionar' id_produto=produto.id %}">Salvar</a>
-                                <a href="{% url 'carrinho_remover' id_produto=produto.id %}">Excluir</a>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="card-body">
+                                <a href="{% url 'produto' id_produto=produto.id %}" class="card-title text-decoration-none">
+                                    <h5 class="mb-2">{{ produto.nome }}</h5>
+                                </a>
+                                <p class="card-text"><small>{{ produto.nota }}</small></p>
+                                {% if produto.tem_promocao %}
+                                    <p class="card-text mt-3 mb-0 "><span class="text-decoration-line-through">R${{ produto.preco_sem_desconto|floatformat:2 }}</span> {{ produto.desconto|floatformat:0 }}% OFF</p>
+                                    <p class="card-text"><span class="fw-bold lead me-1">R${{ produto.preco|floatformat:2 }}</span>/ unidade</p>
+                                {% else %}
+                                    <p class="card-text"><span class="fw-bold lead me-1">R${{ produto.preco|floatformat:2 }}</span>/ unidade</p>
+                                {% endif %}
+                                <input type="number" id="p{{ produto.id }}c{{ user.id }}" min="1" class="form-control" aria-label="Quantidade" value="{{ produto.quantidade }}">
+                                <div class="d-flex gap-3 flex-wrap mt-3">
+                                    <a href="{% url 'comprar_produto' id_produto=produto.id %}">Comprar agora</a>
+                                    <a href="{% url 'lista_de_desejos_adicionar' id_produto=produto.id %}">Salvar</a>
+                                    <a href="{% url 'carrinho_remover' id_produto=produto.id %}">Excluir</a>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            {% empty %}
+                <p>Seu carrinho está vazio.</p>
             {% endfor %}
-            {% else %}
-            <p>Seu carrinho está vazio.</p>
-            {% endif %}
         </div>
         <div class="col-lg-5 order-first order-lg-last mb-3 mb-lg-0">
             <div class="card">
@@ -63,8 +61,8 @@ window.onload = () => {
                 </div>
                 <div class="card-body">
                     <div class="row row-cols-2 gy-2 align-items-center justify-content-between">
-                        <div class="fw-bold">Produtos (n)</div>
-                        <div class="text-end">R$99,99</div>
+                        <div class="fw-bold">Produtos ({{ quantidade_total }})</div>
+                        <div class="text-end">R${{preco_total|floatformat:2}}</div>
                         <div class="fw-bold">Frete</div>
                         <div class="text-end">a ser decidido</div>
                         <div class="fw-bold">Cupons</div>
