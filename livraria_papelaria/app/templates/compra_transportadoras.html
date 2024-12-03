@@ -3,9 +3,11 @@
 {% block content %}
     {% include 'components/content_title.html' with title='Compra' %}
     <h5>Transportadora</h5>
-    <form>
+    <form method="post">
+        {% csrf_token %}
+
         <div class="row row-cols-1 row-cols-lg-2">
-            {% for i in '0123456789' %}
+            {% for compra_produto in compra_produtos %}
                 <div class="col">
                     <div class="card mb-3 w-100 text-decoration-none">
                         <div class="row g-0 align-items-center">
@@ -15,13 +17,13 @@
                             </div>
                             <div class="col-md-7">
                                 <div class="card-body">
-                                    <h5 class="card-title mb-2">Produto {{ i }}</h5>
-                                    <p>Quantidade: n</p>
+                                    <h5 class="card-title mb-2">{{ compra_produto.produto.nome }}</h5>
+                                    <p>Quantidade: {{ compra_produto.quantidade }}</p>
                                     
-                                    <select class="form-select form-select-lg mb-3" aria-label="Large select example">
-                                        <option selected>Escolha</option>
-                                        {% for i in "12345" %}
-                                            <option value="{{ i }}">Transportadora {{ i }}</option>
+                                    <select required name="Transportadora{{compra_produto.id}}" class="form-select form-select-lg mb-3" aria-label="Large select example">
+                                        <option selected value="">Escolha...</option>
+                                        {% for transportadora in transportadoras %}
+                                            <option value="{{ transportadora.id }}">{{ transportadora.nome }}</option>
                                         {% endfor %}
                                     </select>
                                 </div>
@@ -31,6 +33,6 @@
                 </div>
             {% endfor %}
         </div>
-        <a href="{% url 'compra_cupons' %}" type="submit" class="btn btn-primary w-100">Continuar</a>
+        <button type="submit" class="btn btn-primary w-100">Continuar</button>
     </form>
 {% endblock %}

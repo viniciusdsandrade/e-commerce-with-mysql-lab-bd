@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Produto, Compra, CompraProduto, Carrinho, CarrinhoProduto, Endereco, ListaDesejos
+from .models import Produto, Compra, CompraProduto, Carrinho, CarrinhoProduto, Endereco, Transportadora, Entrega
 from .forms import EnderecoForm, PixForm, CartaoForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
+from .context_processors import produtos_processor
 
 
 def usuario_comum(user):
@@ -31,7 +32,7 @@ def compra_endereco(request, id_compra):
 
         compra.endereco = endereco
         compra.save()
-        return redirect('compra_transportadoras')
+        return redirect('compra_transportadoras', id_compra=id_compra)
 
     formulario = EnderecoForm()
     enderecos = request.user.endereco_set.all()
@@ -40,8 +41,28 @@ def compra_endereco(request, id_compra):
 
 @login_required
 @user_passes_test(usuario_comum)
-def compra_transportadoras(request):
-    return render(request, 'compra_transportadoras.html')
+def compra_transportadoras(request, id_compra):
+    compra = get_object_or_404(Compra, id=id_compra)
+    compra_produtos = CompraProduto.objects.filter(compra=compra)
+
+    if request.method == 'POST':
+        for compra_produto in compra_produtos:
+            transportadora = Transportadora.objects.get(id=request.POST[f'Transportadora{compra_produto.id}'])
+            
+            try:
+                entrega = Entrega.objects.get(compra_produto=compra_produto)
+                entrega.transportadora = transportadora
+                entrega.save()
+
+            except Entrega.DoesNotExist:
+                entrega = Entrega.objects.create(compra_produto=compra_produto, transportadora=transportadora)
+            
+            compra_produto.save()
+
+        return redirect('compra_cupons')
+
+    transportadoras = Transportadora.objects.all()
+    return render(request, 'compra_transportadoras.html', {'compra_produtos': compra_produtos, 'transportadoras': transportadoras})
 
 
 @login_required
@@ -94,6 +115,10 @@ def comprar_carrinho(request):
     carrinho = get_object_or_404(Carrinho, usuario_id=request.user.id)
     compra = Compra.objects.create(usuario=request.user)
     carrinho_produtos = CarrinhoProduto.objects.filter(carrinho=carrinho)
+
+    if not carrinho_produtos:
+        messages.warning(request, ('Seu carrinho está vazio.'))
+        return redirect('carrinho')
 
     for carrinho_produto in carrinho_produtos:
         CompraProduto.objects.create(compra=compra, produto=carrinho_produto.produto, quantidade=carrinho_produto.quantidade)

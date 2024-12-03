@@ -29,7 +29,7 @@ urlpatterns = [
     path('comprar/carrinho/', views_compra.comprar_carrinho, name='comprar_carrinho'),
 
     path('compra/endereco/<int:id_compra>', views_compra.compra_endereco, name='compra_endereco'),
-    path('compra/transportadoras', views_compra.compra_transportadoras, name='compra_transportadoras'),
+    path('compra/transportadoras/<int:id_compra>', views_compra.compra_transportadoras, name='compra_transportadoras'),
     path('compra/cupons', views_compra.compra_cupons, name='compra_cupons'),
     path('compra/pagamento', views_compra.compra_pagamento, name='compra_pagamento'),
 
