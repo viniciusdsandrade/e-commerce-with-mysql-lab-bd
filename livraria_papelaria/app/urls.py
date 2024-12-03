@@ -25,7 +25,7 @@ urlpatterns = [
 
     path('cupons/', views.cupons, name='cupons'),
 
-    path('comprar/<int:id_produto>/', views_compra.comprar_agora, name='comprar_agora'),
+    path('comprar/<int:id_produto>', views_compra.comprar_agora, name='comprar_agora'),
     path('carrinho/comprar/<int:id_produto>', views_compra.comprar_agora_carrinho, name='comprar_agora_carrinho'),
     path('lista_de_desejos/comprar/<int:id_produto>', views_compra.comprar_agora_listadesejos, name='comprar_agora_listadesejos'),
 
