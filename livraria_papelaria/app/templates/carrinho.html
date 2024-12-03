@@ -41,7 +41,7 @@ window.onload = () => {
                             {% else %}
                                 <p class="card-text"><span class="fw-bold lead me-1">R${{ produto.preco|floatformat:2 }}</span>/ unidade</p>
                             {% endif %}
-                            <input type="number" id="p{{ produto.id }}c{{ id_carrinho }}" min="1" class="form-control" aria-label="Quantidade" value="{{ produto.quantidade }}">
+                            <input type="number" id="p{{ produto.id }}c{{ user.id }}" min="1" class="form-control" aria-label="Quantidade" value="{{ produto.quantidade }}">
                             <div class="d-flex gap-3 flex-wrap mt-3">
                                 <a href="{% url 'comprar_produto' id_produto=produto.id %}">Comprar agora</a>
                                 <a href="{% url 'lista_de_desejos_adicionar' id_produto=produto.id %}">Salvar</a>

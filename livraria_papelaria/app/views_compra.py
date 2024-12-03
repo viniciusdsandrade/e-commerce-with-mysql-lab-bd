@@ -1,9 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Produto, Compra, CompraProduto, Carrinho, CarrinhoProduto, Endereco
-from .forms import EnderecoForm
+from .models import Produto, Compra, CompraProduto, Carrinho, CarrinhoProduto, Endereco, ListaDesejos
+from .forms import EnderecoForm, PixForm, CartaoForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
-from .forms import EnderecoForm, PixForm, CartaoForm
 
 
 def usuario_comum(user):
@@ -30,6 +29,27 @@ def compra_pagamento(request):
     formulario_pix = PixForm()
     formulario_cartao = CartaoForm()
     return render(request, 'compra_pagamento.html', {'formulario_pix': formulario_pix, 'formulario_cartao': formulario_cartao})
+
+
+# def comprar_agora_listadesejos(request, id_produto):
+#     try:
+#         endereco = request.user.endereco_set.get(is_principal=True)
+#     except Endereco.DoesNotExist:
+#         messages.warning(request, ('Voce precisa de um endereço para fazer uma compra.'))
+#         return redirect('enderecos')
+
+#     compra = Compra.objects.create(usuario=request.user, endereco=endereco)
+#     compra.save()
+
+#     listadesejos = ListaDesejos.objects.get(id=id_carrinho)
+#     produto = Produto.objects.get(id=id_produto)
+
+#     if not CompraProduto.objects.filter(compra=compra, produto=produto).exists():
+#         listadesejos.produtos.remove(produto)
+#         compraproduto = CompraProduto.objects.create(compra=compra, produto=produto, quantidade=1)
+#         compraproduto.save()
+
+#     return redirect('enderecos')
 
 
 @login_required

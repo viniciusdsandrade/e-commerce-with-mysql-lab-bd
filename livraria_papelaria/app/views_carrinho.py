@@ -30,7 +30,7 @@ def carrinho(request):
 
     produtos = produtos_processor(request, produtos)['produtos']
 
-    return render(request, 'carrinho.html', {'produtos': produtos, 'id_carrinho': request.user.id})
+    return render(request, 'carrinho.html', {'produtos': produtos})
 
 
 @login_required
