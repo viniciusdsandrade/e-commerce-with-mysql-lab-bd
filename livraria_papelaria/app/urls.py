@@ -25,12 +25,12 @@ urlpatterns = [
 
     path('cupons/', views.cupons, name='cupons'),
 
-    path('comprar/<int:id_produto>/', views_compra.comprar_agora, name='comprar_agora'),
-    path('comprar/<int:id_produto>/<int:id_carrinho>', views_compra.comprar_agora_carrinho, name='comprar_agora_carrinho'),
+    path('comprar/produto/<int:id_produto>/', views_compra.comprar_produto, name='comprar_produto'),
+    path('comprar/carrinho/', views_compra.comprar_carrinho, name='comprar_carrinho'),
 
-    path('compra/endereco', views.compra_endereco, name='compra_endereco'),
-    path('compra/transportadora', views.compra_transportadora, name='compra_transportadora'),
-    path('compra/pagamento', views.compra_pagamento, name='compra_pagamento'),
+    path('compra/endereco/<int:id_compra>/', views_compra.compra_endereco, name='compra_endereco'),
+    path('compra/transportadora', views_compra.compra_transportadora, name='compra_transportadora'),
+    path('compra/pagamento', views_compra.compra_pagamento, name='compra_pagamento'),
 
     path('historico_compras/', views.historico_compras, name='historico_compras'),
 

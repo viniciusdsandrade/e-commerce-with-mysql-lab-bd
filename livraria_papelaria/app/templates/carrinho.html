@@ -41,11 +41,11 @@ window.onload = () => {
                             {% else %}
                                 <p class="card-text"><span class="fw-bold lead me-1">R${{ produto.preco|floatformat:2 }}</span>/ unidade</p>
                             {% endif %}
-                            <input type="number" id="p{{ produto.id }}c{{ id_carrinho}}" min="1" class="form-control" aria-label="Quantidade" value="{{ produto.quantidade }}">
+                            <input type="number" id="p{{ produto.id }}c{{ id_carrinho }}" min="1" class="form-control" aria-label="Quantidade" value="{{ produto.quantidade }}">
                             <div class="d-flex gap-3 flex-wrap mt-3">
-                                <a href="{% url 'carrinho_remover' id_produto=produto.id %}">Excluir</a>
+                                <a href="{% url 'comprar_produto' id_produto=produto.id %}">Comprar agora</a>
                                 <a href="{% url 'lista_de_desejos_adicionar' id_produto=produto.id %}">Salvar</a>
-                                <a href="{# url 'comprar_agora_carrinho' id_produto=id_produto id_carrinho=id_carrinho #}">Comprar agora</a>
+                                <a href="{% url 'carrinho_remover' id_produto=produto.id %}">Excluir</a>
                             </div>
                         </div>
                     </div>
@@ -65,40 +65,23 @@ window.onload = () => {
                     <div class="row row-cols-2 gy-2 align-items-center justify-content-between">
                         <div class="fw-bold">Produtos (n)</div>
                         <div class="text-end">R$99,99</div>
-                        <div class="fw-bold">Cupons (n)</div>
-                        <div class="text-end">- R$99,99</div>
-                    </div>
-
-                    <div class="row row-cols-2 bg-body-secondary rounded-3 p-1 my-3">
-                        <div class="fw-bold">R$10 OFF</div>
-                        <div class="text-end">- R$10,00</div>
-                        <div class="fw-bold">R$20 OFF</div>
-                        <div class="text-end">- R$10,00</div>
-                    </div>
-
-                    <div class="row row-cols-2 gy-2 align-items-center justify-content-between">
                         <div class="fw-bold">Frete</div>
-                        <div class="text-end">- R$99,99</div>
-                        <div class="fw-bold">Total</div>
-                        <div class="text-end">R$99,99</div>
+                        <div class="text-end">a ser decidido</div>
+                        <div class="fw-bold">Cupons</div>
+                        <div class="text-end">a ser decidido</div>
                     </div>
 
-                    <div class="d-flex gap-2 justify-content-between mt-3">
-                        <a href="{% url 'compra_endereco' %}" class="w-100 btn btn-primary">Comprar tudo</a>
-                        <div class="dropdown w-100">
-                            <button class="btn btn-secondary dropdown-toggle w-100" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Adicionar cupom
-                            </button>
-                            <ul class="dropdown-menu">
-                                {% for i in "12345" %}
-                                    <li><a class="dropdown-item" href="#">Cupom {{ i }}</a></li>
-                                {% endfor %}
-                            </ul>
+                    <div class="row gx-3 mt-3">
+                        <div class="col">
+                            <a href="{% url 'comprar_carrinho' %}" class="w-100 btn btn-primary">Continuar para compra</a>
                         </div>
+                        <div class="col">
+                            <a href="{% url 'carrinho_esvaziar' %}" class="w-100 btn btn-danger">Esvaziar carrinho</a>
+                        </div>                   
                     </div>
                 </div>
             </div>
-            <a href="{% url 'carrinho_esvaziar' %}" class="btn btn-danger w-100 mt-3">Esvaziar carrinho</a>
+            
         </div>
     </div>
 {% endblock %}

@@ -160,8 +160,9 @@ class CarrinhoProduto(models.Model):
 # Tabela para armazenar as Compras
 class Compra(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
-    endereco = models.ForeignKey(Endereco, on_delete=models.CASCADE)
+    endereco = models.ForeignKey(Endereco, on_delete=models.CASCADE, null=True, blank=True)
     data_realizada = models.DateTimeField(auto_now_add=True)
+    produtos = models.ManyToManyField(Produto, through='CompraProduto')
 
     def __str__(self):
         return f"Compra #{self.id} - {self.usuario.username}"

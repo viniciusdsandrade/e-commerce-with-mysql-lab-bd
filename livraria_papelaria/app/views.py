@@ -1,6 +1,5 @@
 from django.shortcuts import render, redirect
 from .models import ListaDesejos, Produto, Carrinho
-from .forms import EnderecoForm, PixForm, CartaoForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
@@ -103,27 +102,6 @@ def conta(request):
 @user_passes_test(usuario_comum)
 def cupons(request):
     return render(request, 'cupons.html')
-
-
-@login_required
-@user_passes_test(usuario_comum)
-def compra_endereco(request):
-    formulario = EnderecoForm()
-    return render(request, 'compra_endereco.html', {'formulario': formulario})
-
-
-@login_required
-@user_passes_test(usuario_comum)
-def compra_transportadora(request):
-    return render(request, 'compra_transportadora.html')
-
-
-@login_required
-@user_passes_test(usuario_comum)
-def compra_pagamento(request):
-    formulario_pix = PixForm()
-    formulario_cartao = CartaoForm()
-    return render(request, 'compra_pagamento.html', {'formulario_pix': formulario_pix, 'formulario_cartao': formulario_cartao})
 
 
 @login_required
