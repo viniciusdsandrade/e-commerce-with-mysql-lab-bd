@@ -1,0 +1,20 @@
+{% extends 'components/base.html' %}
+{% block title %} Compra {% endblock %}
+{% block content %}
+    {% include 'components/content_title.html' with title='Compra' %}
+    <h5 class="mb-4">Endereço</h5>
+    <form class="d-flex flex-column gap-4" method="post">
+        {% csrf_token %}
+
+        {% for i in "12345" %}
+        
+            <div>
+                <input class="form-check-input" type="checkbox" name="cupons" id="cupons">
+                <label class="form-check-label" for="cupons">Cupons</label>
+            </div>
+
+        {% endfor %}
+
+        <a href="{% url 'compra_pagamento' %}" type="submit" class="btn btn-primary">Continuar</a>
+    </form>
+{% endblock %}

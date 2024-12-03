@@ -19,8 +19,14 @@ def compra_endereco(request, id_compra):
 
 @login_required
 @user_passes_test(usuario_comum)
-def compra_transportadora(request):
-    return render(request, 'compra_transportadora.html')
+def compra_transportadoras(request):
+    return render(request, 'compra_transportadoras.html')
+
+
+@login_required
+@user_passes_test(usuario_comum)
+def compra_cupons(request):
+    return render(request, 'compra_cupons.html')
 
 
 @login_required
