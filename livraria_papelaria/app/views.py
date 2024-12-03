@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import ListaDesejos, Produto, Carrinho
+from .models import ListaDesejos, Produto, Carrinho, Cupom
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
@@ -45,7 +45,6 @@ def pesquisa(request):
 
     # Aplicar filtros
 
-    print(filtros['Busca'])
     produtos = produtos.filter(nome__icontains=filtros['Busca'])
 
     if filtros['Categoria'] != 'Qualquer':
@@ -101,7 +100,8 @@ def conta(request):
 @login_required
 @user_passes_test(usuario_comum)
 def cupons(request):
-    return render(request, 'cupons.html')
+    cupons = [cupom for cupom in Cupom.objects.all() if cupom.is_valido(request.user)]
+    return render(request, 'cupons.html', {'cupons': cupons})
 
 
 @login_required

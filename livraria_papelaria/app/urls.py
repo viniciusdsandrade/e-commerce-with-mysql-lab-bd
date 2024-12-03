@@ -30,7 +30,7 @@ urlpatterns = [
 
     path('compra/endereco/<int:id_compra>', views_compra.compra_endereco, name='compra_endereco'),
     path('compra/transportadoras/<int:id_compra>', views_compra.compra_transportadoras, name='compra_transportadoras'),
-    path('compra/cupons', views_compra.compra_cupons, name='compra_cupons'),
+    path('compra/cupons/<int:id_compra>', views_compra.compra_cupons, name='compra_cupons'),
     path('compra/pagamento', views_compra.compra_pagamento, name='compra_pagamento'),
 
     path('historico_compras/', views.historico_compras, name='historico_compras'),

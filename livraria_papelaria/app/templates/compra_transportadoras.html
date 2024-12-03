@@ -2,6 +2,8 @@
 {% block title %} Compra {% endblock %}
 {% block content %}
     {% include 'components/content_title.html' with title='Compra' %}
+    {% include 'components/resumo_compra.html' with preco_produtos=compra.preco_produtos quantidade_produtos=compra.quantidade_produtos preco_total=compra.preco_total %}
+
     <h5>Transportadora</h5>
     <form method="post">
         {% csrf_token %}

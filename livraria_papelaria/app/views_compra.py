@@ -6,6 +6,9 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from .context_processors import produtos_processor
 
 
+from django.utils import timezone
+
+
 def usuario_comum(user):
     return not user.is_staff
 
@@ -36,7 +39,11 @@ def compra_endereco(request, id_compra):
 
     formulario = EnderecoForm()
     enderecos = request.user.endereco_set.all()
-    return render(request, 'compra_endereco.html', {'enderecos': enderecos, 'formulario': formulario})
+    return render(request, 'compra_endereco.html', {
+        'enderecos': enderecos,
+        'formulario': formulario,
+        'compra': compra
+    })
 
 
 @login_required
@@ -48,27 +55,21 @@ def compra_transportadoras(request, id_compra):
     if request.method == 'POST':
         for compra_produto in compra_produtos:
             transportadora = Transportadora.objects.get(id=request.POST[f'Transportadora{compra_produto.id}'])
-            
-            try:
-                entrega = Entrega.objects.get(compra_produto=compra_produto)
-                entrega.transportadora = transportadora
-                entrega.save()
+            entrega = Entrega.objects.get(compra_produto=compra_produto)
+            entrega.transportadora = transportadora
+            entrega.save()
 
-            except Entrega.DoesNotExist:
-                entrega = Entrega.objects.create(compra_produto=compra_produto, transportadora=transportadora)
-            
-            compra_produto.save()
-
-        return redirect('compra_cupons')
+        return redirect('compra_cupons', id_compra=id_compra)
 
     transportadoras = Transportadora.objects.all()
-    return render(request, 'compra_transportadoras.html', {'compra_produtos': compra_produtos, 'transportadoras': transportadoras})
+    return render(request, 'compra_transportadoras.html', {'compra': compra, 'compra_produtos': compra_produtos, 'transportadoras': transportadoras})
 
 
 @login_required
 @user_passes_test(usuario_comum)
-def compra_cupons(request):
-    return render(request, 'compra_cupons.html')
+def compra_cupons(request, id_compra):
+    compra = get_object_or_404(Compra, id=id_compra)
+    return render(request, 'compra_cupons.html', {'compra': compra})
 
 
 @login_required

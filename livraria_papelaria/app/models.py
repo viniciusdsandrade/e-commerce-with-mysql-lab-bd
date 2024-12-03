@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
 
 
 
@@ -10,7 +11,7 @@ class Transportadora(models.Model):
     inscricao_estadual = models.CharField(max_length=100, unique=True)
     telefone = models.CharField(max_length=20)
     email = models.EmailField(max_length=100, unique=True)
-    preco_km = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    preco = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     endereco = models.CharField(max_length=100, null=True, blank=True)
 
     def __str__(self):
@@ -86,6 +87,15 @@ class Produto(models.Model):
 
     def __str__(self):
         return self.nome
+    
+    def preco_atual(self):
+        promocao = self.promocao_set.last()
+
+        if promocao:
+            promocao_produto = promocao.promocaoproduto_set.get(produto=self)
+            return self.preco * (1 - promocao_produto.desconto)
+        
+        return self.preco
 
     class Meta:
         verbose_name = verbose_name_plural = 'Produto'
@@ -166,6 +176,27 @@ class Compra(models.Model):
 
     def __str__(self):
         return f"Compra #{self.id} - {self.usuario.username}"
+    
+    def quantidade_produtos(self):
+        return sum([compra_produto.quantidade for compra_produto in self.compraproduto_set.all()])
+
+    def preco_produtos(self):
+        return sum([compra_produto.produto.preco_atual() * compra_produto.quantidade for compra_produto in self.compraproduto_set.all()])
+
+    def preco_frete(self):
+        soma = 0
+
+        for compra_produto in self.compraproduto_set.all():
+            transportadora = compra_produto.entrega_associada().transportadora
+            soma += transportadora.preco if transportadora is not None else 0
+
+        return soma
+
+    def desconto_cupons(self):
+        return sum([cupom.desconto for cupom in self.cupom_set.all()])
+
+    def preco_total(self):
+        return self.preco_produtos() + self.preco_frete() - self.desconto_cupons()
 
     class Meta:
         verbose_name = verbose_name_plural = 'Compra'
@@ -176,6 +207,15 @@ class CompraProduto(models.Model):
     compra = models.ForeignKey(Compra, on_delete=models.CASCADE)
     produto = models.ForeignKey(Produto, on_delete=models.CASCADE)
     quantidade = models.PositiveIntegerField()
+
+    def entrega_associada(self):
+        try:
+            entrega = Entrega.objects.get(compra_produto=self)
+        except Entrega.DoesNotExist:
+            entrega = Entrega(compra_produto=self)
+            entrega.save()
+
+        return entrega
 
     class Meta:
         unique_together = ('compra', 'produto')
@@ -210,10 +250,16 @@ class Cupom(models.Model):
     desconto = models.DecimalField(max_digits=10, decimal_places=2)
     data_inicio = models.DateTimeField()
     data_fim = models.DateTimeField()
-    compras = models.ManyToManyField(Compra)
+    compras = models.ManyToManyField(Compra, blank=True)
 
     def __str__(self):
         return self.nome
+
+    def is_valido(self, usuario):
+        dentro_do_tempo = self.data_inicio <= timezone.now() <= self.data_fim
+        usuario_nao_usou = not self.compras.filter(usuario=usuario).exists()
+
+        return dentro_do_tempo and usuario_nao_usou
 
     class Meta:
         verbose_name = verbose_name_plural = 'Cupom'
@@ -229,7 +275,7 @@ class Entrega(models.Model):
         ENTREGUE = 'ENTREGUE', 'Entregue'
 
     compra_produto = models.OneToOneField(CompraProduto, on_delete=models.CASCADE, primary_key=True)
-    transportadora = models.ForeignKey(Transportadora, on_delete=models.CASCADE)
+    transportadora = models.ForeignKey(Transportadora, on_delete=models.CASCADE, null=True, blank=True)
     codigo_rastreio = models.CharField(max_length=100, null=True, blank=True)
     data_postado = models.DateTimeField(null=True, blank=True)
     data_transito = models.DateTimeField(null=True, blank=True)

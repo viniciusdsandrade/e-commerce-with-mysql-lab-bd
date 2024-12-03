@@ -2,6 +2,8 @@
 {% block title %} Compra {% endblock %}
 {% block content %}
     {% include 'components/content_title.html' with title='Compra' %}
+    {% include 'components/resumo_compra.html' with preco_produtos=compra.preco_produtos quantidade_produtos=compra.quantidade_produtos preco_total=compra.preco_total preco_frete=compra.preco_frete %}
+
     <h5 class="mb-4">Endereço</h5>
     <form class="d-flex flex-column gap-4" method="post">
         {% csrf_token %}

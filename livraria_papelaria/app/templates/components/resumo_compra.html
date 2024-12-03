@@ -1,0 +1,10 @@
+<div style="max-width: 400px;" class="row row-cols-2 gy-2 align-items-center justify-content-between mb-5">
+    <div class="fw-bold">Produtos ({{ quantidade_produtos }})</div>
+    <div class="text-end">R${{ preco_produtos|floatformat:2 }}</div>
+    <div class="fw-bold">Frete</div>
+    <div class="text-end">R${{ preco_frete|floatformat:2|default:"a ser decidido" }}</div>
+    <div class="fw-bold">Cupons</div>
+    <div class="text-end">- R${{ desconto_cupons|floatformat:2|default:"a ser decidido" }}</div>
+    <div class="fw-bold">Total</div>
+    <div class="text-end">R${{ preco_total|floatformat:2|default:"a ser decidido" }}</div>
+</div>

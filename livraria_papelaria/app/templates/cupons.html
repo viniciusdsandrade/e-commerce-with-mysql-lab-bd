@@ -4,8 +4,8 @@
     {% include 'components/content_title.html' with title='Cupons' %}
     <p>Você tem esses cupons disponíveis para usar antes de pagar a compra:</p>
     <div class="d-flex flex-wrap justify-content-space-between gap-2">
-    {% for i in "0123456789" %}
-        <div class="card py-2 px-3">Cupom {{i}}</div>
+    {% for cupom in cupons %}
+        <div class="card py-2 px-3">{{ cupom.nome }}</div>
     {% endfor %}
     </div>
 {% endblock %}
