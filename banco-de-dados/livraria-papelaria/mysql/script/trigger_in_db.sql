@@ -2,6 +2,8 @@ use livraria_papelaria;
 
 DROP TRIGGER IF EXISTS tr_endereco_is_principal_bi;
 DROP TRIGGER IF EXISTS tr_endereco_is_principal_bu;
+DROP TRIGGER IF EXISTS tr_endereco_is_principal_bi;
+DROP TRIGGER IF EXISTS tr_endereco_is_principal_bu;
 DROP TRIGGER IF EXISTS tr_atualizar_estoque;
 
 -- ********************
