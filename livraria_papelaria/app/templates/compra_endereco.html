@@ -7,20 +7,20 @@
         {% csrf_token %}
         <div class="input-group">
             <div class="input-group-text">
-                <input class="form-check-input mt-0" name="endereco" type="radio" value="" aria-label="Radio button for following text input">
+                <input checked class="form-check-input mt-0" name="endereco" type="radio" value="Existente">
             </div>
             <label class="input-group-text" for="inputGroupSelect01">Existente</label>
             <select class="form-select" id="inputGroupSelect01">
                 <option selected>Escolha...</option>
-                {% for i in "12345" %}
-                    <option value="{{ i }}">Endereço {{ i }}</option>
+                {% for endereco in enderecos %}
+                    <option {% if endereco.is_principal %} selected {% endif %} value="{{ endereco.id }}">{{ endereco.nome }}</option>
                 {% endfor %}
             </select>
         </div>
 
         <div class="input-group">
             <div class="input-group-text">
-                <input class="form-check-input mt-0" name="endereco" type="radio" value="" aria-label="Radio button for following text input">
+                <input {% if not enderecos %} checked {% endif %} class="form-check-input mt-0" name="endereco" type="radio" value="Novo">
             </div>
             <label class="input-group-text" for="inputGroupSelect01">Novo</label>
             <div class="p-3 border">

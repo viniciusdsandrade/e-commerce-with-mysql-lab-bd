@@ -34,7 +34,7 @@ def formas_pagamento_criar(request, tipo_pagamento):
             pagamento.save()
             return redirect('formas_pagamento')
         else:
-            messages.warning(request, ('Houve um erro ao salvar o pagamento.'))
+            messages.warning(request, ('Houve um erro ao salvar o pagamento. Pode ser que a validade não esteja no formato certo (AAAA-MM-DD).'))
             return redirect('formas_pagamento_criar', tipo_pagamento=tipo_pagamento)
     if tipo_pagamento == 'pix':
         formulario = PixForm()

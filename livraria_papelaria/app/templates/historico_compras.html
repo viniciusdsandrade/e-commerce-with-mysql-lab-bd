@@ -18,14 +18,14 @@
                 {% for i in "123" %}
                     <div class="row g-0 align-items-center">
                         <div class="col-md-5 p-3 ps-md-2">
-                            <a href="{% url 'produto' %}">
+                            <a href="#">
                                 {% load static %}
                                 <img src="{% static 'img/teste.png' %}" class="img-fluid" alt="...">
                             </a>
                         </div>
                         <div class="col-md-7">
                             <div class="card-body">
-                                <a href="{% url 'produto' %}" class="card-title text-decoration-none">
+                                <a href="#" class="card-title text-decoration-none">
                                     <h5 class="mb-2">Produto {{ i }}</h5>
                                 </a>
                                 <p><span class="fw-bold">Status: </span>Estado do item</p>

@@ -236,8 +236,7 @@ class Entrega(models.Model):
     estado = models.CharField(
         max_length=30,
         choices=EstadoChoices.choices,
-        null=True,
-        blank=True
+        default=EstadoChoices.AGUARDANDO_PAGAMENTO_COMPRA,
     )
 
     class Meta:
