@@ -5,7 +5,7 @@
     <div class="col-md-5 d-flex flex-column gap-3">
     {% load static %}
       <img src="{% static 'img/teste.png' %}" class="img-fluid" alt="Imagem do produto">
-      <a href="{% url 'compra_endereco' %}" class="btn btn-primary">Comprar agora</a>
+      <a href="{% url 'comprar_agora' id_produto=produto.id %}" class="btn btn-primary">Comprar agora</a>
       <a href="{% url 'carrinho_adicionar' id_produto=produto.id %}" class="btn btn-secondary">Adicionar ao carrinho</a>
       <a href="{% url 'lista_de_desejos_adicionar' id_produto=produto.id %}" class="btn btn-secondary">Salvar na lista de desejos</a>
     </div>
