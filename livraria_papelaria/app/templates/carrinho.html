@@ -45,7 +45,7 @@ window.onload = () => {
                             <div class="d-flex gap-3 flex-wrap mt-3">
                                 <a href="{% url 'carrinho_remover' id_produto=produto.id %}">Excluir</a>
                                 <a href="{% url 'lista_de_desejos_adicionar' id_produto=produto.id %}">Salvar</a>
-                                <a href="{# url 'comprar_agora_carrinho' id_produto id_carrinho=id_carrinho #}">Comprar agora</a>
+                                <a href="{# url 'comprar_agora_carrinho' id_produto=id_produto id_carrinho=id_carrinho #}">Comprar agora</a>
                             </div>
                         </div>
                     </div>
