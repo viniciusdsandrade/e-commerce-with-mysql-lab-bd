@@ -1,40 +1,35 @@
 {% extends 'components/base.html' %}
 {% block title %} Compra {% endblock %}
 {% block content %}
+
     {% include 'components/content_title.html' with title='Compra' %}
     <h5>Endereço</h5>
-    <form class="d-flex flex-column gap-4" method="post">
+
+    <form class="mt-5" method="post">
         {% csrf_token %}
-        <div class="input-group">
-            <div class="input-group-text">
-                <input checked class="form-check-input mt-0" name="endereco" type="radio" value="Existente">
-            </div>
-            <label class="input-group-text" for="inputGroupSelect01">Existente</label>
-            <select class="form-select" id="inputGroupSelect01">
-                <option selected>Escolha...</option>
-                {% for endereco in enderecos %}
-                    <option {% if endereco.is_principal %} selected {% endif %} value="{{ endereco.id }}">{{ endereco.nome }}</option>
-                {% endfor %}
-            </select>
-        </div>
+        <input type="hidden" name="Tipo" value="Existente">
 
-        <div class="input-group">
-            <div class="input-group-text">
-                <input {% if not enderecos %} checked {% endif %} class="form-check-input mt-0" name="endereco" type="radio" value="Novo">
-            </div>
-            <label class="input-group-text" for="inputGroupSelect01">Novo</label>
-            <div class="p-3 border">
-                {{ formulario.as_p }}
+        <h6>Existente</h6>
+        <select class="form-select" id="inputGroupSelect01" name="Endereco">
+            <option selected>Escolha...</option>
+            {% for endereco in enderecos %}
+                <option {% if endereco.is_principal %} selected {% endif %} value="{{ endereco.id }}">{{ endereco.nome }}</option>
+            {% endfor %}
+        </select>
 
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="gridCheck">
-                    <label class="form-check-label" for="gridCheck">
-                        Registrar este endereço na minha conta
-                    </label>
-                </div>
-            </div>
-        </div>
-
-        <a href="{% url 'compra_transportadoras' %}" type="submit" class="btn btn-primary">Continuar</a>
+        <button type="submit" class="mt-2 btn btn-primary">Continuar com endereço existente</button>
     </form>
+
+    <form class="mt-5" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="Tipo" value="Novo">
+
+        <h6>Novo</h6>
+        <div class="p-3 border">
+            {{ formulario.as_p }}
+        </div>
+
+        <button type="submit" class="mt-2 btn btn-primary">Continuar com endereço novo</button>
+    </form>
+
 {% endblock %}

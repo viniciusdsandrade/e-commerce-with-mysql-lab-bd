@@ -12,6 +12,27 @@ def usuario_comum(user):
 @login_required
 @user_passes_test(usuario_comum)
 def compra_endereco(request, id_compra):
+    compra = get_object_or_404(Compra, id=id_compra)
+
+    if request.method == 'POST':
+        endereco = None
+
+        if request.POST['Tipo'] == 'Existente':
+            endereco = Endereco.objects.get(id=request.POST['Endereco'])
+
+        elif request.POST['Tipo'] == 'Novo':
+            formulario = EnderecoForm(request.POST)
+
+            if formulario.is_valid():
+                endereco = formulario.save(commit=False)
+                endereco.usuario = request.user
+                endereco.save()
+
+
+        compra.endereco = endereco
+        compra.save()
+        return redirect('compra_transportadoras')
+
     formulario = EnderecoForm()
     enderecos = request.user.endereco_set.all()
     return render(request, 'compra_endereco.html', {'enderecos': enderecos, 'formulario': formulario})
