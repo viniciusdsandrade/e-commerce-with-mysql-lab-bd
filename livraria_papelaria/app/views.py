@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import ListaDesejos, Produto, Carrinho, Cupom
+from .models import ListaDesejos, Produto, Carrinho, Cupom, CompraProduto, Avaliacao
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
@@ -107,6 +107,16 @@ def cupons(request):
 @login_required
 @user_passes_test(usuario_comum)
 def historico_compras(request):
+    if request.method == 'POST':
+        compra_produto = CompraProduto.objects.get(id=request.POST['compra_produto_id'])
+        Avaliacao.objects.create(compra_produto=compra_produto)
+        compra_produto.avaliacao.nota = request.POST['Nota']
+        compra_produto.avaliacao.comentario = request.POST['Descricao']
+        compra_produto.avaliacao.save()
+
+        messages.success(request, ('Avaliação feita com sucesso.'))
+        return redirect('historico_compras')
+
     compras = request.user.compra_set.all()
     return render(request, 'historico_compras.html', {'compras': compras})
 

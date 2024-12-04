@@ -31,15 +31,17 @@
                                 <p><span class="fw-bold">Status: </span> {{ compra_produto.entrega.estado }}</p>
                                 <p><span class="fw-bold">Transportadora: </span> {{ compra_produto.entrega.transportadora.nome }}</p>
 
-                                {% if forloop.counter|divisibleby:'2' %}
-                                
+                                {% if not compra_produto.foi_avaliado %}
                                     <!-- Button trigger modal -->
                                     <button type="button" class="w-100 btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                                         Avaliar produto
                                     </button>
 
                                     <!-- Modal -->
-                                    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                    <form method="post" class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                        {% csrf_token %}
+                                        <input type="hidden" value="{{ compra_produto.id }}" name="compra_produto_id">
+                                        
                                         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                                             <div class="modal-content">
                                             <div class="modal-header">
@@ -48,27 +50,27 @@
                                             </div>
                                             <div class="modal-body">
                                                 <div class="input-group mb-3">
-                                                    <select required class="form-select form-select-lg mb-3" aria-label="Large select example">
+                                                    <select required name="Nota" class="form-select form-select-lg mb-3" aria-label="Large select example">
                                                         <option selected value="">Nota</option>
-                                                        <option value="1">⭐</option>
-                                                        <option value="2">⭐⭐</option>
-                                                        <option value="3">⭐⭐⭐</option>
-                                                        <option value="4">⭐⭐⭐⭐</option>
-                                                        <option value="5">⭐⭐⭐⭐⭐</option>
+                                                        <option value="⭐">⭐</option>
+                                                        <option value="⭐⭐">⭐⭐</option>
+                                                        <option value="⭐⭐⭐">⭐⭐⭐</option>
+                                                        <option value="⭐⭐⭐⭐">⭐⭐⭐⭐</option>
+                                                        <option value="⭐⭐⭐⭐⭐">⭐⭐⭐⭐⭐</option>
                                                     </select>
                                                 </div>
                                                 <div class="form-floating">
-                                                    <textarea class="form-control" style="height: 100px;" placeholder="Comente sua avaliação" id="floatingTextarea"></textarea>
+                                                    <textarea name="Descricao" class="form-control" style="height: 100px;" placeholder="Comente sua avaliação" id="floatingTextarea"></textarea>
                                                     <label for="floatingTextarea">Descrição</label>
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                                <button type="button" class="btn btn-primary">Avaliar</button>
+                                                <button type="submit" class="btn btn-primary">Avaliar</button>
                                             </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </form>
 
                                 {% else %}
                                     <div class="card px-3 py-2 text-center">Já avaliado</div>

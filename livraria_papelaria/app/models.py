@@ -222,6 +222,9 @@ class CompraProduto(models.Model):
 
         return entrega
 
+    def foi_avaliado(self):
+        return hasattr(self, 'avaliacao')
+
     class Meta:
         unique_together = ('compra', 'produto')
         verbose_name = verbose_name_plural = 'CompraProduto'
