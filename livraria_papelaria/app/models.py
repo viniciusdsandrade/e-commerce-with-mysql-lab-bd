@@ -193,10 +193,15 @@ class Compra(models.Model):
         return soma
 
     def desconto_cupons(self):
-        return sum([cupom.desconto for cupom in self.cupom_set.all()])
+        soma = 0
+
+        for cupom in self.cupom_set.all():
+            soma += cupom.desconto
+
+        return soma
 
     def preco_total(self):
-        return self.preco_produtos() + self.preco_frete() - self.desconto_cupons()
+        return max(0, self.preco_produtos() + self.preco_frete() - self.desconto_cupons())
 
     class Meta:
         verbose_name = verbose_name_plural = 'Compra'

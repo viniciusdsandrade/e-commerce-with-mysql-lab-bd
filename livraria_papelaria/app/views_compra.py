@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Produto, Compra, CompraProduto, Carrinho, CarrinhoProduto, Endereco, Transportadora, Entrega
+from .models import Produto, Compra, CompraProduto, Carrinho, CarrinhoProduto, Endereco, Transportadora, Entrega, Cupom
 from .forms import EnderecoForm, PixForm, CartaoForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -69,15 +69,23 @@ def compra_transportadoras(request, id_compra):
 @user_passes_test(usuario_comum)
 def compra_cupons(request, id_compra):
     compra = get_object_or_404(Compra, id=id_compra)
-    return render(request, 'compra_cupons.html', {'compra': compra})
+
+    if request.method == 'POST':
+        cupons = request.POST.getlist('cupons')
+        compra.cupom_set.set(cupons)
+        return redirect('compra_pagamento', id_compra=id_compra)
+
+    cupons = [cupom for cupom in Cupom.objects.all() if cupom.is_valido(request.user)]
+    return render(request, 'compra_cupons.html', {'compra': compra, 'cupons': cupons})
 
 
 @login_required
 @user_passes_test(usuario_comum)
-def compra_pagamento(request):
+def compra_pagamento(request, id_compra):
+    compra = get_object_or_404(Compra, id=id_compra)
     formulario_pix = PixForm()
     formulario_cartao = CartaoForm()
-    return render(request, 'compra_pagamento.html', {'formulario_pix': formulario_pix, 'formulario_cartao': formulario_cartao})
+    return render(request, 'compra_pagamento.html', {'compra': compra, 'formulario_pix': formulario_pix, 'formulario_cartao': formulario_cartao})
 
 
 # def comprar_agora_listadesejos(request, id_produto):
