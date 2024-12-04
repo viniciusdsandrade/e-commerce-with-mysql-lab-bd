@@ -5,7 +5,6 @@ def categorias_processor(request):
     categorias = Categoria.objects.all()
     categorias_livraria = categorias.filter(tipo='LIVRARIA')
     categorias_papelaria = categorias.filter(tipo='PAPELARIA')
-    categorias = categorias[:10]
 
     return {
         'categorias': categorias,

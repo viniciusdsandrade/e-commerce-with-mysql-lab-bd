@@ -19,7 +19,7 @@ SELECT p.id                    AS produto_id,
        p.nome                  AS produto_nome,
        p.preco                 AS preco_original,
        pp.desconto             AS desconto_promocao,
-       (p.preco - pp.desconto) AS preco_promocional,
+       (p.preco * (1- pp.desconto)) AS preco_promocional,
        pr.nome                 AS promocao_nome,
        pr.data_inicio,
        pr.data_fim
