@@ -12,6 +12,10 @@ window.onload = () => {
             const carrinhoId = match[2];
             const produtoQtd = event.target.value;
             fetch(`_qtd/${produtoId}/${carrinhoId}/${produtoQtd}`)
+            .then(response => response.text())
+            .then(data => {
+                document.querySelector("#resumo").innerHTML = data
+            });
         }
     }
 }
@@ -59,7 +63,7 @@ window.onload = () => {
                 <div class="card-header text-center fw-bold">
                     Resumo
                 </div>
-                <div class="card-body">
+                <div class="card-body" id="resumo">
                     <div class="row row-cols-2 gy-2 align-items-center justify-content-between">
                         <div class="fw-bold">Produtos ({{ quantidade_total }})</div>
                         <div class="text-end">R${{ preco_total|floatformat:2 }}</div>

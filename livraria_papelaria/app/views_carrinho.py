@@ -73,4 +73,7 @@ def quantidade_produto(request, id_produto, id_carrinho, quantidade):
     carrinho_produto = CarrinhoProduto.objects.get(carrinho=carrinho, produto=produto)
     carrinho_produto.quantidade = quantidade
     carrinho_produto.save()
-    return HttpResponse('')
+
+    # recria o resumo
+
+    return HttpResponse('html do resumo')
