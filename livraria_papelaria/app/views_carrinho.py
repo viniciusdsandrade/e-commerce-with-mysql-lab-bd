@@ -74,6 +74,36 @@ def quantidade_produto(request, id_produto, id_carrinho, quantidade):
     carrinho_produto.quantidade = quantidade
     carrinho_produto.save()
 
-    # recria o resumo
+    carrinho = Carrinho.objects.get(usuario=request.user)
 
-    return HttpResponse('html do resumo')
+    produtos = [produto for produto in carrinho.produtos.all()]
+
+    for produto in produtos:
+        carrinhoproduto = CarrinhoProduto.objects.get(produto=produto, carrinho=carrinho)
+        produto.quantidade = carrinhoproduto.quantidade
+
+    produtos = produtos_processor(request, produtos)['produtos']
+    quantidade_total = sum([produto.quantidade for produto in produtos])
+    preco_total = sum([produto.preco * produto.quantidade for produto in produtos])
+
+    resumo = f'''
+    <div class="row row-cols-2 gy-2 align-items-center justify-content-between">
+        <div class="fw-bold">Produtos ({ quantidade_total })</div>
+            <div class="text-end">R${ preco_total }</div>
+            <div class="fw-bold">Frete</div>
+            <div class="text-end">a ser decidido</div>
+            <div class="fw-bold">Cupons</div>
+            <div class="text-end">a ser decidido</div>
+        </div>
+
+        <div class="row gx-3 mt-3">
+            <div class="col">
+                <a href="/comprar/carrinho" class="w-100 btn btn-primary">Continuar para compra</a>
+            </div>
+            <div class="col">
+                <a href="/carrinho/esvaziar" class="w-100 btn btn-danger">Esvaziar carrinho</a>
+            </div>                   
+        </div>
+    </div>'''
+
+    return HttpResponse(resumo)
