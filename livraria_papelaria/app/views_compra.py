@@ -94,7 +94,7 @@ def compra_pagamento(request, id_compra):
             forma_pagamento = None
 
             for compra_produto in compra_produtos:
-                compra_produto.entrega.estado = 'EM_PREPARO'
+                compra_produto.entrega.estado = 'ENTREGUE'
                 compra_produto.entrega.save()
 
             if request.POST['FormaPagamento'] == 'Existente':

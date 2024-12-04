@@ -107,7 +107,8 @@ def cupons(request):
 @login_required
 @user_passes_test(usuario_comum)
 def historico_compras(request):
-    return render(request, 'historico_compras.html')
+    compras = request.user.compra_set.all()
+    return render(request, 'historico_compras.html', {'compras': compras})
 
 
 def entrar(request):
