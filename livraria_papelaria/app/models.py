@@ -9,10 +9,7 @@ class Transportadora(models.Model):
     nome = models.CharField(max_length=100)
     cnpj = models.CharField(max_length=20, unique=True)
     inscricao_estadual = models.CharField(max_length=100, unique=True)
-    telefone = models.CharField(max_length=20)
-    email = models.EmailField(max_length=100, unique=True)
     preco = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
-    endereco = models.CharField(max_length=100, null=True, blank=True)
 
     def __str__(self):
         return self.nome
@@ -27,7 +24,6 @@ class FormaPagamento(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
 
     class Meta:
-        abstract = True
         verbose_name = verbose_name_plural = 'FormaPagamento'
 
 
@@ -53,6 +49,9 @@ class Cartao(FormaPagamento):
         max_length=7,
         choices=TipoChoices.choices,
     )
+
+    def ultimos_digitos(self):
+        return self.numero[-4:]
 
     class Meta:
         verbose_name = verbose_name_plural = 'Cartao'
@@ -170,6 +169,7 @@ class CarrinhoProduto(models.Model):
 # Tabela para armazenar as Compras
 class Compra(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    forma_pagamento = models.ForeignKey(FormaPagamento, on_delete=models.CASCADE, null=True, blank=True)
     endereco = models.ForeignKey(Endereco, on_delete=models.CASCADE, null=True, blank=True)
     data_realizada = models.DateTimeField(auto_now_add=True)
     produtos = models.ManyToManyField(Produto, through='CompraProduto')

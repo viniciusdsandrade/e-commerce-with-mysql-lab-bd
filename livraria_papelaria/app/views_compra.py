@@ -1,9 +1,13 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Produto, Compra, CompraProduto, Carrinho, CarrinhoProduto, Endereco, Transportadora, Entrega, Cupom
+
+from .models import Produto, Compra, CompraProduto, Carrinho, CarrinhoProduto, \
+Endereco, Transportadora, Entrega, Cupom, FormaPagamento
+
 from .forms import EnderecoForm, PixForm, CartaoForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
 from .context_processors import produtos_processor
+from random import choice
 
 
 from django.utils import timezone
@@ -82,10 +86,65 @@ def compra_cupons(request, id_compra):
 @login_required
 @user_passes_test(usuario_comum)
 def compra_pagamento(request, id_compra):
+    if request.method == 'POST':
+        if choice([True]):
+            compra = Compra.objects.get(id=id_compra)
+            compra_produtos = compra.compraproduto_set.all()
+
+            forma_pagamento = None
+
+            for compra_produto in compra_produtos:
+                compra_produto.entrega.estado = 'EM_PREPARO'
+                compra_produto.entrega.save()
+
+            if request.POST['FormaPagamento'] == 'Existente':
+                forma_pagamento = FormaPagamento.objects.get(id=request.POST['FormaId'])
+            
+            elif request.POST['FormaPagamento'] == 'PixNovo':
+                formulario = PixForm(request.POST)
+
+                if formulario.is_valid():
+                    forma_pagamento = formulario.save(commit=False)
+                    forma_pagamento.usuario = request.user
+                    forma_pagamento.save()
+                else:
+                    messages.warning(request, ('Erro no formulário da forma de pagamento. Tente novamente.'))
+                    return redirect('compra_pagamento', id_compra=id_compra)
+
+            elif request.POST['FormaPagamento'] == 'CartaoNovo':
+                formulario = CartaoForm(request.POST)
+
+                if formulario.is_valid():
+                    forma_pagamento = formulario.save(commit=False)
+                    forma_pagamento.usuario = request.user
+                    forma_pagamento.save()
+                else:
+                    messages.warning(request, ('Erro no formulário da forma de pagamento. Tente novamente.'))
+                    return redirect('compra_pagamento', id_compra=id_compra)
+
+            compra.forma_pagamento = forma_pagamento
+            compra.save()
+            messages.success(request, ('Compra realizada com sucesso!'))
+            return redirect('historico_compras')
+        
+        messages.warning(request, ('Erro ao efetuar pagamento. Tente novamente.'))
+
     compra = get_object_or_404(Compra, id=id_compra)
     formulario_pix = PixForm()
     formulario_cartao = CartaoForm()
-    return render(request, 'compra_pagamento.html', {'compra': compra, 'formulario_pix': formulario_pix, 'formulario_cartao': formulario_cartao})
+    cartoes = [forma.cartao for forma in request.user.formapagamento_set.all() if hasattr(forma, 'cartao')]
+    pix = [forma.pix for forma in request.user.formapagamento_set.all() if hasattr(forma, 'pix')]
+    
+    for cartao in cartoes:
+        cartao.ultimos_digitos = cartao.numero[-4:]
+
+    return render(request, 'compra_pagamento.html', {
+        'compra': compra,
+        'formulario_pix': formulario_pix,
+        'formulario_cartao': formulario_cartao,
+        'cartoes': cartoes,
+        'pix': pix,
+    })
 
 
 # def comprar_agora_listadesejos(request, id_produto):
