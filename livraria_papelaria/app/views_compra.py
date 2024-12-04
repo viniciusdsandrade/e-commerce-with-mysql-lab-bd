@@ -87,7 +87,7 @@ def compra_cupons(request, id_compra):
 @user_passes_test(usuario_comum)
 def compra_pagamento(request, id_compra):
     if request.method == 'POST':
-        if choice([True]):
+        if choice([True, False]):
             compra = Compra.objects.get(id=id_compra)
             compra_produtos = compra.compraproduto_set.all()
 
