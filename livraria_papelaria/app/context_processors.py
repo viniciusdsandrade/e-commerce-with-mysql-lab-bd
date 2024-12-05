@@ -3,8 +3,8 @@ from .models import Categoria, Produto
 
 def categorias_processor(request):
     categorias = Categoria.objects.all()
-    categorias_livraria = categorias.filter(tipo='LIVRARIA')
-    categorias_papelaria = categorias.filter(tipo='PAPELARIA')
+    categorias_livraria = categorias.filter(tipo='Livraria')
+    categorias_papelaria = categorias.filter(tipo='Papelaria')
     categorias = categorias[:10]
 
     return {
